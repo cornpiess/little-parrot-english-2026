@@ -898,7 +898,7 @@ function NewUserCountdown({ color, theme }: { color: string; theme: 'dark' | 'li
 export default function HomePageV3() {
   const navigate = useNavigate();
   const [childName, setChildName] = useState('小朋友');
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => (localStorage.getItem('app_theme') as 'dark' | 'light') || 'dark');
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => (localStorage.getItem('app_theme') as 'dark' | 'light') || 'light');
   const [selTeacher, setSelTeacher] = useState(() => localStorage.getItem('homev3_selTeacher') || 'einstein');
   const [selPartner, setSelPartner] = useState(() => localStorage.getItem('homev3_selPartner') || 'parrot');
   const [focus, setFocus] = useState<'teacher' | 'partner'>(() => (localStorage.getItem('homev3_focus') as 'teacher' | 'partner') || 'teacher');
