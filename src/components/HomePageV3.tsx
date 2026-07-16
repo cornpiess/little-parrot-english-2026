@@ -231,20 +231,6 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
                 {char.desc}
               </p>
             )}
-            {/* Bond hearts — independent per character, shown for purchased characters */}
-            {isFront && (trialState?.status === 'purchased' || trialState?.status === 'subscribed') && (() => {
-              const bond = getBondLevel(char.id);
-              return (
-                <div className="flex items-center gap-0.5 mt-1">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <span key={i} className="text-[8px]" style={{ color: i < bond.hearts ? char.color : 'rgba(255,255,255,0.15)' }}>
-                      ♥
-                    </span>
-                  ))}
-                  <span className="text-[8px] ml-0.5" style={{ color: 'rgba(255,255,255,0.25)' }}>Lv{bond.level}</span>
-                </div>
-              );
-            })()}
           </div>
         </div>
       </div>
@@ -1286,53 +1272,22 @@ export default function HomePageV3() {
     })()}
   </AnimatePresence>
 
-  {/* ===== VERTICAL SWIPE ZONE (full screen touch, owned tab only) ===== */}
+  {/* ===== VERTICAL SWIPE (right edge strip, owned tab only) ===== */}
   {charTab === 'owned' && (
-  <div className="fixed inset-0 z-40 pointer-events-auto"
-    style={{ touchAction: 'none' }}
+  <div className="fixed right-0 top-0 bottom-0 z-40 pointer-events-auto"
+    style={{ width: 64, touchAction: 'none' }}
     onPointerDown={onStripPointerDown}
     onPointerMove={onStripPointerMove}
     onPointerUp={onStripPointerUp}
     onPointerCancel={onStripPointerUp}>
-    {/* Arrow buttons */}
-    {!isT && (
-      <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={() => switchFocus('teacher')}
-        className="absolute left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full"
-        style={{
-          top: 'max(5rem, env(safe-area-inset-top, 4rem))',
-          background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
-          border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'}`,
-          backdropFilter: 'blur(10px)',
-        }}>
-        <div className="flex items-center gap-2">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M6 10V2M6 2L2 6M6 2L10 6" stroke={theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span className="text-[10px] font-bold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>切换 AI 老师</span>
-        </div>
-      </motion.button>
-    )}
-    {isT && (
-      <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={() => switchFocus('partner')}
-        className="absolute left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full"
-        style={{
-          bottom: 'max(10rem, env(safe-area-inset-bottom, 8rem))',
-          background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
-          border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'}`,
-          backdropFilter: 'blur(10px)',
-        }}>
-        <div className="flex items-center gap-2">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M6 2V10M6 10L2 6M6 10L10 6" stroke={theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span className="text-[10px] font-bold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>切换 AI 伙伴</span>
-        </div>
-      </motion.button>
-    )}
+    <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 pointer-events-none">
+      <motion.div className="w-1 h-8 rounded-full"
+        animate={{ background: isT ? aT.color : 'rgba(255,255,255,0.08)', opacity: isT ? 0.6 : 0.2 }}
+        transition={{ duration: 0.3 }} />
+      <motion.div className="w-1 h-8 rounded-full"
+        animate={{ background: !isT ? aP.color : 'rgba(255,255,255,0.08)', opacity: !isT ? 0.6 : 0.2 }}
+        transition={{ duration: 0.3 }} />
+    </div>
   </div>
   )}
 
