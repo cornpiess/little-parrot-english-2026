@@ -1277,21 +1277,8 @@ export default function HomePageV3() {
           ═══════════════════════════════════════════════════════
         */}
 
-        {/* AI badge */}
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-center gap-2 mb-3">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-            style={{
-              background: theme === 'dark' ? 'rgba(88,204,2,0.12)' : 'rgba(88,204,2,0.08)',
-              border: '1px solid rgba(88,204,2,0.25)',
-            }}>
-            <span className="text-xs">🤖</span>
-            <span className="text-[11px] font-bold" style={{ color: '#58CC02' }}>{badgeText}</span>
-          </div>
-        </motion.div>
-
         {compareText && (
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             className="text-center text-[11px] mb-3 px-4"
             style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
             {compareText}
