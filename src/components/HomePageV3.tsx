@@ -384,9 +384,10 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
   }, [chars, maxIdx, centerOffset, minX, onSelect, x, CARD_W, GAP, onVerticalSwipe]);
 
   const addCard: Character = {
-    id: '__add__', name: '添加角色', subtitle: '发现更多',
+    id: '__add__', name: '添加角色', subtitle: '',
     color: theme === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)',
     accent: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)',
+    language: 'english',
     component: (
       <div className="flex flex-col items-center justify-center gap-1" style={{ height: 140 }}>
         <div className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -1108,45 +1109,46 @@ export default function HomePageV3() {
       <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         className="relative z-20 flex-shrink-0"
         style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0px))', paddingBottom: 2 }}>
-        {/* Row 1: Onboarding icon + Tabs + Right buttons */}
-        <div className="flex items-center justify-between px-3">
-          {/* Left: Onboarding icon only */}
-          <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/')}
-            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-            style={{
-              background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
-              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
-            }}>
-            <span className="text-sm">🏠</span>
-          </motion.button>
-
-          {/* Center: Tabs */}
-          <div className="flex gap-1.5">
+        {/* Row 1: Tabs (left) + Right buttons */}
+        <div className="flex items-center justify-between px-4">
+          {/* Left: Tabs — bigger, left-aligned */}
+          <div className="flex gap-2">
             {(['owned', 'unowned'] as const).map(t => {
               const count = t === 'owned' ? (ownedTeachers.length + ownedPartners.length) : unownedAll.length;
               const isActive = charTab === t;
               return (
                 <motion.button key={t} whileTap={{ scale: 0.95 }}
                   onClick={() => { setCharTab(t); setFlippedCard(null); setFlipOrigin(null); }}
-                  className="px-3 py-1.5 rounded-xl font-extrabold transition-all whitespace-nowrap"
+                  className="px-4 py-2 rounded-2xl font-extrabold transition-all whitespace-nowrap"
                   style={{
-                    fontSize: 12,
+                    fontSize: 13,
                     background: isActive
                       ? (theme === 'dark' ? 'rgba(255,255,255,0.12)' : `${effectiveActiveChar.color}18`)
                       : (theme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'),
                     color: isActive
                       ? (theme === 'dark' ? 'white' : '#1f2937')
                       : (theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)'),
-                    border: `1.5px solid ${isActive ? (theme === 'dark' ? 'rgba(255,255,255,0.15)' : `${effectiveActiveChar.color}30`) : 'transparent'}`,
+                    border: `2px solid ${isActive ? (theme === 'dark' ? 'rgba(255,255,255,0.15)' : `${effectiveActiveChar.color}30`) : 'transparent'}`,
                   }}>
-                  {t === 'owned' ? `已拥有${count}` : `未拥有${count}`}
+                  {t === 'owned' ? `已拥有 ${count}` : `未拥有 ${count}`}
                 </motion.button>
               );
             })}
           </div>
 
-          {/* Right: Theme + Simulate card activation */}
+          {/* Right: Profile + Theme + Simulate activation */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
+            <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/')}
+              className="w-8 h-8 rounded-full flex items-center justify-center"
+              style={{
+                background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+                border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
+              }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </motion.button>
             <motion.button whileTap={{ scale: 0.85 }} onClick={toggleTheme} className="w-8 h-8 rounded-full flex items-center justify-center"
               style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)' }}>
               {theme === 'dark' ? <Sun className="w-3.5 h-3.5 text-yellow-400" /> : <Moon className="w-3.5 h-3.5 text-gray-600" />}
@@ -1163,31 +1165,9 @@ export default function HomePageV3() {
           </div>
         </div>
 
-        {/* Row 2: Greeting + progress (only for owned tab) */}
+        {/* Row 2: Greeting + shipping tip (only for owned tab) */}
         {charTab === 'owned' && (
           <div className="px-5">
-            <div className="flex items-center gap-2 mb-1">
-              {(() => {
-                const progress = getLearningProgress();
-                if (progress.wordsLearned === 0 && progress.streakDays === 0) return null;
-                return (
-                  <>
-                    {progress.wordsLearned > 0 && (
-                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                        style={{ background: 'rgba(88,204,2,0.12)', color: '#58CC02' }}>
-                        📖 {progress.wordsLearned}词
-                      </span>
-                    )}
-                    {progress.streakDays > 1 && (
-                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                        style={{ background: 'rgba(255,149,0,0.12)', color: '#FF9500' }}>
-                        🔥 {progress.streakDays}天连续
-                      </span>
-                    )}
-                  </>
-                );
-              })()}
-            </div>
             <div className="flex items-center justify-between">
               <div>
                 <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
@@ -1197,23 +1177,24 @@ export default function HomePageV3() {
                   {isT ? '↑ 上滑切换到小伙伴' : '↓ 下滑切换到 AI 老师'}
                 </p>
               </div>
-              {/* Shipping address tip — scrolling banner */}
+              {/* Shipping address tip — scrolling marquee */}
               {!hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
-                <motion.button whileTap={{ scale: 0.98 }}
+                <motion.button whileTap={{ scale: 0.97 }}
                   onClick={() => navigate('/shipping-address')}
-                  className="flex items-center gap-1 px-2 py-1 rounded-lg flex-shrink-0 max-w-[160px] overflow-hidden"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl flex-shrink-0 max-w-[220px] overflow-hidden"
                   style={{
                     background: 'rgba(255,183,0,0.1)',
                     border: '1px solid rgba(255,183,0,0.2)',
                   }}>
-                  <span className="text-[10px] flex-shrink-0">🎁</span>
+                  <span className="text-base flex-shrink-0">🎁</span>
                   <div className="overflow-hidden flex-1 min-w-0">
-                    <motion.p className="text-[9px] font-bold whitespace-nowrap"
-                      style={{ color: '#FFB700' }}
-                      animate={{ x: [0, -60, 0] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}>
-                      恭喜获得实体卡片！点击填写收货地址 →
-                    </motion.p>
+                    <motion.div className="whitespace-nowrap"
+                      animate={{ x: ['0%', '-50%'] }}
+                      transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}>
+                      <span className="text-[11px] font-bold" style={{ color: '#FFB700' }}>
+                        恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;
+                      </span>
+                    </motion.div>
                   </div>
                 </motion.button>
               )}
