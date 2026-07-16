@@ -1301,16 +1301,16 @@ export default function HomePageV3() {
         {/* Character card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="rounded-3xl p-4 mb-3 flex gap-3"
+          className="rounded-3xl p-3 mb-3 flex gap-3"
           style={{
             background: theme === 'dark'
               ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
               : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
             border: `1.5px solid ${recChar.color}25`,
           }}>
-          <div className="w-24 h-28 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden"
+          <div className="w-20 h-24 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden"
             style={{ background: `${recChar.color}10` }}>
-            {recChar.component ? <div className="transform scale-50 origin-center">{recChar.component}</div> : recChar.image ? (
+            {recChar.component ? <div className="transform scale-[0.42] origin-center">{recChar.component}</div> : recChar.image ? (
               <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
             ) : null}
           </div>
@@ -1368,7 +1368,7 @@ export default function HomePageV3() {
             }}>
             ¥8.99 解锁 {recChar.name}
           </motion.button>
-          <p className="text-center text-[10px] mt-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
+          <p className="text-center text-[10px] mt-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
             或浏览更多角色 ↓
           </p>
         </motion.div>
