@@ -1362,30 +1362,28 @@ export default function HomePageV3() {
 
       {/* ===== UNOWNED TAB: Language-categorized grid ===== */}
       {charTab === 'unowned' && (() => {
-        const LANG_GROUPS: { key: string; label: string; flag: string; ids: string[] }[] = [
-          { key: 'english', label: '英语Agent', flag: '🇺🇸', ids: ['parrot', 'fox', 'olaf', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco'] },
-          { key: 'japanese', label: '日语 Agent', flag: '🇯🇵', ids: ['xizi'] },
-          { key: 'portuguese', label: '葡萄牙语 Agent', flag: '🇧🇷', ids: ['bull'] },
-          { key: 'arabic', label: '阿拉伯语 Agent', flag: '🇸🇦', ids: ['bred'] },
+        const LANG_GROUPS: { key: string; label: string; flag: string; bg: string; ids: string[] }[] = [
+          { key: 'english', label: '英语', flag: '🇺🇸', bg: 'rgba(28,176,246,0.06)', ids: ['parrot', 'fox', 'olaf', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco'] },
+          { key: 'japanese', label: '日语', flag: '🇯🇵', bg: 'rgba(255,107,157,0.06)', ids: ['xizi'] },
+          { key: 'portuguese', label: '葡萄牙语', flag: '🇧🇷', bg: 'rgba(255,149,0,0.06)', ids: ['bull'] },
+          { key: 'arabic', label: '阿拉伯语', flag: '🇸🇦', bg: 'rgba(175,87,219,0.06)', ids: ['bred'] },
         ];
         const allChars = [...TEACHERS, ...PARTNERS];
         return (
           <div className="flex-1 min-h-0 relative z-10 overflow-y-auto px-4 pb-4"
             style={{ scrollbarWidth: 'none' }}>
             {LANG_GROUPS.map(group => {
-              const chars = group.ids.map(id => allChars.find(c => c.id === id)).filter(Boolean) as Character[];
+              const chars = group.ids
+                .map(id => allChars.find(c => c.id === id))
+                .filter((c): c is Character => !!c && !isOwned(c.id));
               if (chars.length === 0) return null;
               return (
-                <div key={group.key} className="mb-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-lg">{group.flag}</span>
+                <div key={group.key} className="mb-4 rounded-2xl p-3" style={{ background: group.bg }}>
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <span className="text-base">{group.flag}</span>
                     <h3 className="text-sm font-extrabold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)' }}>
                       {group.label}
                     </h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                      style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)', color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
-                      {chars.length}个
-                    </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 w-full">
