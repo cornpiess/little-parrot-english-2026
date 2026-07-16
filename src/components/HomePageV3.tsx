@@ -98,7 +98,12 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
     const py = (cy - r.top) / r.height;
     setTilt({ x: (py - 0.5) * -24, y: (px - 0.5) * 24 });
     setMx(px * 100); setMy(py * 100);
-  }, [isFront, flipped]);
+    // On mobile touch, also trigger wobble
+    if (!hovered) {
+      setTapWobble(true);
+      setHovered(true);
+    }
+  }, [isFront, flipped, hovered]);
 
   const handleClick = useCallback(() => {
     if (isFront) {
@@ -145,6 +150,14 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
       } as React.CSSProperties}
       whileTap={isFront ? { scale: 0.97 } : undefined}
       onClick={handleClick}
+      onPointerDown={(e) => {
+        // Trigger wobble on touch start (mobile)
+        if (isFront && !flipped) {
+          setTapWobble(true);
+          setTimeout(() => setTapWobble(false), 2000);
+        }
+        onMove(e.clientX, e.clientY);
+      }}
       onPointerMove={(e) => onMove(e.clientX, e.clientY)}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => { setHovered(false); setTilt({ x: 0, y: 0 }); setMx(50); setMy(50); }}
@@ -336,7 +349,8 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
   const GAP = 16;
   const centerOffset = window.innerWidth / 2 - CARD_W / 2;
   const idx = chars.findIndex(c => c.id === selectedId);
-  const maxIdx = chars.length - 1;
+  const totalCards = chars.length + 1; // +1 for add card
+  const maxIdx = totalCards - 1;
   const minX = centerOffset - maxIdx * (CARD_W + GAP);
   const targetX = idx >= 0 ? centerOffset - idx * (CARD_W + GAP) : centerOffset;
   const x = useMotionValue(sharedX.current);
@@ -377,10 +391,17 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
     if (t.dir === 'h') {
       const cur = x.get();
       if (cur > centerOffset + 20) { animate(x, centerOffset, { type: 'spring', stiffness: 350, damping: 30 }); onSelect(chars[0].id); return; }
-      if (cur < minX - 20) { animate(x, minX, { type: 'spring', stiffness: 350, damping: 30 }); onSelect(chars[maxIdx].id); return; }
+      if (cur < minX - 20) { animate(x, minX, { type: 'spring', stiffness: 350, damping: 30 }); onAdd?.(); return; }
       let ci = Math.round((centerOffset - cur) / (CARD_W + GAP));
       ci = Math.max(0, Math.min(maxIdx, ci));
-      onSelect(chars[ci].id);
+      if (ci >= chars.length) {
+        // Scrolled to add card position
+        const addX = centerOffset - chars.length * (CARD_W + GAP);
+        animate(x, addX, { type: 'spring', stiffness: 350, damping: 30 });
+        onAdd?.();
+      } else {
+        onSelect(chars[ci].id);
+      }
     } else if (t.dir === 'v') {
       const dy = e.clientY - t.startY;
       if (Math.abs(dy) > 15 && onVerticalSwipe) {
@@ -1285,7 +1306,7 @@ export default function HomePageV3() {
           </motion.p>
         )}
 
-        {/* Character card */}
+        {/* Character card — adaptive height */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="rounded-3xl p-3 mb-3 flex gap-3 relative"
@@ -1300,13 +1321,15 @@ export default function HomePageV3() {
             style={{ background: 'rgba(88,204,2,0.9)', color: 'white' }}>
             AI 推荐
           </div>
-          <div className="w-20 h-24 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden"
-            style={{ background: `${recChar.color}10` }}>
+          {/* Character image — adaptive height */}
+          <div className="w-20 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden self-start"
+            style={{ background: `${recChar.color}10`, minHeight: 80 }}>
             {recChar.component ? <div className="transform scale-[0.42] origin-center">{recChar.component}</div> : recChar.image ? (
-              <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
+              <img src={recChar.image} alt={recChar.name} className="w-full h-auto object-contain" />
             ) : null}
           </div>
-          <div className="flex-1 flex flex-col justify-center min-w-0">
+          {/* Info — grows with content */}
+          <div className="flex-1 flex flex-col justify-center min-w-0 py-1">
             <div className="flex items-center gap-2 mb-1">
               <h2 className="text-lg font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
                 {recChar.name}
@@ -1317,7 +1340,7 @@ export default function HomePageV3() {
               </span>
             </div>
             <p className="text-[11px] leading-relaxed" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}>
-              {CHARACTER_STORIES[recId]?.slice(0, 50)}...
+              {CHARACTER_STORIES[recId] || recChar.desc}
             </p>
           </div>
         </motion.div>
