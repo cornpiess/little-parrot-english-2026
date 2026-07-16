@@ -5,7 +5,7 @@ import { BookOpen, Users, Sun, Moon, Wifi, X, HelpCircle, Sparkles, Lock, Check 
 import ParrotCharacter from '@/components/ParrotCharacter';
 import FoxCharacter from '@/components/FoxCharacter';
 import OlafCharacter from '@/components/OlafCharacter';
-import { getCharacterState, startTrial, purchaseCharacter, subscribeCharacter, activateCharacter, formatTrialTime, CHARACTER_STORIES, CharacterState, getBondLevel, addBondExp, getLearningProgress, markActiveDay, beginLearningSession, endLearningSession, getTrialDurationMs, isTrialExpired, getOriginalPrice, getPromoPrice, setAutoRenew as setAutoRenewState, markPhysicalCardSent, hasPhysicalCard, hasShippingAddress, hasAnyOwned } from '@/lib/characterState';
+import { getCharacterState, startTrial, purchaseCharacter, subscribeCharacter, activateCharacter, formatTrialTime, CHARACTER_STORIES, CharacterState, getBondLevel, addBondExp, getLearningProgress, markActiveDay, beginLearningSession, endLearningSession, getTrialDurationMs, isTrialExpired, getOriginalPrice, getPromoPrice, setAutoRenew as setAutoRenewState, markPhysicalCardSent, hasPhysicalCard, hasShippingAddress, hasAnyOwned, getRecommendedCharId, getOnboardingData } from '@/lib/characterState';
 
 import imgTeacher1 from '@/assets/1ebf0cda2cde974b5ed9ae6990f1305cc10602a8.webp';
 import imgTeacher2 from '@/assets/18466f7d75c7f0003c756fab4f226f5acaf0b786.webp';
@@ -1146,7 +1146,7 @@ export default function HomePageV3() {
         </div>
 
         {/* Shipping address tip — scrolling marquee (owned tab only) */}
-        {charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
+        {hasAnyOwned() && charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
           <div className="px-5 mt-1">
             <motion.button whileTap={{ scale: 0.97 }}
               onClick={() => navigate('/shipping-address')}
@@ -1169,7 +1169,8 @@ export default function HomePageV3() {
           </div>
         )}
 
-        {/* Row 2: Tabs — left-aligned */}
+        {/* Row 2: Tabs — only shown when user has owned characters */}
+        {hasAnyOwned() && (
         <div className="flex px-4 mt-2">
           <div className="flex rounded-2xl overflow-hidden"
             style={{
@@ -1202,7 +1203,83 @@ export default function HomePageV3() {
             })}
           </div>
         </div>
+        )}
       </motion.div>
+
+  {/* ===== NEW USER RECOMMENDATION SCREEN ===== */}
+  {!hasAnyOwned() && (() => {
+    const recId = getRecommendedCharId();
+    const allChars = [...TEACHERS, ...PARTNERS];
+    const recChar = allChars.find(c => c.id === recId);
+    if (!recChar) return null;
+    const onboardingData = getOnboardingData();
+    const targetLang = onboardingData.targetLanguage || 'english';
+    const langLabels: Record<string, string> = { english: '英语', japanese: '日语', portuguese: '葡萄牙语', arabic: '阿拉伯语' };
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-sm text-center">
+          {/* Recommended character */}
+          <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.2 }}
+            className="w-40 h-52 mx-auto mb-5 rounded-3xl overflow-hidden flex items-center justify-center"
+            style={{
+              background: `linear-gradient(180deg, ${recChar.color}15 0%, ${recChar.color}05 100%)`,
+              border: `2px solid ${recChar.color}30`,
+              boxShadow: `0 16px 40px ${recChar.color}25`,
+            }}>
+            {recChar.component ? <div className="transform scale-110">{recChar.component}</div> : recChar.image ? (
+              <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
+            ) : null}
+          </motion.div>
+
+          <p className="text-xs mb-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>
+            根据{langLabels[targetLang] || '英语'}学习推荐
+          </p>
+          <h2 className="text-xl font-extrabold mb-1" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
+            {recChar.name}
+          </h2>
+          <p className="text-sm mb-4" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)' }}>
+            {recChar.desc}
+          </p>
+
+          {/* New user price */}
+          <div className="rounded-2xl p-4 mb-4"
+            style={{
+              background: `linear-gradient(135deg, ${recChar.color}10, ${recChar.color}05)`,
+              border: `1.5px solid ${recChar.color}25`,
+            }}>
+            <div className="flex items-center justify-center gap-1 mb-1">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                style={{ background: '#FF4D4F', color: 'white' }}>新人专享</span>
+            </div>
+            <div className="flex items-baseline justify-center gap-1">
+              <span className="text-3xl font-extrabold" style={{ color: recChar.color }}>¥0.01</span>
+              <span className="text-xs" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>解锁</span>
+            </div>
+            <p className="text-[10px] mt-1" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
+              解锁后赠送实体角色卡片
+            </p>
+          </div>
+
+          {/* CTA */}
+          <motion.button whileTap={{ scale: 0.95 }}
+            onClick={() => setPurchaseModal({ char: recChar })}
+            className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
+            style={{
+              background: `linear-gradient(135deg, ${recChar.color}, ${recChar.color}CC)`,
+              boxShadow: `0 8px 32px ${recChar.color}40`,
+            }}>
+            ¥0.01 解锁 {recChar.name}
+          </motion.button>
+
+          <p className="text-[9px] mt-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }}>
+            或浏览更多角色 ↓
+          </p>
+        </motion.div>
+      </div>
+    );
+  })()}
 
   {/* ===== FROSTED BACKDROP (when card is flipped) ===== */}
   <AnimatePresence>
@@ -1671,29 +1748,56 @@ export default function HomePageV3() {
 
                 {/* Section 2: Promo Price */}
                 <div className="px-5 mb-4">
-                  <div className="rounded-2xl p-4 relative overflow-hidden"
-                    style={{
-                      background: `linear-gradient(135deg, ${c.color}12, ${c.color}08)`,
-                      border: `2px solid ${c.color}30`,
-                    }}>
-                    <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-extrabold text-white"
-                      style={{ background: '#FF4D4F' }}>
-                      首月5折
+                  {!hasAnyOwned() ? (
+                    /* New user: 0.01 yuan */
+                    <div className="rounded-2xl p-4 relative overflow-hidden"
+                      style={{
+                        background: `linear-gradient(135deg, ${c.color}12, ${c.color}08)`,
+                        border: `2px solid ${c.color}30`,
+                      }}>
+                      <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-extrabold text-white"
+                        style={{ background: '#FF4D4F' }}>
+                        新人专享
+                      </div>
+                      <p className="text-xs font-bold mb-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
+                        🎁 首次解锁特惠
+                      </p>
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-[11px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
+                          ¥{original}/月
+                        </span>
+                        <span className="text-2xl font-extrabold" style={{ color: c.color }}>¥0.01</span>
+                      </div>
+                      <p className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
+                        解锁后赠送实体角色卡片
+                      </p>
                     </div>
-                    <p className="text-xs font-bold mb-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
-                      📦 首月特惠
-                    </p>
-                    <div className="flex items-baseline gap-2 mb-1">
-                      <span className="text-[11px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
-                        ¥{original}/月
-                      </span>
-                      <span className="text-2xl font-extrabold" style={{ color: c.color }}>¥{promo}</span>
-                      <span className="text-xs font-bold" style={{ color: c.color }}>/月</span>
+                  ) : (
+                    /* Existing user: 50% off */
+                    <div className="rounded-2xl p-4 relative overflow-hidden"
+                      style={{
+                        background: `linear-gradient(135deg, ${c.color}12, ${c.color}08)`,
+                        border: `2px solid ${c.color}30`,
+                      }}>
+                      <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-extrabold text-white"
+                        style={{ background: '#FF4D4F' }}>
+                        首月5折
+                      </div>
+                      <p className="text-xs font-bold mb-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
+                        📦 首月特惠
+                      </p>
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-[11px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
+                          ¥{original}/月
+                        </span>
+                        <span className="text-2xl font-extrabold" style={{ color: c.color }}>¥{promo}</span>
+                        <span className="text-xs font-bold" style={{ color: c.color }}>/月</span>
+                      </div>
+                      <p className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
+                        续费享同价，随时可取消
+                      </p>
                     </div>
-                    <p className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
-                      续费享同价，随时可取消
-                    </p>
-                  </div>
+                  )}
                 </div>
 
                 {/* Section 3: Auto-renew toggle */}
@@ -1751,7 +1855,7 @@ export default function HomePageV3() {
                       background: `linear-gradient(135deg, ${c.color}, ${c.color}CC)`,
                       boxShadow: `0 8px 32px ${c.color}40`,
                     }}>
-                    ¥{promo}/月 立即订阅 {c.name}
+                    {!hasAnyOwned() ? `¥0.01 解锁 ${c.name}` : `¥${promo}/月 立即订阅 ${c.name}`}
                   </motion.button>
                   <p className="text-center text-[9px] mt-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
                     订阅即同意《服务协议》和《隐私政策》

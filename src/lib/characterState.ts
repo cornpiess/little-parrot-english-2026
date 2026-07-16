@@ -121,13 +121,44 @@ export function activateCharacter(id: string): void {
   localStorage.setItem(purchaseKey(id), 'subscribed');
 }
 
+/** Check if a specific character is owned */
+function isOwned(id: string): boolean {
+  const s = getCharacterState(id);
+  return s.status === 'purchased' || s.status === 'subscribed';
+}
+
 /** Check if any character is owned */
 export function hasAnyOwned(): boolean {
   return [...TEACHER_IDS, 'parrot', 'fox', 'olaf', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco']
-    .some(id => {
-      const s = getCharacterState(id);
-      return s.status === 'purchased' || s.status === 'subscribed';
-    });
+    .some(id => isOwned(id));
+}
+
+/** Get onboarding data */
+export function getOnboardingData(): Record<string, any> {
+  const raw = localStorage.getItem('onboarding_data');
+  return raw ? JSON.parse(raw) : {};
+}
+
+/** Recommend character based on target language */
+export function getRecommendedCharId(): string {
+  const data = getOnboardingData();
+  const targetLang = data.targetLanguage || 'english';
+  const gender = data.gender;
+  // Map target language to recommended character
+  const recommendations: Record<string, string[]> = {
+    english: gender === 'girl' ? ['parrot', 'olaf', 'deer'] : ['fox', 'parrot', 'einstein'],
+    japanese: ['xizi'],
+    portuguese: ['bull'],
+    arabic: ['bred'],
+  };
+  const candidates = recommendations[targetLang] || recommendations.english;
+  // Return first unowned candidate
+  return candidates.find(id => !isOwned(id)) || candidates[0];
+}
+
+/** Check if user has completed onboarding */
+export function hasOnboarding(): boolean {
+  return localStorage.getItem('onboarding_completed') === 'true';
 }
 
 export function formatTrialTime(ms: number | null): string {
