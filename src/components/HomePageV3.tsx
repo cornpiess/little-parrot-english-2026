@@ -1149,11 +1149,7 @@ export default function HomePageV3() {
               <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                 {getGreeting()}，{childName}
               </h1>
-              {charTab === 'owned' && (
-                <p className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-white/30' : 'text-gray-500'}`}>
-                  {isT ? '↑ 上滑切换到小伙伴' : '↓ 下滑切换到 AI 老师'}
-                </p>
-              )}
+
             </div>
             {/* Shipping address tip — scrolling marquee (owned tab only) */}
             {charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
@@ -1447,22 +1443,7 @@ export default function HomePageV3() {
           </div>
         );
       })()}
-      {/* Floating back button for unowned tab — wide, centered, tab-like */}
-      {charTab === 'unowned' && hasAnyOwned() && (
-        <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setCharTab('owned')}
-          className="fixed bottom-20 left-1/2 -translate-x-1/2 z-30 px-8 py-3 rounded-2xl font-bold text-sm"
-          style={{
-            background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
-            color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)',
-            border: `1.5px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)'}`,
-            backdropFilter: 'blur(10px)',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-          }}>
-          ← 返回已拥有角色
-        </motion.button>
-      )}
+
 
       {/* ===== ENGINE HIGHLIGHTS — 4 selling points (owned tab only) ===== */}
       {!flippedCard && charTab === 'owned' && (
