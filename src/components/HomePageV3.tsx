@@ -1288,13 +1288,18 @@ export default function HomePageV3() {
         {/* Character card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="rounded-3xl p-3 mb-3 flex gap-3"
+          className="rounded-3xl p-3 mb-3 flex gap-3 relative"
           style={{
             background: theme === 'dark'
               ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
               : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
             border: `1.5px solid ${recChar.color}25`,
           }}>
+          {/* AI 推荐角标 */}
+          <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-bold z-10"
+            style={{ background: 'rgba(88,204,2,0.9)', color: 'white' }}>
+            AI 推荐
+          </div>
           <div className="w-20 h-24 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden"
             style={{ background: `${recChar.color}10` }}>
             {recChar.component ? <div className="transform scale-[0.42] origin-center">{recChar.component}</div> : recChar.image ? (
