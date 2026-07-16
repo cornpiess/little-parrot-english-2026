@@ -2164,6 +2164,14 @@ export default function HomePageV3() {
         </span>
       </motion.button>
 
+      {/* Version badge */}
+      <div className="fixed bottom-2 right-2 z-[100] px-1.5 py-0.5 rounded"
+        style={{ background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)' }}>
+        <span className="text-[7px] font-mono" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          v1.0.3
+        </span>
+      </div>
+
     </div>
   );
 }
