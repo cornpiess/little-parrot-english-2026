@@ -1246,9 +1246,9 @@ export default function HomePageV3() {
             border: `1.5px solid ${recChar.color}25`,
           }}>
           {/* Left: Character image */}
-          <div className="w-28 h-36 rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center"
+          <div className="w-28 h-36 rounded-2xl flex-shrink-0 flex items-center justify-center overflow-visible"
             style={{ background: `${recChar.color}10` }}>
-            {recChar.component ? <div className="transform scale-90">{recChar.component}</div> : recChar.image ? (
+            {recChar.component ? <div className="transform scale-75 origin-center">{recChar.component}</div> : recChar.image ? (
               <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
             ) : null}
           </div>
