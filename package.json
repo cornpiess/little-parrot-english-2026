@@ -1,7 +1,8 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "little-parrot-english",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "AI-powered English learning app for children with interactive characters and gamified lessons",
   "type": "module",
   "scripts": {
     "dev": "vite",

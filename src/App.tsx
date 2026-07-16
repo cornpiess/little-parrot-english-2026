@@ -8,10 +8,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import Onboarding from "./pages/Onboarding";
 import InitialAssessment from "./pages/InitialAssessment";
 import NotFound from "./pages/NotFound";
-import HomePage from "./components/HomePage";
-import HomePageV2 from "./components/HomePageV2";
 import HomePageV3 from "./components/HomePageV3";
-import HomePageV4 from "./components/HomePageV4";
 import AITeacherMode from "./components/AITeacherMode";
 import PaintingPage from "./components/PaintingPage";
 import PlayTogetherPage from "./components/PlayTogetherPage";
@@ -37,10 +34,6 @@ const App = () => (
             <Route path="/" element={<HomePageV3 />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/initial-assessment" element={<InitialAssessment />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/home-v2" element={<HomePageV2 />} />
-            <Route path="/home-v3" element={<HomePageV3 />} />
-            <Route path="/home-v4" element={<HomePageV4 />} />
             <Route path="/ai-parrot" element={<AITeacherMode />} />
             <Route path="/characters" element={<CharacterSelect />} />
             <Route path="/activate" element={<CardActivation />} />

@@ -1,73 +1,87 @@
-# Welcome to your Lovable project
+# 🦜 Little Parrot English (小鹦鹉英语)
 
-## Project info
+一个面向儿童的 AI 英语学习应用，通过互动角色和游戏化教学让英语学习变得有趣。
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 功能特色
 
-## How can I edit this code?
+- 🎭 **AI 小鹦鹉老师** - 智能英语教学伙伴
+- 🃏 **卡片激活系统** - 实体卡片与数字内容互动
+- 🗺️ **世界探索** - 沉浸式英语学习场景
+- 🎨 **绘画功能** - 创意表达与词汇学习
+- 📚 **课程系统** - 系统化的英语学习路径
+- 🏪 **商店** - 解锁更多学习内容
 
-There are several ways of editing your application.
+## 技术栈
 
-**Use Lovable**
+- **前端框架**: React 18 + TypeScript
+- **构建工具**: Vite 5
+- **UI 组件**: shadcn/ui + Radix UI
+- **样式**: Tailwind CSS
+- **状态管理**: React Query + Context
+- **动画**: Motion (Framer Motion)
+- **路由**: React Router v6
+- **PWA**: Vite Plugin PWA
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 快速开始
 
-Changes made via Lovable will be committed automatically to this repo.
+### 环境要求
 
-**Use your preferred IDE**
+- Node.js >= 18
+- npm 或 bun
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 安装
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+# 克隆仓库
+git clone https://github.com/cornpiess/little-parrot-english-2026.git
+cd little-parrot-english-2026
 
-Follow these steps:
+# 安装依赖
+npm install
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 启动开发服务器
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### 可用脚本
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run dev          # 启动开发服务器
+npm run build        # 构建生产版本
+npm run build:dev    # 构建开发版本
+npm run preview      # 预览生产构建
+npm run lint         # 代码检查
+npm run test         # 运行测试
+npm run test:watch   # 监听模式测试
+```
 
-**Use GitHub Codespaces**
+## 项目结构
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+src/
+├── components/          # 组件目录
+│   ├── AITeacherMode/   # AI 教学模式
+│   ├── HomePageV3/      # 主页（当前版本）
+│   ├── onboarding/      # 引导流程组件
+│   └── ui/              # shadcn/ui 组件
+├── contexts/            # React Context
+├── hooks/               # 自定义 Hooks
+├── lib/                 # 工具函数
+├── pages/               # 页面组件
+│   ├── lessons/         # 课程页面
+│   └── ...
+└── assets/              # 静态资源
+```
 
-## What technologies are used for this project?
+## 部署
 
-This project is built with:
+本项目支持 PWA 部署。构建后可直接部署到任何静态托管服务。
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```bash
+npm run build
+# 将 dist 目录部署到你的服务器
+```
 
-## How can I deploy this project?
+## 许可证
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+MIT License
