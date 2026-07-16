@@ -25,58 +25,58 @@ interface Character {
 }
 
 const TEACHERS: Character[] = [
-  { id: 'einstein', name: '爱因斯坦α', subtitle: '科学�?, color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgTeacher1, desc: '擅长：恐龙时代、动植物百科、太空探�?, language: 'english' },
-  { id: 'beethoven', name: '贝多芬�?, subtitle: '音乐�?, color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', image: imgTeacher2, desc: '擅长：乐器启蒙、儿歌韵�?, language: 'english' },
-  { id: 'deer', name: '小鹿姐姐', subtitle: '幼儿教育专家', color: '#FF6B9D', accent: 'rgba(255,107,157,0.12)', image: imgTeacher3, desc: '擅长：行为引导、自我认知、情绪管�?, language: 'english' },
+  { id: 'einstein', name: '爱因斯坦α', subtitle: '科学家', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgTeacher1, desc: '擅长：恐龙时代、动植物百科、太空探索', language: 'english' },
+  { id: 'beethoven', name: '贝多芬β', subtitle: '音乐家', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', image: imgTeacher2, desc: '擅长：乐器启蒙、儿歌韵律', language: 'english' },
+  { id: 'deer', name: '小鹿姐姐', subtitle: '幼儿教育专家', color: '#FF6B9D', accent: 'rgba(255,107,157,0.12)', image: imgTeacher3, desc: '擅长：行为引导、自我认知、情绪管理', language: 'english' },
 ];
 
 const PARTNERS: Character[] = [
-  { id: 'parrot', name: '小鹦�?, subtitle: '学习伙伴', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', component: <ParrotCharacter state="idle" size={0.85} />, desc: '活泼 · 爱唱�?· 快乐学英�?, language: 'english' },
-  { id: 'fox', name: '小狐�?, subtitle: '好奇宝宝', color: '#E87040', accent: 'rgba(232,112,64,0.12)', component: <FoxCharacter state="idle" size={0.85} />, desc: '聪明 · 好奇 · 爱探�?, language: 'english' },
+  { id: 'parrot', name: '小鹦鹉', subtitle: '学习伙伴', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', component: <ParrotCharacter state="idle" size={0.85} />, desc: '活泼 · 爱唱歌 · 快乐学英语', language: 'english' },
+  { id: 'fox', name: '小狐狸', subtitle: '好奇宝宝', color: '#E87040', accent: 'rgba(232,112,64,0.12)', component: <FoxCharacter state="idle" size={0.85} />, desc: '聪明 · 好奇 · 爱探险', language: 'english' },
   { id: 'olaf', name: '雪宝', subtitle: '雪人朋友', color: '#38BDF8', accent: 'rgba(56,189,248,0.12)', component: <OlafCharacter size={1} />, desc: '温暖 · 友善 · 爱讲故事', language: 'english' },
   { id: 'allen', name: 'Allen', subtitle: '美国', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', image: imgPartnerAllen, desc: '阳光 · 运动 · 音乐', language: 'english' },
-  { id: 'harry', name: 'Harry', subtitle: '英国', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgPartnerHarry, desc: '绅士 · 阅读 · 下午�?, language: 'english' },
+  { id: 'harry', name: 'Harry', subtitle: '英国', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgPartnerHarry, desc: '绅士 · 阅读 · 下午茶', language: 'english' },
   { id: 'xizi', name: 'Xizi', subtitle: '日本', color: '#FF6B9D', accent: 'rgba(255,107,157,0.12)', image: imgPartnerXizi, desc: '可爱 · 画画 · 手工', language: 'japanese' },
-  { id: 'bull', name: 'Bull', subtitle: '巴西', color: '#FF9500', accent: 'rgba(255,149,0,0.12)', image: imgPartnerBull, desc: '热情 · 足球 · 开�?, language: 'portuguese' },
+  { id: 'bull', name: 'Bull', subtitle: '巴西', color: '#FF9500', accent: 'rgba(255,149,0,0.12)', image: imgPartnerBull, desc: '热情 · 足球 · 开朗', language: 'portuguese' },
   { id: 'bred', name: 'Bred', subtitle: '中东', color: '#AF57DB', accent: 'rgba(175,87,219,0.12)', image: imgPartnerBred, desc: '神秘 · 冒险 · 友善', language: 'arabic' },
-  { id: 'coco', name: 'Coco', subtitle: '小鹦�?, color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgPartnerCoco, desc: '聪明 · 模仿 · 快乐', language: 'english' },
+  { id: 'coco', name: 'Coco', subtitle: '小鹦鹉', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgPartnerCoco, desc: '聪明 · 模仿 · 快乐', language: 'english' },
 ];
 
 const GREETINGS: Record<string, string[]> = {
-  einstein: ['来吧，一起探索科学的奥秘�?, '今天想了解恐龙还是太空呢�?, '准备好开启知识之旅了吗？'],
-  beethoven: ['来，我们一起唱首歌吧！', '准备好了吗？音乐时间到！', '今天想学什么旋律呢�?],
-  deer: ['宝贝今天心情怎么样呀�?, '来，我们一起做个小游戏吧！', '准备好了吗？开始今天的学习�?],
-  parrot: ['嗨！准备好一起学英语了吗�?, '嘿呀！快来跟我一起玩吧！', '你来啦！今天一起探险吧�?],
-  fox: ['嘿嘿～想不想跟我去冒险？', '嘘！我发现一个超酷的秘密�?, '终于来啦！快来快来！'],
+  einstein: ['来吧，一起探索科学的奥秘！', '今天想了解恐龙还是太空呢？', '准备好开启知识之旅了吗？'],
+  beethoven: ['来，我们一起唱首歌吧！', '准备好了吗？音乐时间到！', '今天想学什么旋律呢？'],
+  deer: ['宝贝今天心情怎么样呀？', '来，我们一起做个小游戏吧！', '准备好了吗？开始今天的学习！'],
+  parrot: ['嗨！准备好一起学英语了吗？', '嘿呀！快来跟我一起玩吧！', '你来啦！今天一起探险吧！'],
+  fox: ['嘿嘿～想不想跟我去冒险？', '嘘！我发现一个超酷的秘密！', '终于来啦！快来快来！'],
   olaf: ['嗨～朋友！见到你好开心！', '啊！是你呀！我好想你！', '来啦！我有好多故事讲给你听！'],
   allen: ['Hey! Ready to learn English with me?', "What's up! Let's have some fun!", "Nice to see you! Let's play!"],
   harry: ['Hello there! Fancy meeting you!', "Welcome! Shall we read a book?", "Jolly good! Let's get started!"],
-  xizi: ['こんにちは！一緒に玩耍吧�?, '你好呀！今天一起画画吧�?, '来啦！我准备了手工材料哦�?],
-  bull: ['Olá! Vamos jogar juntos?', '嗨！准备好踢球了吗？', '来吧！今天我们学葡萄牙语�?],
-  bred: ['مرحبا! مرحبا بك!', '你好！想听一个神秘故事吗�?, '来啦！我带你去探险！'],
-  coco: ['嘎嘎～你好呀小朋友！', '嘿嘿！我学会新单词了�?, '快来！我们一起唱歌吧�?],
+  xizi: ['こんにちは！一緒に玩耍吧！', '你好呀！今天一起画画吧！', '来啦！我准备了手工材料哦！'],
+  bull: ['Olá! Vamos jogar juntos?', '嗨！准备好踢球了吗？', '来吧！今天我们学葡萄牙语！'],
+  bred: ['مرحبا! مرحبا بك!', '你好！想听一个神秘故事吗？', '来啦！我带你去探险！'],
+  coco: ['嘎嘎～你好呀小朋友！', '嘿嘿！我学会新单词了！', '快来！我们一起唱歌吧！'],
 };
 
 const ENGINE_HIGHLIGHTS = [
-  { label: '每月测评', value: '测评�?, color: '#AF57DB', icon: '📊',
-    detail: { title: '每月测评', subtitle: 'AI 无感测评', status: '正在测评中（根据最�?7 天互动分析）', letter: '💡 给家长的�?, letterBody: 'AI 伙伴会在宝贝与它的对话过程中，自动分析发音、词汇掌握及逻辑表达。无需额外考试，每个月 1 号为您生成深度成长报告�?, metrics: [{ value: '156', label: '词汇�?, color: '#AF57DB' }, { value: '85%', label: '表达�?, color: '#1CB0F6' }, { value: '92%', label: '积极�?, color: '#58CC02' }] } },
+  { label: '每月测评', value: '测评中', color: '#AF57DB', icon: '📊',
+    detail: { title: '每月测评', subtitle: 'AI 无感测评', status: '正在测评中（根据最近 7 天互动分析）', letter: '💡 给家长的信', letterBody: 'AI 伙伴会在宝贝与它的对话过程中，自动分析发音、词汇掌握及逻辑表达。无需额外考试，每个月 1 号为您生成深度成长报告。', metrics: [{ value: '156', label: '词汇量', color: '#AF57DB' }, { value: '85%', label: '表达力', color: '#1CB0F6' }, { value: '92%', label: '积极度', color: '#58CC02' }] } },
   { label: 'i+1匹配', value: '100%', color: '#1CB0F6', icon: '🎯',
-    detail: { title: 'i+1 动态匹�?, subtitle: '智能难度调节', status: '当前处于 L2 水平', letter: '📈 匹配详情', letterBody: '当前处于 L2 水平。AI 已为您调整对话难度：新词�?10%，语�?85%�?, metrics: [{ value: '10%', label: '新词�?, color: '#FF9500' }, { value: '85%', label: '语�?, color: '#1CB0F6' }, { value: 'L2', label: '等级', color: '#58CC02' }] } },
+    detail: { title: 'i+1 动态匹配', subtitle: '智能难度调节', status: '当前处于 L2 水平', letter: '📈 匹配详情', letterBody: '当前处于 L2 水平。AI 已为您调整对话难度：新词率 10%，语速 85%。', metrics: [{ value: '10%', label: '新词率', color: '#FF9500' }, { value: '85%', label: '语速', color: '#1CB0F6' }, { value: 'L2', label: '等级', color: '#58CC02' }] } },
   { label: 'AI计划', value: '15分钟', color: '#58CC02', icon: '📋',
-    detail: { title: 'AI 计划', subtitle: '今日学习计划', status: '推荐学习 15 分钟', letter: '📅 计划详情', letterBody: '今日推荐学习 15 分钟，包�?2 个新单词复习�?1 个新场景探索�?, metrics: [{ value: '15', label: '分钟', color: '#58CC02' }, { value: '2', label: '新词', color: '#FF9500' }, { value: '1', label: '场景', color: '#AF57DB' }] } },
+    detail: { title: 'AI 计划', subtitle: '今日学习计划', status: '推荐学习 15 分钟', letter: '📅 计划详情', letterBody: '今日推荐学习 15 分钟，包含 2 个新单词复习和 1 个新场景探索。', metrics: [{ value: '15', label: '分钟', color: '#58CC02' }, { value: '2', label: '新词', color: '#FF9500' }, { value: '1', label: '场景', color: '#AF57DB' }] } },
   { label: '遗忘曲线', value: '3个词', color: '#FF9500', icon: '🧠',
-    detail: { title: '遗忘曲线', subtitle: '记忆巩固提醒', status: '5 个词汇即将到达遗忘临界点', letter: '🔄 巩固详情', letterBody: '今日�?5 个词汇即将到达遗忘临界点，AI 已将它们编入今日对话开场白�?, metrics: [{ value: '5', label: '待巩�?, color: '#FF9500' }, { value: '23', label: '已掌�?, color: '#58CC02' }, { value: '89%', label: '留存�?, color: '#1CB0F6' }] } },
+    detail: { title: '遗忘曲线', subtitle: '记忆巩固提醒', status: '5 个词汇即将到达遗忘临界点', letter: '🔄 巩固详情', letterBody: '今日有 5 个词汇即将到达遗忘临界点，AI 已将它们编入今日对话开场白。', metrics: [{ value: '5', label: '待巩固', color: '#FF9500' }, { value: '23', label: '已掌握', color: '#58CC02' }, { value: '89%', label: '留存率', color: '#1CB0F6' }] } },
 ];
 
 const getGreeting = () => {
   const h = new Date().getHours();
-  if (h < 6) return '夜深�?; if (h < 11) return '早安'; if (h < 13) return '午安';
-  if (h < 18) return '下午�?; if (h < 22) return '晚上�?; return '夜深�?;
+  if (h < 6) return '夜深了'; if (h < 11) return '早安'; if (h < 13) return '午安';
+  if (h < 18) return '下午好'; if (h < 22) return '晚上好'; return '夜深了';
 };
 
-/* ══════════════════════════════════════�?
+/* ═══════════════════════════════════════
    V2-quality card with holo + tilt + expand
-   ══════════════════════════════════════�?*/
+   ═══════════════════════════════════════ */
 function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew, trialState }: {
   char: Character; isActive: boolean; size: 'front' | 'back'; onClick?: () => void; theme: 'dark' | 'light';
   isFlipped?: boolean; onFlip?: (flipped: boolean, rect?: DOMRect) => void;
@@ -123,7 +123,7 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
     }
   }, [isFront, flipped, onFlip, onClick, hovered]);
 
-  /* When flipped, render invisible placeholder �?parent shows expanded overlay */
+  /* When flipped, render invisible placeholder — parent shows expanded overlay */
   if (isFront && flipped) {
     return (
       <motion.div className="flex-shrink-0 relative"
@@ -254,7 +254,7 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
         </div>
       </div>
 
-      {/* Unread dot �?character-colored, like iPhone unopened app indicator */}
+      {/* Unread dot — character-colored, like iPhone unopened app indicator */}
       {isFront && isNew && (
         <motion.div
           className="absolute -top-1 -right-1 z-30"
@@ -274,7 +274,7 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
         </motion.div>
       )}
 
-      {/* Trial timer badge �?top-right */}
+      {/* Trial timer badge — top-right */}
       {isFront && trialState?.status === 'trialing' && (
         <motion.div
           className="absolute top-2 right-2 z-30 px-2 py-0.5 rounded-full flex items-center gap-1"
@@ -292,7 +292,7 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
         </motion.div>
       )}
 
-      {/* Locked badge �?small corner indicator */}
+      {/* Locked badge — small corner indicator */}
       {isFront && trialState?.status === 'locked' && (
         <div className="absolute top-2 left-2 z-30 px-1.5 py-0.5 rounded-full"
           style={{
@@ -300,12 +300,12 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
             border: `1px solid ${isTrialExpired(char.id) ? `${char.color}30` : 'rgba(255,255,255,0.1)'}`,
           }}>
           <span className="text-[8px] font-bold" style={{ color: isTrialExpired(char.id) ? char.color : 'rgba(255,255,255,0.45)' }}>
-            {isTrialExpired(char.id) ? '已体�? : getTrialDurationMs(char.id) > 5 * 60 * 1000 ? '试用' : '体验'}
+            {isTrialExpired(char.id) ? '已体验' : getTrialDurationMs(char.id) > 5 * 60 * 1000 ? '试用' : '体验'}
           </span>
         </div>
       )}
 
-      {/* Trial progress bar �?bottom of card */}
+      {/* Trial progress bar — bottom of card */}
       {isFront && trialState?.status === 'trialing' && (
         <div className="absolute bottom-0 left-0 right-0 h-1 z-20 pointer-events-none rounded-b-[2rem] overflow-hidden"
           style={{ background: 'rgba(0,0,0,0.3)' }}>
@@ -331,9 +331,9 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
   );
 }
 
-/* ══════════════════════════════════════�?
-   Swipeable row �?manual touch (no drag conflict)
-   ══════════════════════════════════════�?*/
+/* ═══════════════════════════════════════
+   Swipeable row — manual touch (no drag conflict)
+   ═══════════════════════════════════════ */
 const sharedX = { current: typeof window !== 'undefined' ? window.innerWidth / 2 - 195 / 2 : 0 };
 
 function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flippedCard, onFlipCard, onAdd, newlyActivated, trialStates, rowType }: {
@@ -395,7 +395,7 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
       let ci = Math.round((centerOffset - cur) / (CARD_W + GAP));
       ci = Math.max(0, Math.min(maxIdx, ci));
       if (ci >= chars.length) {
-        // Scrolled to add card �?just center it visually, don't switch tab
+        // Scrolled to add card — just center it visually, don't switch tab
         const addX = centerOffset - chars.length * (CARD_W + GAP);
         animate(x, addX, { type: 'spring', stiffness: 350, damping: 30 });
       } else {
@@ -455,9 +455,9 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
 
 const sharedBackX = { current: typeof window !== 'undefined' ? window.innerWidth / 2 - 60 : 0 };
 
-/* ══════════════════════════════════════�?
+/* ═══════════════════════════════════════
    Back row (static, non-interactive)
-   ══════════════════════════════════════�?*/
+   ═══════════════════════════════════════ */
 function BackRow({ chars, selectedId, theme, trialStates }: { chars: Character[]; selectedId: string; theme: 'dark' | 'light'; trialStates?: Record<string, CharacterState> }) {
   const CARD_W = 120;
   const GAP = 8;
@@ -500,9 +500,9 @@ function BackRow({ chars, selectedId, theme, trialStates }: { chars: Character[]
   );
 }
 
-/* ══════════════════════════════════════�?
-   Spin card �?360° flip from origin to center
-   ══════════════════════════════════════�?*/
+/* ═══════════════════════════════════════
+   Spin card — 360° flip from origin to center
+   ═══════════════════════════════════════ */
 function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
   char: Character; origin: { x: number; y: number; w: number; h: number };
   theme: 'dark' | 'light'; onDismiss: () => void;
@@ -581,19 +581,19 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
 
   const MEMORIES: Record<string, { emoji: string; title: string; date: string }[]> = {
     parrot: [
-      { emoji: '🌈', title: '彩虹桥探�?, date: '3天前' },
+      { emoji: '🌈', title: '彩虹桥探险', date: '3天前' },
       { emoji: '🎵', title: '一起唱儿歌', date: '5天前' },
       { emoji: '🦜', title: '学说Hello', date: '1周前' },
-      { emoji: '🌟', title: '夜晚看星�?, date: '2周前' },
+      { emoji: '🌟', title: '夜晚看星星', date: '2周前' },
     ],
     fox: [
       { emoji: '🔍', title: '森林寻宝', date: '2天前' },
       { emoji: '🍄', title: '蘑菇王国', date: '4天前' },
       { emoji: '🦊', title: '学会分享', date: '1周前' },
-      { emoji: '🍂', title: '秋天的树�?, date: '2周前' },
+      { emoji: '🍂', title: '秋天的树叶', date: '2周前' },
     ],
     olaf: [
-      { emoji: '�?, title: '堆雪�?, date: '1天前' },
+      { emoji: '⛄', title: '堆雪人', date: '1天前' },
       { emoji: '❄️', title: '冰雪世界', date: '3天前' },
       { emoji: '📖', title: '睡前故事', date: '1周前' },
       { emoji: '🤗', title: '温暖拥抱', date: '2周前' },
@@ -601,20 +601,20 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
     einstein: [
       { emoji: '🚀', title: '太空探险', date: '2天前' },
       { emoji: '🦕', title: '恐龙时代', date: '5天前' },
-      { emoji: '🔬', title: '小小科学�?, date: '1周前' },
+      { emoji: '🔬', title: '小小科学家', date: '1周前' },
       { emoji: '🌌', title: '银河之旅', date: '3周前' },
     ],
     beethoven: [
       { emoji: '🎹', title: '钢琴启蒙', date: '1天前' },
-      { emoji: '🎶', title: '摇篮�?, date: '3天前' },
+      { emoji: '🎶', title: '摇篮曲', date: '3天前' },
       { emoji: '🎻', title: '小提琴初体验', date: '1周前' },
-      { emoji: '🎤', title: '第一次唱�?, date: '2周前' },
+      { emoji: '🎤', title: '第一次唱歌', date: '2周前' },
     ],
     deer: [
       { emoji: '🎨', title: '画画时间', date: '2天前' },
       { emoji: '🧸', title: '情绪小怪兽', date: '4天前' },
       { emoji: '🌈', title: '认识颜色', date: '1周前' },
-      { emoji: '😊', title: '今天真开�?, date: '2周前' },
+      { emoji: '😊', title: '今天真开心', date: '2周前' },
     ],
   };
 
@@ -638,7 +638,7 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
       }}
       onClick={(e) => { e.stopPropagation(); onDismiss(); }}
     >
-    {/* Flip wrapper �?CSS flip entrance + CSS tilt (same as V2Card) */}
+    {/* Flip wrapper — CSS flip entrance + CSS tilt (same as V2Card) */}
     <div
       ref={flipRef}
       className="card-glow spin-card-enter"
@@ -689,7 +689,7 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
         )}
       </AnimatePresence>
 
-      {/* Card face �?same style as original */}
+      {/* Card face — same style as original */}
       <div ref={cardRef} className="w-full h-full rounded-[2rem] overflow-hidden flex flex-col items-center relative"
         style={{
           background: theme === 'dark'
@@ -751,7 +751,7 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
       </div>
       </div>{/* End flip wrapper */}
 
-      {/* Action buttons �?fade in after spin */}
+      {/* Action buttons — fade in after spin */}
       <AnimatePresence>
         {showBtns && (
           <motion.div
@@ -764,7 +764,7 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
           >
             {/* Trial state: show trial button or timer */}
             {trialState?.status === 'locked' && expired ? (
-              /* Trial expired �?show purchase prompt */
+              /* Trial expired — show purchase prompt */
               <motion.button whileTap={{ scale: 0.93 }} onClick={(e) => {
                 e.stopPropagation();
                 setPurchaseModal({ char });
@@ -778,7 +778,7 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
                 解锁 {char.name}
               </motion.button>
             ) : trialState?.status === 'locked' ? (
-              /* Trial not started �?show trial button */
+              /* Trial not started — show trial button */
               <motion.button whileTap={{ scale: 0.93 }} onClick={(e) => { e.stopPropagation(); actions[0]?.onClick(); }}
                 className="px-7 py-3.5 rounded-2xl font-bold text-sm text-white flex items-center gap-2"
                 style={{
@@ -794,7 +794,7 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
                   animate={{ opacity: [1, 0.3, 1] }}
                   transition={{ duration: 1, repeat: Infinity }} />
                 <span className="text-xs font-bold" style={{ color: '#58CC02' }}>
-                  {getTrialDurationMs(char.id) > 5 * 60 * 1000 ? '试用�? : '体验�?} {formatTrialTime(remaining)}
+                  {getTrialDurationMs(char.id) > 5 * 60 * 1000 ? '试用中' : '体验中'} {formatTrialTime(remaining)}
                 </span>
               </div>
             ) : (
@@ -817,7 +817,7 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
         )}
       </AnimatePresence>
 
-      {/* Memory cards �?full screen width, below buttons */}
+      {/* Memory cards — full screen width, below buttons */}
       <AnimatePresence>
         {showBtns && (
           <motion.div
@@ -865,9 +865,9 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
   );
 }
 
-/* ══════════════════════════════════════�?
-   New User Countdown �?24h offer timer
-   ══════════════════════════════════════�?*/
+/* ═══════════════════════════════════════
+   New User Countdown — 24h offer timer
+   ═══════════════════════════════════════ */
 function NewUserCountdown({ color, theme }: { color: string; theme: 'dark' | 'light' }) {
   const [timeLeft, setTimeLeft] = useState(() => {
     const start = localStorage.getItem('new_user_offer_start');
@@ -895,7 +895,7 @@ function NewUserCountdown({ color, theme }: { color: string; theme: 'dark' | 'li
   const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
   const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-  if (timeLeft <= 0) return <span className="text-[10px] font-bold" style={{ color: '#999' }}>已过�?/span>;
+  if (timeLeft <= 0) return <span className="text-[10px] font-bold" style={{ color: '#999' }}>已过期</span>;
 
   return (
     <div className="flex items-center gap-0.5">
@@ -912,12 +912,12 @@ function NewUserCountdown({ color, theme }: { color: string; theme: 'dark' | 'li
   );
 }
 
-/* ══════════════════════════════════════�?
+/* ═══════════════════════════════════════
    Main
-   ══════════════════════════════════════�?*/
+   ═══════════════════════════════════════ */
 export default function HomePageV3() {
   const navigate = useNavigate();
-  const [childName, setChildName] = useState('小朋�?);
+  const [childName, setChildName] = useState('小朋友');
   const [theme, setTheme] = useState<'dark' | 'light'>(() => (localStorage.getItem('app_theme') as 'dark' | 'light') || 'light');
   const [selTeacher, setSelTeacher] = useState(() => localStorage.getItem('homev3_selTeacher') || 'einstein');
   const [selPartner, setSelPartner] = useState(() => localStorage.getItem('homev3_selPartner') || 'parrot');
@@ -959,7 +959,7 @@ export default function HomePageV3() {
   useEffect(() => { localStorage.setItem('homev3_selPartner', selPartner); }, [selPartner]);
   useEffect(() => { localStorage.setItem('homev3_focus', focus); }, [focus]);
 
-  // Trial timer �?ticks every second to update countdown displays
+  // Trial timer — ticks every second to update countdown displays
   useEffect(() => {
     const update = () => {
       const states: Record<string, CharacterState> = {};
@@ -971,7 +971,7 @@ export default function HomePageV3() {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle newly activated character �?auto-navigate to adventure
+  // Handle newly activated character — auto-navigate to adventure
   useEffect(() => {
     if (!newlyActivated) return;
     // Select the new character
@@ -995,7 +995,7 @@ export default function HomePageV3() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run only on mount
 
-  // Learning session �?begin/end when SpinCard opens/closes for trial characters
+  // Learning session — begin/end when SpinCard opens/closes for trial characters
   useEffect(() => {
     if (!flippedCard) return;
     const state = getCharacterState(flippedCard);
@@ -1009,7 +1009,7 @@ export default function HomePageV3() {
     }
   }, [flippedCard]);
 
-  // Engine highlight loading �?done transitions
+  // Engine highlight loading → done transitions
   useEffect(() => {
     const t1 = setTimeout(() => setEngineStatus(prev => ({ ...prev, 0: 'done' })), 4000);
     const t2 = setTimeout(() => setEngineStatus(prev => ({ ...prev, 2: 'done' })), 6000);
@@ -1049,7 +1049,7 @@ export default function HomePageV3() {
     prevFocusRef.current = focus;
   }
 
-  // Vertical swipe �?full screen gesture handler
+  // Vertical swipe — full screen gesture handler
   const vTouchRef = useRef({ startY: 0, startX: 0, decided: false, direction: '' as '' | 'v' | 'h' });
 
   const onFullScreenPointerDown = useCallback((e: React.PointerEvent) => {
@@ -1168,7 +1168,7 @@ export default function HomePageV3() {
         .engine-live{animation:engineLive 2s ease-in-out infinite}
       `}</style>
 
-      {/* BG glow �?strong, mode-specific */}
+      {/* BG glow — strong, mode-specific */}
       <div className="absolute inset-0 pointer-events-none glow-drift" style={{
         background: theme === 'dark'
           ? `radial-gradient(ellipse 90% 70% at 40% 40%, ${effectiveActiveChar.color}35 0%, transparent 70%),
@@ -1185,7 +1185,7 @@ export default function HomePageV3() {
              radial-gradient(ellipse 50% 40% at 20% 70%, ${effectiveActiveChar.color}10 0%, transparent 60%)`,
         transition: 'background 0.8s',
       }} />
-      {/* Active character center glow �?follows the card */}
+      {/* Active character center glow — follows the card */}
       <motion.div className="absolute inset-0 pointer-events-none"
         animate={{
           background: `radial-gradient(ellipse 50% 40% at 50% 50%, ${effectiveActiveChar.color}60 0%, ${effectiveActiveChar.color}25 35%, transparent 70%)`,
@@ -1247,12 +1247,12 @@ export default function HomePageV3() {
                 border: '1px solid rgba(232,112,64,0.2)',
               }}>
               <Wifi className="w-2.5 h-2.5" style={{ color: '#E87040', transform: 'rotate(90deg)' }} />
-              <span className="text-[8px] font-bold" style={{ color: '#E87040' }}>模拟卡片激�?/span>
+              <span className="text-[8px] font-bold" style={{ color: '#E87040' }}>模拟卡片激活</span>
             </motion.button>
           </div>
         </div>
 
-        {/* Row 2: Tabs �?only shown when user has owned characters */}
+        {/* Row 2: Tabs — only shown when user has owned characters */}
         {hasAnyOwned() && (
         <div className="flex px-4 mt-2">
           <div className="flex rounded-2xl overflow-hidden"
@@ -1280,7 +1280,7 @@ export default function HomePageV3() {
                       }}
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
                   )}
-                  <span className="relative z-10">{t === 'owned' ? '已拥�? : '未拥�?}</span>
+                  <span className="relative z-10">{t === 'owned' ? '已拥有' : '未拥有'}</span>
                 </motion.button>
               );
             })}
@@ -1289,11 +1289,11 @@ export default function HomePageV3() {
         )}
       </motion.div>
 
-  {/* ===== PROGRESSIVE RECOMMENDATION SCREEN (new users only) ===== */}
+  {/* ===== PROGRESSIVE RECOMMENDATION SCREEN ===== */}
   {(() => {
     const phase = getRecommendationPhase();
-    // Only show when user has NO owned characters
-    if (hasAnyOwned()) return null;
+    // Only show in unowned tab or when no characters owned
+    if (hasAnyOwned() && charTab === 'owned') return null;
 
     const allChars = [...TEACHERS, ...PARTNERS];
     const onboardingData = getOnboardingData();
@@ -1306,15 +1306,15 @@ export default function HomePageV3() {
 
     if (phase === 'initial') {
       recId = getRecommendedCharId();
-      badgeText = `AI �?{childName}推荐�?{langLabels[targetLang] || '英语'}学习伙伴`;
+      badgeText = `AI 为${childName}推荐的${langLabels[targetLang] || '英语'}学习伙伴`;
     } else if (phase === 'need-teacher') {
       recId = getRecommendedTeacherId();
-      badgeText = '您已�?AI 伙伴，再搭配一�?AI 老师';
-      compareText = 'AI 老师专注知识传授与答疑解�?;
+      badgeText = '您已有 AI 伙伴，再搭配一位 AI 老师';
+      compareText = 'AI 老师专注知识传授与答疑解惑';
     } else if (phase === 'need-partner') {
       recId = getRecommendedPartnerId();
-      badgeText = '您已�?AI 老师，再搭配一�?AI 伙伴';
-      compareText = 'AI 伙伴营造语言环境，提供情绪陪�?;
+      badgeText = '您已有 AI 老师，再搭配一位 AI 伙伴';
+      compareText = 'AI 伙伴营造语言环境，提供情绪陪伴';
     }
 
     if (!recId) return null;
@@ -1322,171 +1322,108 @@ export default function HomePageV3() {
     if (!recChar) return null;
     const isTeacher = TEACHERS.some(t => t.id === recId);
 
-    // Character grid data for unowned tab
-    const LANG_GROUPS: { key: string; label: string; flag: string; bg: string; ids: string[] }[] = [
-      { key: 'english', label: '英语', flag: '🇺🇸', bg: 'rgba(28,176,246,0.06)', ids: ['parrot', 'fox', 'olaf', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco'] },
-      { key: 'japanese', label: '日语', flag: '🇯🇵', bg: 'rgba(255,107,157,0.06)', ids: ['xizi'] },
-      { key: 'portuguese', label: '葡萄牙语', flag: '🇧🇷', bg: 'rgba(255,149,0,0.06)', ids: ['bull'] },
-      { key: 'arabic', label: '阿拉伯语', flag: '🇸🇦', bg: 'rgba(175,87,219,0.06)', ids: ['bred'] },
-    ];
-
     return (
-      <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
-        {/* Fixed recommendation card + purchase button */}
-        <div className="px-5 pt-2 pb-3">
-          {compareText && (
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              className="text-center text-[11px] mb-3 px-4"
-              style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
-              {compareText}
-            </motion.p>
-          )}
+      <div className="flex-1 px-5 pt-2 pb-8 relative z-10 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+        {/*
+          ═══════════════════════════════════════════════════════
+          TEAM NOTE: 用户到达此页面前已经历的流程：
+          1. Onboarding：填写幼儿姓名、年龄、性别、目标语言
+          2. 与推荐角色打了招呼（GREETINGS 弹窗）
+          3. 体验了一节 demo 课（LessonFlow / AITeacherMode）
+          4. 到达此页面 → 先推荐 AI 伙伴 → 再推荐 AI 老师
+          5. 都解锁后 → 语音按钮，AI 根据对话推荐第三个角色
+          ═══════════════════════════════════════════════════════
+        */}
 
-          {/* Character card �?adaptive height */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="rounded-3xl p-2 mb-2 flex gap-3 relative"
+        {compareText && (
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            className="text-center text-[11px] mb-3 px-4"
+            style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
+            {compareText}
+          </motion.p>
+        )}
+
+        {/* Character card — adaptive height */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-3xl p-2 mb-2 flex gap-3 relative"
+          style={{
+            background: theme === 'dark'
+              ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
+              : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
+            border: `1.5px solid ${recChar.color}25`,
+          }}>
+          {/* AI 推荐角标 */}
+          <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-bold z-10"
+            style={{ background: 'rgba(88,204,2,0.9)', color: 'white' }}>
+            AI 推荐
+          </div>
+          {/* Character image — adaptive height */}
+          <div className="w-20 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden self-start"
+            style={{ background: `${recChar.color}10`, minHeight: 80 }}>
+            {recChar.component ? <div className="transform scale-[0.42] origin-center">{recChar.component}</div> : recChar.image ? (
+              <img src={recChar.image} alt={recChar.name} className="w-full h-auto object-contain" />
+            ) : null}
+          </div>
+          {/* Info — grows with content */}
+          <div className="flex-1 flex flex-col justify-center min-w-0 py-1">
+            <div className="flex items-center gap-2 mb-1">
+              <h2 className="text-lg font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
+                {recChar.name}
+              </h2>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0"
+                style={{ background: `${recChar.color}18`, color: recChar.color }}>
+                {isTeacher ? 'AI老师' : 'AI伙伴'}
+              </span>
+            </div>
+            <p className="text-[11px] leading-relaxed" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}>
+              {CHARACTER_STORIES[recId] || recChar.desc}
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Price + Countdown + CTA */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}>
+          <div className="rounded-2xl p-3 mb-3"
             style={{
-              background: theme === 'dark'
-                ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
-                : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
-              border: `1.5px solid ${recChar.color}25`,
+              background: `linear-gradient(135deg, ${recChar.color}08, ${recChar.color}04)`,
+              border: `1px solid ${recChar.color}20`,
             }}>
-            {/* AI 推荐角标 */}
-            <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-bold z-10"
-              style={{ background: 'rgba(88,204,2,0.9)', color: 'white' }}>
-              AI 推荐
-            </div>
-            {/* Character image �?fixed height */}
-            <div className="w-14 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden"
-              style={{ background: `${recChar.color}10`, height: 64 }}>
-              {recChar.component ? <div className="transform scale-[0.3] origin-center">{recChar.component}</div> : recChar.image ? (
-                <img src={recChar.image} alt={recChar.name} className="w-full h-full object-cover" />
-              ) : null}
-            </div>
-            {/* Info �?grows with content */}
-            <div className="flex-1 flex flex-col justify-center min-w-0 py-1 overflow-hidden">
-              <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-base font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
-                  {recChar.name}
-                </h2>
-                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
-                  style={{ background: `${recChar.color}18`, color: recChar.color }}>
-                  {isTeacher ? 'AI老师' : 'AI伙伴'}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                  style={{ background: '#FF4D4F', color: 'white' }}>限时优惠</span>
+                <span className="text-[10px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
+                  ¥{getOriginalPrice(recId)}/月
                 </span>
               </div>
-              <p className="text-[10px] leading-snug line-clamp-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}>
-                {CHARACTER_STORIES[recId] || recChar.desc}
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Price + Countdown + CTA �?always visible */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}>
-            <div className="rounded-2xl p-2.5 mb-2"
-              style={{
-                background: `linear-gradient(135deg, ${recChar.color}08, ${recChar.color}04)`,
-                border: `1px solid ${recChar.color}20`,
-              }}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                    style={{ background: '#FF4D4F', color: 'white' }}>限时优惠</span>
-                  <span className="text-[10px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
-                    ¥{getOriginalPrice(recId)}/�?
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold" style={{ color: '#FF4D4F' }}>倒计�?/span>
-                  <NewUserCountdown color={recChar.color} theme={theme} />
-                </div>
-              </div>
-              <div className="flex items-baseline gap-2 mt-2">
-                <span className="text-2xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
-                <span className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>解锁</span>
-                <span className="text-[10px] ml-auto" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
-                  🎁 送实体卡�?
-                </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold" style={{ color: '#FF4D4F' }}>倒计时</span>
+                <NewUserCountdown color={recChar.color} theme={theme} />
               </div>
             </div>
-            <motion.button whileTap={{ scale: 0.95 }}
-              onClick={() => setPurchaseModal({ char: recChar })}
-              className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
-              style={{
-                background: `linear-gradient(135deg, ${recChar.color}, ${recChar.color}CC)`,
-                boxShadow: `0 8px 32px ${recChar.color}40`,
-              }}>
-              ¥8.99 解锁 {recChar.name}
-            </motion.button>
-          </motion.div>
-        </div>
-
-        {/* Scrollable character grid below */}
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4" style={{ scrollbarWidth: 'none' }}>
-          <p className="text-center text-[10px] mb-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
-            或浏览更多角�?�?
+            <div className="flex items-baseline gap-2 mt-2">
+              <span className="text-2xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
+              <span className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>解锁</span>
+              <span className="text-[10px] ml-auto" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
+                🎁 送实体卡片
+              </span>
+            </div>
+          </div>
+          <motion.button whileTap={{ scale: 0.95 }}
+            onClick={() => setPurchaseModal({ char: recChar })}
+            className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
+            style={{
+              background: `linear-gradient(135deg, ${recChar.color}, ${recChar.color}CC)`,
+              boxShadow: `0 8px 32px ${recChar.color}40`,
+            }}>
+            ¥8.99 解锁 {recChar.name}
+          </motion.button>
+          <p className="text-center text-[10px] mt-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
+            或浏览更多角色 ↓
           </p>
-          {LANG_GROUPS.map(group => {
-            const chars = group.ids
-              .map(id => allChars.find(c => c.id === id))
-              .filter((c): c is Character => !!c && !isOwned(c.id));
-            if (chars.length === 0) return null;
-            return (
-              <div key={group.key} className="mb-4 rounded-2xl p-3" style={{ background: group.bg }}>
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <span className="text-base">{group.flag}</span>
-                  <h3 className="text-sm font-extrabold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)' }}>
-                    {group.label}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2 gap-3 w-full">
-                  {chars.map((c, i) => (
-                    <motion.div key={c.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => setPurchaseModal({ char: c })}
-                      className="relative rounded-[1.2rem] flex flex-col items-center cursor-pointer overflow-hidden"
-                      style={{
-                        aspectRatio: '3 / 4',
-                        padding: '0.75rem 0.5rem 0.5rem',
-                        background: theme === 'dark'
-                          ? `linear-gradient(180deg, ${c.color}10 0%, ${c.accent} 50%, rgba(10,10,15,0.9) 100%)`
-                          : `linear-gradient(180deg, ${c.color}08 0%, ${c.accent} 50%, rgba(255,255,255,0.95) 100%)`,
-                        border: `1.5px solid ${c.color}20`,
-                        boxShadow: `0 4px 16px ${c.color}10`,
-                      }}>
-                      <div className="absolute top-2 right-2 z-10">
-                        <Lock className="w-3.5 h-3.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }} />
-                      </div>
-                      <div className="flex-1 flex items-center justify-center w-full min-h-0 overflow-hidden">
-                        {c.component ? <div className="transform scale-75">{c.component}</div> : c.image ? (
-                          <img src={c.image} alt={c.name} className="w-full h-full object-contain" loading="lazy" />
-                        ) : null}
-                      </div>
-                      <div className="text-center w-full px-1">
-                        <p className="font-bold text-[12px] truncate"
-                          style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)' }}>
-                          {c.name}
-                        </p>
-                        <p className="text-[9px] mt-0.5 truncate"
-                          style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
-                          {c.desc}
-                        </p>
-                      </div>
-                      <div className="mt-1.5 px-3 py-1 rounded-full text-[10px] font-bold"
-                        style={{ background: `${c.color}18`, color: c.color }}>
-                        ¥{getPromoPrice(c.id)}/�?
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        </motion.div>
       </div>
     );
   })()}
@@ -1506,7 +1443,7 @@ export default function HomePageV3() {
     )}
   </AnimatePresence>
 
-  {/* ===== EXPANDED CARD �?360° spin from origin to center ===== */}
+  {/* ===== EXPANDED CARD — 360° spin from origin to center ===== */}
   <AnimatePresence>
     {flippedCard && flipOrigin && (() => {
       const allChars = [...TEACHERS, ...PARTNERS];
@@ -1518,11 +1455,11 @@ export default function HomePageV3() {
           onDismiss={() => { setFlippedCard(null); setFlipOrigin(null); }}
           trialState={flippedCard ? getCharacterState(flippedCard) : undefined}
           actions={isTeacherChar ? [
-            { label: '一起学�?, icon: <BookOpen className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate('/lessons'); } },
-            { label: '十万个为什�?, icon: <HelpCircle className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate(`/why?teacher=${flippedCard}`); } },
+            { label: '一起学习', icon: <BookOpen className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate('/lessons'); } },
+            { label: '十万个为什么', icon: <HelpCircle className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate(`/why?teacher=${flippedCard}`); } },
           ] : [
-            { label: '一起冒�?, icon: <Sparkles className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate('/adventure'); } },
-            { label: '一起玩�?, icon: <Users className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate('/ai-parrot'); } },
+            { label: '一起冒险', icon: <Sparkles className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate('/adventure'); } },
+            { label: '一起玩耍', icon: <Users className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate('/ai-parrot'); } },
           ]}
         />
       );
@@ -1530,7 +1467,7 @@ export default function HomePageV3() {
   </AnimatePresence>
 
   {/* ===== VERTICAL SWIPE (left + right edge strips, owned tab only) ===== */}
-  {charTab === 'owned' && (
+  {charTab === 'owned' && !flippedCard && (
   <>
   {/* Right edge strip */}
   <div className="fixed right-0 z-40 pointer-events-auto"
@@ -1560,10 +1497,10 @@ export default function HomePageV3() {
   )}
 
       {/* ===== OWNED TAB: Carousel ===== */}
-      {charTab === 'owned' && (
+      {charTab === 'owned' && !flippedCard && (
       <div className="flex-1 min-h-0 relative z-10 flex flex-col">
 
-        {/* TOP zone �?teachers behind (only when partner is in front) */}
+        {/* TOP zone — teachers behind (only when partner is in front) */}
         <motion.div className="flex-shrink-0 flex items-end justify-center overflow-hidden"
           animate={{
             height: isT ? '0%' : '16%',
@@ -1576,7 +1513,7 @@ export default function HomePageV3() {
           <BackRow chars={displayTeachers} selectedId={selTeacher} theme={theme} trialStates={trialStates} />
         </motion.div>
 
-        {/* MIDDLE zone �?front cards */}
+        {/* MIDDLE zone — front cards */}
         <div className="flex-1 min-h-0 flex flex-col items-center justify-center px-2 overflow-visible">
           {/* Greeting bubble */}
           <AnimatePresence>
@@ -1632,7 +1569,7 @@ export default function HomePageV3() {
           </div>
         </div>
 
-        {/* BOTTOM zone �?partners behind (only when teacher is in front) */}
+        {/* BOTTOM zone — partners behind (only when teacher is in front) */}
         <motion.div className="flex-shrink-0 flex items-start justify-center overflow-hidden"
           animate={{
             height: !isT ? '0%' : '16%',
@@ -1659,7 +1596,7 @@ export default function HomePageV3() {
         return (
           <div className="flex-1 min-h-0 relative z-10 overflow-y-auto px-4 pb-4"
             style={{ scrollbarWidth: 'none' }}>
-            {/* Voice recommendation button �?when user has both teacher and partner */}
+            {/* Voice recommendation button — when user has both teacher and partner */}
             {hasOwnedTeacher() && hasOwnedPartner() && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                 className="mb-4 rounded-2xl p-4"
@@ -1670,20 +1607,20 @@ export default function HomePageV3() {
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
                     style={{ background: 'rgba(88,204,2,0.15)' }}>
-                    <span className="text-xl">🎙�?/span>
+                    <span className="text-xl">🎙️</span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
                       获取个性化角色推荐
                     </p>
                     <p className="text-[11px] mt-0.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>
-                      �?AI 讲讲宝贝的情况，推荐专属角色
+                      和 AI 讲讲宝贝的情况，推荐专属角色
                     </p>
                   </div>
                   <motion.button whileTap={{ scale: 0.95 }}
                     className="px-4 py-2 rounded-xl font-bold text-xs text-white flex-shrink-0"
                     style={{ background: 'linear-gradient(135deg, #58CC02, #58CC02CC)' }}>
-                    开始对�?
+                    开始对话
                   </motion.button>
                 </div>
               </motion.div>
@@ -1740,7 +1677,7 @@ export default function HomePageV3() {
                         </div>
                         <div className="mt-1.5 px-3 py-1 rounded-full text-[10px] font-bold"
                           style={{ background: `${c.color}18`, color: c.color }}>
-                          ¥{getPromoPrice(c.id)}/�?
+                          ¥{getPromoPrice(c.id)}/月
                         </div>
                       </motion.div>
                     ))}
@@ -1753,7 +1690,7 @@ export default function HomePageV3() {
       })()}
 
 
-      {/* ===== SHIPPING ADDRESS TIP �?above highlights ===== */}
+      {/* ===== SHIPPING ADDRESS TIP — above highlights ===== */}
       {hasAnyOwned() && charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
         <div className="flex-shrink-0 relative z-20 px-4 pb-2">
           <motion.button whileTap={{ scale: 0.97 }}
@@ -1777,7 +1714,7 @@ export default function HomePageV3() {
         </div>
       )}
 
-      {/* ===== ENGINE HIGHLIGHTS �?4 selling points (owned tab only) ===== */}
+      {/* ===== ENGINE HIGHLIGHTS — 4 selling points (owned tab only) ===== */}
       {!flippedCard && charTab === 'owned' && (
       <div className="flex-shrink-0 relative z-30 px-4 pb-2">
         <div className="flex gap-2">
@@ -1803,7 +1740,7 @@ export default function HomePageV3() {
                       animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
                       transition={{ duration: 1, repeat: Infinity }}
                     />
-                    <span style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>分析�?/span>
+                    <span style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>分析中</span>
                   </motion.span>
                 ) : isDone ? (
                   <motion.span className="inline-flex items-center gap-1"
@@ -1829,7 +1766,7 @@ export default function HomePageV3() {
       </div>
       )}
 
-      {/* ===== BOTTOM BAR �?Fixed floating deep tab (owned tab only, hidden when card is flipped) ===== */}
+      {/* ===== BOTTOM BAR — Fixed floating deep tab (owned tab only, hidden when card is flipped) ===== */}
       {charTab === 'owned' && !flippedCard && (
       <div className="fixed bottom-0 left-0 right-0 z-30"
         style={{
@@ -1864,7 +1801,7 @@ export default function HomePageV3() {
                     background: `linear-gradient(135deg, ${effectiveActiveChar.color}, ${effectiveActiveChar.color}CC)`,
                     boxShadow: `0 8px 32px ${effectiveActiveChar.color}40`, color: 'white', minHeight: 48,
                   }}>
-                  <BookOpen className="w-4 h-4" /> 一起学�?
+                  <BookOpen className="w-4 h-4" /> 一起学习
                 </motion.button>
                 <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(effectiveActiveChar.id, 10); navigate(`/why?teacher=${selTeacher}`); }}
                   className="flex-1 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"
@@ -1875,7 +1812,7 @@ export default function HomePageV3() {
                     boxShadow: `0 0 20px ${effectiveActiveChar.color}20, inset 0 1px 0 rgba(255,255,255,0.1)`,
                     minHeight: 48,
                   }}>
-                  <HelpCircle className="w-4 h-4" /> 十万个为什�?
+                  <HelpCircle className="w-4 h-4" /> 十万个为什么
                 </motion.button>
               </>
             ) : (
@@ -1886,7 +1823,7 @@ export default function HomePageV3() {
                     background: `linear-gradient(135deg, ${effectiveActiveChar.color}, ${effectiveActiveChar.color}CC)`,
                     boxShadow: `0 8px 32px ${effectiveActiveChar.color}40`, color: 'white', minHeight: 48,
                   }}>
-                  <Sparkles className="w-4 h-4" /> 一起冒�?
+                  <Sparkles className="w-4 h-4" /> 一起冒险
                 </motion.button>
                 <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(effectiveActiveChar.id, 10); navigate('/ai-parrot'); }}
                   className="flex-1 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"
@@ -1897,7 +1834,7 @@ export default function HomePageV3() {
                     boxShadow: `0 0 20px ${effectiveActiveChar.color}20, inset 0 1px 0 rgba(255,255,255,0.1)`,
                     minHeight: 48,
                   }}>
-                  <Users className="w-4 h-4" /> 一起玩�?
+                  <Users className="w-4 h-4" /> 一起玩耍
                 </motion.button>
               </>
             )}
@@ -1959,7 +1896,7 @@ export default function HomePageV3() {
                   <motion.button whileTap={{ scale: 0.95 }} onClick={() => setActiveHighlight(null)}
                     className="w-full py-3 rounded-2xl font-bold text-white text-sm"
                     style={{ background: h.color, boxShadow: `0 4px 16px ${h.color}40` }}>
-                    知道�?
+                    知道了
                   </motion.button>
                 </div>
               </motion.div>
@@ -1968,7 +1905,7 @@ export default function HomePageV3() {
         })()}
       </AnimatePresence>
 
-      {/* ===== PURCHASE MODAL �?Subscription with promo ===== */}
+      {/* ===== PURCHASE MODAL — Subscription with promo ===== */}
       <AnimatePresence>
         {purchaseModal && (() => {
           const c = purchaseModal.char;
@@ -1990,7 +1927,7 @@ export default function HomePageV3() {
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
                       style={{ background: `${c.color}18`, border: `2px solid ${c.color}30` }}>
-                      <span className="text-2xl">�?/span>
+                      <span className="text-2xl">✨</span>
                     </div>
                     <div className="flex-1">
                       <h3 className="text-lg font-extrabold" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>{c.name}</h3>
@@ -2027,12 +1964,12 @@ export default function HomePageV3() {
                       </p>
                       <div className="flex items-baseline gap-2 mb-1">
                         <span className="text-[11px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
-                          ¥{original}/�?
+                          ¥{original}/月
                         </span>
                         <span className="text-2xl font-extrabold" style={{ color: c.color }}>¥8.99</span>
                       </div>
                       <p className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
-                        解锁后赠送实体角色卡�?
+                        解锁后赠送实体角色卡片
                       </p>
                     </div>
                   ) : (
@@ -2044,20 +1981,20 @@ export default function HomePageV3() {
                       }}>
                       <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-extrabold text-white"
                         style={{ background: '#FF4D4F' }}>
-                        首月5�?
+                        首月5折
                       </div>
                       <p className="text-xs font-bold mb-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
                         📦 首月特惠
                       </p>
                       <div className="flex items-baseline gap-2 mb-1">
                         <span className="text-[11px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
-                          ¥{original}/�?
+                          ¥{original}/月
                         </span>
                         <span className="text-2xl font-extrabold" style={{ color: c.color }}>¥{promo}</span>
-                        <span className="text-xs font-bold" style={{ color: c.color }}>/�?/span>
+                        <span className="text-xs font-bold" style={{ color: c.color }}>/月</span>
                       </div>
                       <p className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
-                        续费享同价，随时可取�?
+                        续费享同价，随时可取消
                       </p>
                     </div>
                   )}
@@ -2084,7 +2021,7 @@ export default function HomePageV3() {
                         自动续费
                       </p>
                       <p className="text-[10px] mt-0.5" style={{ color: autoRenew ? c.color : (theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)') }}>
-                        {autoRenew ? '🎁 勾选续费免费送实体角色卡�? : '勾选续费可免费获得实体卡片'}
+                        {autoRenew ? '🎁 勾选续费免费送实体角色卡片' : '勾选续费可免费获得实体卡片'}
                       </p>
                     </div>
                   </motion.button>
@@ -2118,11 +2055,19 @@ export default function HomePageV3() {
                       background: `linear-gradient(135deg, ${c.color}, ${c.color}CC)`,
                       boxShadow: `0 8px 32px ${c.color}40`,
                     }}>
-                    {!hasAnyOwned() ? `¥8.99 解锁 ${c.name}` : `¥${promo}/�?立即订阅 ${c.name}`}
+                    {!hasAnyOwned() ? `¥8.99 解锁 ${c.name}` : `¥${promo}/月 立即订阅 ${c.name}`}
                   </motion.button>
                   <p className="text-center text-[9px] mt-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
-                    订阅即同意《服务协议》和《隐私政策�?
+                    订阅即同意《服务协议》和《隐私政策》
                   </p>
+      
+      {/* Version badge */}
+      <div className="fixed bottom-2 right-2 z-[100] px-1.5 py-0.5 rounded"
+        style={{ background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)' }}>
+        <span className="text-[7px] font-mono" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          v1.0.3
+        </span>
+      </div>
                 </div>
               </motion.div>
             </motion.div>
@@ -2130,7 +2075,7 @@ export default function HomePageV3() {
         })()}
       </AnimatePresence>
 
-      {/* Reset to new user �?debug button */}
+      {/* Reset to new user — debug button */}
       <motion.button
         className="fixed z-[100] flex items-center gap-1 px-2 py-1 rounded-full"
         style={{
@@ -2163,14 +2108,6 @@ export default function HomePageV3() {
           重置为新用户
         </span>
       </motion.button>
-
-      {/* Version badge */}
-      <div className="fixed bottom-2 right-2 z-[100] px-1.5 py-0.5 rounded"
-        style={{ background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)' }}>
-        <span className="text-[7px] font-mono" style={{ color: 'rgba(255,255,255,0.4)' }}>
-          v1.0.3
-        </span>
-      </div>
 
     </div>
   );
