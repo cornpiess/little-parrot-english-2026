@@ -1049,8 +1049,41 @@ export default function HomePageV3() {
     prevFocusRef.current = focus;
   }
 
-  // Vertical swipe — unified pointer handler on the strip
-  const vTouchRef = useRef({ startY: 0, decided: false });
+  // Vertical swipe — full screen gesture handler
+  const vTouchRef = useRef({ startY: 0, startX: 0, decided: false, direction: '' as '' | 'v' | 'h' });
+
+  const onFullScreenPointerDown = useCallback((e: React.PointerEvent) => {
+    // Don't capture on interactive elements
+    const tag = (e.target as HTMLElement).tagName;
+    if (tag === 'BUTTON' || tag === 'A' || (e.target as HTMLElement).closest('button') || (e.target as HTMLElement).closest('a')) return;
+    vTouchRef.current = { startY: e.clientY, startX: e.clientX, decided: false, direction: '' };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }, []);
+
+  const onFullScreenPointerMove = useCallback((e: React.PointerEvent) => {
+    const t = vTouchRef.current;
+    if (!t.decided) {
+      const dx = Math.abs(e.clientX - t.startX);
+      const dy = Math.abs(e.clientY - t.startY);
+      if (dx > 10 || dy > 10) {
+        t.direction = dy > dx ? 'v' : 'h';
+        t.decided = true;
+      }
+    }
+  }, []);
+
+  const onFullScreenPointerUp = useCallback((e: React.PointerEvent) => {
+    const t = vTouchRef.current;
+    e.currentTarget.releasePointerCapture(e.pointerId);
+    if (t.direction === 'v') {
+      const dy = e.clientY - t.startY;
+      if (Math.abs(dy) > 30) {
+        if (dy < 0 && focus === 'teacher') switchFocus('partner');
+        else if (dy > 0 && focus === 'partner') switchFocus('teacher');
+      }
+    }
+    vTouchRef.current = { startY: 0, startX: 0, decided: false, direction: '' };
+  }, [focus]);
 
   const onStripPointerDown = useCallback((e: React.PointerEvent) => {
     vTouchRef.current = { startY: e.clientY, decided: false };
@@ -1110,8 +1143,13 @@ export default function HomePageV3() {
           : (isT ? teacherBg : partnerBg),
         transition: 'background 0.8s ease',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        touchAction: 'none',
       }}
-      onWheel={charTab === 'owned' ? onWheel : undefined}>
+      onWheel={charTab === 'owned' ? onWheel : undefined}
+      onPointerDown={onFullScreenPointerDown}
+      onPointerMove={onFullScreenPointerMove}
+      onPointerUp={onFullScreenPointerUp}
+      onPointerCancel={onFullScreenPointerUp}>
 
       <style>{`
         *::-webkit-scrollbar{display:none!important}
