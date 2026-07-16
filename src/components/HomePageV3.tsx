@@ -1,11 +1,11 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, animate } from 'motion/react';
-import { BookOpen, Users, ShoppingBag, Sun, Moon, Wifi, X, ChevronDown, UserPlus, HelpCircle, Sparkles, Lock, Check } from 'lucide-react';
+import { BookOpen, Users, Sun, Moon, Wifi, X, HelpCircle, Sparkles, Lock, Check } from 'lucide-react';
 import ParrotCharacter from '@/components/ParrotCharacter';
 import FoxCharacter from '@/components/FoxCharacter';
 import OlafCharacter from '@/components/OlafCharacter';
-import { getCharacterState, startTrial, purchaseCharacter, subscribeCharacter, formatTrialTime, CHARACTER_STORIES, CharacterState, getBondLevel, addBondExp, getLearningProgress, markActiveDay, beginLearningSession, endLearningSession, getTrialDurationMs, isTrialExpired, getOriginalPrice, getPromoPrice, setAutoRenew as setAutoRenewState, markPhysicalCardSent, hasPhysicalCard, hasShippingAddress } from '@/lib/characterState';
+import { getCharacterState, startTrial, purchaseCharacter, subscribeCharacter, activateCharacter, formatTrialTime, CHARACTER_STORIES, CharacterState, getBondLevel, addBondExp, getLearningProgress, markActiveDay, beginLearningSession, endLearningSession, getTrialDurationMs, isTrialExpired, getOriginalPrice, getPromoPrice, setAutoRenew as setAutoRenewState, markPhysicalCardSent, hasPhysicalCard, hasShippingAddress, hasAnyOwned } from '@/lib/characterState';
 
 import imgTeacher1 from '@/assets/1ebf0cda2cde974b5ed9ae6990f1305cc10602a8.webp';
 import imgTeacher2 from '@/assets/18466f7d75c7f0003c756fab4f226f5acaf0b786.webp';
@@ -21,24 +21,25 @@ import imgPartnerCoco from '@/assets/adc9f9dc90a165002cdfaac86d27cb447763afc7.we
 interface Character {
   id: string; name: string; subtitle: string; color: string; accent: string;
   component: React.ReactNode; image?: string; desc?: string;
+  language: 'english' | 'japanese' | 'portuguese' | 'arabic';
 }
 
 const TEACHERS: Character[] = [
-  { id: 'einstein', name: '爱因斯坦α', subtitle: '科学家', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgTeacher1, desc: '擅长：恐龙时代、动植物百科、太空探索' },
-  { id: 'beethoven', name: '贝多芬β', subtitle: '音乐家', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', image: imgTeacher2, desc: '擅长：乐器启蒙、儿歌韵律' },
-  { id: 'deer', name: '小鹿姐姐', subtitle: '幼儿教育专家', color: '#FF6B9D', accent: 'rgba(255,107,157,0.12)', image: imgTeacher3, desc: '擅长：行为引导、自我认知、情绪管理' },
+  { id: 'einstein', name: '爱因斯坦α', subtitle: '科学家', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgTeacher1, desc: '擅长：恐龙时代、动植物百科、太空探索', language: 'english' },
+  { id: 'beethoven', name: '贝多芬β', subtitle: '音乐家', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', image: imgTeacher2, desc: '擅长：乐器启蒙、儿歌韵律', language: 'english' },
+  { id: 'deer', name: '小鹿姐姐', subtitle: '幼儿教育专家', color: '#FF6B9D', accent: 'rgba(255,107,157,0.12)', image: imgTeacher3, desc: '擅长：行为引导、自我认知、情绪管理', language: 'english' },
 ];
 
 const PARTNERS: Character[] = [
-  { id: 'parrot', name: '小鹦鹉', subtitle: '学习伙伴', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', component: <ParrotCharacter state="idle" size={0.85} />, desc: '活泼 · 爱唱歌 · 快乐学英语' },
-  { id: 'fox', name: '小狐狸', subtitle: '好奇宝宝', color: '#E87040', accent: 'rgba(232,112,64,0.12)', component: <FoxCharacter state="idle" size={0.85} />, desc: '聪明 · 好奇 · 爱探险' },
-  { id: 'olaf', name: '雪宝', subtitle: '雪人朋友', color: '#38BDF8', accent: 'rgba(56,189,248,0.12)', component: <OlafCharacter size={1} />, desc: '温暖 · 友善 · 爱讲故事' },
-  { id: 'allen', name: 'Allen', subtitle: '美国', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', image: imgPartnerAllen, desc: '阳光 · 运动 · 音乐' },
-  { id: 'harry', name: 'Harry', subtitle: '英国', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgPartnerHarry, desc: '绅士 · 阅读 · 下午茶' },
-  { id: 'xizi', name: 'Xizi', subtitle: '日本', color: '#FF6B9D', accent: 'rgba(255,107,157,0.12)', image: imgPartnerXizi, desc: '可爱 · 画画 · 手工' },
-  { id: 'bull', name: 'Bull', subtitle: '巴西', color: '#FF9500', accent: 'rgba(255,149,0,0.12)', image: imgPartnerBull, desc: '热情 · 足球 · 开朗' },
-  { id: 'bred', name: 'Bred', subtitle: '中东', color: '#AF57DB', accent: 'rgba(175,87,219,0.12)', image: imgPartnerBred, desc: '神秘 · 冒险 · 友善' },
-  { id: 'coco', name: 'Coco', subtitle: '小鹦鹉', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgPartnerCoco, desc: '聪明 · 模仿 · 快乐' },
+  { id: 'parrot', name: '小鹦鹉', subtitle: '学习伙伴', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', component: <ParrotCharacter state="idle" size={0.85} />, desc: '活泼 · 爱唱歌 · 快乐学英语', language: 'english' },
+  { id: 'fox', name: '小狐狸', subtitle: '好奇宝宝', color: '#E87040', accent: 'rgba(232,112,64,0.12)', component: <FoxCharacter state="idle" size={0.85} />, desc: '聪明 · 好奇 · 爱探险', language: 'english' },
+  { id: 'olaf', name: '雪宝', subtitle: '雪人朋友', color: '#38BDF8', accent: 'rgba(56,189,248,0.12)', component: <OlafCharacter size={1} />, desc: '温暖 · 友善 · 爱讲故事', language: 'english' },
+  { id: 'allen', name: 'Allen', subtitle: '美国', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', image: imgPartnerAllen, desc: '阳光 · 运动 · 音乐', language: 'english' },
+  { id: 'harry', name: 'Harry', subtitle: '英国', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgPartnerHarry, desc: '绅士 · 阅读 · 下午茶', language: 'english' },
+  { id: 'xizi', name: 'Xizi', subtitle: '日本', color: '#FF6B9D', accent: 'rgba(255,107,157,0.12)', image: imgPartnerXizi, desc: '可爱 · 画画 · 手工', language: 'japanese' },
+  { id: 'bull', name: 'Bull', subtitle: '巴西', color: '#FF9500', accent: 'rgba(255,149,0,0.12)', image: imgPartnerBull, desc: '热情 · 足球 · 开朗', language: 'portuguese' },
+  { id: 'bred', name: 'Bred', subtitle: '中东', color: '#AF57DB', accent: 'rgba(175,87,219,0.12)', image: imgPartnerBred, desc: '神秘 · 冒险 · 友善', language: 'arabic' },
+  { id: 'coco', name: 'Coco', subtitle: '小鹦鹉', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgPartnerCoco, desc: '聪明 · 模仿 · 快乐', language: 'english' },
 ];
 
 const GREETINGS: Record<string, string[]> = {
@@ -338,14 +339,13 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
    ═══════════════════════════════════════ */
 const sharedX = { current: typeof window !== 'undefined' ? window.innerWidth / 2 - 195 / 2 : 0 };
 
-function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flippedCard, onFlipCard, onAdd, newlyActivated, trialStates, veteranMode }: {
+function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flippedCard, onFlipCard, onAdd, newlyActivated, trialStates }: {
   chars: Character[]; selectedId: string; onSelect: (id: string) => void; theme: 'dark' | 'light';
   onVerticalSwipe?: (direction: 'up' | 'down') => void;
   flippedCard: string | null; onFlipCard: (id: string | null, rect?: DOMRect) => void;
   onAdd?: () => void;
   newlyActivated?: string | null;
   trialStates?: Record<string, CharacterState>;
-  veteranMode?: boolean;
 }) {
   const CARD_W = 195;
   const GAP = 16;
@@ -427,8 +427,8 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}>
         {chars.map(c => {
-          const ts = veteranMode ? undefined : trialStates?.[c.id];
-          const isLocked = !veteranMode && ts?.status === 'locked';
+          const ts = trialStates?.[c.id];
+          const isLocked = ts?.status === 'locked';
           return (
           <V2Card key={c.id} char={c} isActive={c.id === selectedId && !isLocked} size="front"
             onClick={() => onSelect(c.id)}
@@ -863,7 +863,6 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
    ═══════════════════════════════════════ */
 export default function HomePageV3() {
   const navigate = useNavigate();
-  const [userMode, setUserMode] = useState<'new' | 'veteran'>(() => (localStorage.getItem('homev3_userMode') as 'new' | 'veteran') || 'veteran');
   const [childName, setChildName] = useState('小朋友');
   const [theme, setTheme] = useState<'dark' | 'light'>(() => (localStorage.getItem('app_theme') as 'dark' | 'light') || 'dark');
   const [selTeacher, setSelTeacher] = useState(() => localStorage.getItem('homev3_selTeacher') || 'einstein');
@@ -875,7 +874,7 @@ export default function HomePageV3() {
   const [trialStates, setTrialStates] = useState<Record<string, CharacterState>>({});
   const [purchaseModal, setPurchaseModal] = useState<{ char: Character } | null>(null);
   const [autoRenew, setAutoRenew] = useState(true);
-  const [charTab, setCharTab] = useState<'owned' | 'unowned'>('owned');
+  const [charTab, setCharTab] = useState<'owned' | 'unowned'>(() => hasAnyOwned() ? 'owned' : 'unowned');
 
   const switchFocus = (target: 'teacher' | 'partner') => {
     if (target !== focus) navigator.vibrate?.(15);
@@ -885,23 +884,6 @@ export default function HomePageV3() {
     setFlipOrigin(null);
   };
 
-  const toggleUserMode = () => {
-    const next = userMode === 'new' ? 'veteran' : 'new';
-    setUserMode(next);
-    localStorage.setItem('homev3_userMode', next);
-    // Reset all trial/purchase states when switching to new user mode
-    if (next === 'new') {
-      [...TEACHERS, ...PARTNERS].forEach(c => {
-        localStorage.removeItem(`char_trial_${c.id}`);
-        localStorage.removeItem(`char_trial_used_${c.id}`);
-        localStorage.removeItem(`char_trial_active_${c.id}`);
-        localStorage.removeItem(`char_trial_active_${c.id}_start`);
-        localStorage.removeItem(`char_purchased_${c.id}`);
-      });
-      setTrialStates({});
-    }
-  };
-
   const [greetingActive, setGreetingActive] = useState(false);
   const [greetingText, setGreetingText] = useState('');
   const [activeHighlight, setActiveHighlight] = useState<number | null>(null);
@@ -909,7 +891,7 @@ export default function HomePageV3() {
     0: 'loading', // 每月测评
     2: 'loading', // AI计划
   });
-  const [showAddMenu, setShowAddMenu] = useState(false);
+
   const [flipOrigin, setFlipOrigin] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
   const greetingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const greetingDurationRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -935,45 +917,29 @@ export default function HomePageV3() {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle newly activated character — switch to partner mode, select the new char, auto-open SpinCard
+  // Handle newly activated character — auto-navigate to adventure
   useEffect(() => {
     if (!newlyActivated) return;
+    // Select the new character
     const isPartner = PARTNERS.some(p => p.id === newlyActivated);
     if (isPartner) {
-      setFocus('partner');
-      setSlideDir('down');
       setSelPartner(newlyActivated);
       localStorage.setItem('homev3_selPartner', newlyActivated);
-      localStorage.setItem('homev3_focus', 'partner');
+    } else {
+      setSelTeacher(newlyActivated);
+      localStorage.setItem('homev3_selTeacher', newlyActivated);
     }
-    // Auto-open the SpinCard for the new character after landing animation
+    // Jump to owned tab
+    setCharTab('owned');
+    // Auto-navigate to adventure after a short delay
     const t = setTimeout(() => {
-      setFlippedCard(newlyActivated);
-      setFlipOrigin({ x: window.innerWidth / 2 - 150, y: window.innerHeight * 0.12, w: 300, h: 420 });
-    }, 400);
+      setNewlyActivated(null);
+      localStorage.removeItem('homev3_newlyActivated');
+      navigate(`/adventure?character=${newlyActivated}`);
+    }, 800);
     return () => clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run only on mount
-
-  // Clear newlyActivated only when SpinCard is dismissed for that character
-  const prevFlippedRef = useRef(flippedCard);
-  useEffect(() => {
-    const prev = prevFlippedRef.current;
-    prevFlippedRef.current = flippedCard;
-    // Only clear when transitioning from the new character's card to null (card dismissed)
-    if (newlyActivated && prev === newlyActivated && flippedCard === null) {
-      setNewlyActivated(null);
-      localStorage.removeItem('homev3_newlyActivated');
-    }
-  }, [flippedCard, newlyActivated]);
-
-  // Close add menu on outside click
-  useEffect(() => {
-    if (!showAddMenu) return;
-    const handler = () => setShowAddMenu(false);
-    const timer = setTimeout(() => document.addEventListener('click', handler), 0);
-    return () => { clearTimeout(timer); document.removeEventListener('click', handler); };
-  }, [showAddMenu]);
 
   // Learning session — begin/end when SpinCard opens/closes for trial characters
   useEffect(() => {
@@ -1047,7 +1013,7 @@ export default function HomePageV3() {
   const onStripPointerUp = useCallback((e: React.PointerEvent) => {
     const dy = e.clientY - vTouchRef.current.startY;
     e.currentTarget.releasePointerCapture(e.pointerId);
-    if (Math.abs(dy) > 30) {
+    if (Math.abs(dy) > 20) {
       if (dy < 0 && focus === 'teacher') switchFocus('partner');
       else if (dy > 0 && focus === 'partner') switchFocus('teacher');
     }
@@ -1204,50 +1170,21 @@ export default function HomePageV3() {
             })}
           </div>
 
-          {/* Right: Theme + Add menu */}
-          <div className="flex items-center gap-2 relative">
+          {/* Right: Theme + Simulate card activation */}
+          <div className="flex items-center gap-2">
             <motion.button whileTap={{ scale: 0.85 }} onClick={toggleTheme} className="w-9 h-9 rounded-full flex items-center justify-center"
               style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)' }}>
               {theme === 'dark' ? <Sun className="w-4 h-4 text-yellow-400" /> : <Moon className="w-4 h-4 text-gray-600" />}
             </motion.button>
-            <motion.button whileTap={{ scale: 0.85 }} onClick={() => setShowAddMenu(!showAddMenu)}
-              className="h-9 px-3 rounded-full flex items-center gap-1.5 relative"
-              style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)' }}>
-              <UserPlus className="w-4 h-4" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }} />
-              <span className="text-[11px] font-bold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)' }}>添加角色</span>
-              <ChevronDown className="w-3 h-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', transform: showAddMenu ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }} />
+            <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/activate')}
+              className="h-9 px-3 rounded-full flex items-center gap-1.5"
+              style={{
+                background: theme === 'dark' ? 'rgba(232,112,64,0.12)' : 'rgba(232,112,64,0.08)',
+                border: '1px solid rgba(232,112,64,0.25)',
+              }}>
+              <Wifi className="w-3.5 h-3.5" style={{ color: '#E87040', transform: 'rotate(90deg)' }} />
+              <span className="text-[10px] font-bold" style={{ color: '#E87040' }}>模拟卡片激活</span>
             </motion.button>
-            <AnimatePresence>
-              {showAddMenu && (
-                <motion.div initial={{ opacity: 0, y: -8, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -8, scale: 0.95 }} transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-full mt-2 w-44 rounded-2xl overflow-hidden z-50"
-                  style={{
-                    background: theme === 'dark' ? 'rgba(28,28,40,0.95)' : 'rgba(255,255,255,0.95)',
-                    backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-                    border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'}`,
-                    boxShadow: theme === 'dark' ? '0 12px 40px rgba(0,0,0,0.5)' : '0 12px 40px rgba(0,0,0,0.12)',
-                  }}>
-                  <motion.button whileTap={{ scale: 0.97 }} onClick={() => { setShowAddMenu(false); navigate('/activate'); }}
-                    className="w-full px-4 py-3 flex items-center gap-3 text-left">
-                    <Wifi className="w-4 h-4" style={{ color: '#E87040', transform: 'rotate(90deg)' }} />
-                    <div>
-                      <p className={`text-xs font-bold ${theme === 'dark' ? 'text-white/90' : 'text-gray-800'}`}>激活角色</p>
-                      <p className={`text-[10px] ${theme === 'dark' ? 'text-white/35' : 'text-gray-400'}`}>扫描卡片激活新伙伴</p>
-                    </div>
-                  </motion.button>
-                  <div style={{ height: 1, background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)' }} />
-                  <motion.button whileTap={{ scale: 0.97 }} onClick={() => { setShowAddMenu(false); navigate('/shop'); }}
-                    className="w-full px-4 py-3 flex items-center gap-3 text-left">
-                    <ShoppingBag className="w-4 h-4" style={{ color: '#AF57DB' }} />
-                    <div>
-                      <p className={`text-xs font-bold ${theme === 'dark' ? 'text-white/90' : 'text-gray-800'}`}>角色商城</p>
-                      <p className={`text-[10px] ${theme === 'dark' ? 'text-white/35' : 'text-gray-400'}`}>探索更多角色图鉴</p>
-                    </div>
-                  </motion.button>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </div>
 
@@ -1284,35 +1221,32 @@ export default function HomePageV3() {
                 );
               })()}
             </div>
-            <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-              {getGreeting()}，{childName}
-            </h1>
-            <p className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-white/30' : 'text-gray-500'}`}>
-              {isT ? '↑ 上滑切换到小伙伴' : '↓ 下滑切换到 AI 老师'}
-            </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  {getGreeting()}，{childName}
+                </h1>
+                <p className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-white/30' : 'text-gray-500'}`}>
+                  {isT ? '↑ 上滑切换到小伙伴' : '↓ 下滑切换到 AI 老师'}
+                </p>
+              </div>
+              {/* Shipping address tip — inline */}
+              {!hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
+                <motion.button whileTap={{ scale: 0.95 }}
+                  onClick={() => navigate('/shipping-address')}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl flex-shrink-0"
+                  style={{
+                    background: 'rgba(255,183,0,0.12)',
+                    border: '1px solid rgba(255,183,0,0.25)',
+                  }}>
+                  <span className="text-sm">🎁</span>
+                  <span className="text-[9px] font-bold" style={{ color: '#FFB700' }}>填写地址</span>
+                </motion.button>
+              )}
+            </div>
           </div>
         )}
       </motion.div>
-
-  {/* ===== SHIPPING ADDRESS TIP ===== */}
-  {!hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
-    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-      className="relative z-20 mx-4 mb-2 px-4 py-3 rounded-2xl flex items-center gap-3 cursor-pointer"
-      style={{
-        background: theme === 'dark' ? 'rgba(255,183,0,0.12)' : 'rgba(255,183,0,0.08)',
-        border: '1.5px solid rgba(255,183,0,0.25)',
-      }}
-      onClick={() => navigate('/shipping-address')}>
-      <span className="text-lg">🎁</span>
-      <div className="flex-1">
-        <p className="text-xs font-bold" style={{ color: '#FFB700' }}>恭喜获得实体角色卡片！</p>
-        <p className="text-[10px] mt-0.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>
-          点击添加收货地址，我们将尽快寄出
-        </p>
-      </div>
-      <span className="text-xs" style={{ color: '#FFB700' }}>→</span>
-    </motion.div>
-  )}
 
   {/* ===== FROSTED BACKDROP (when card is flipped) ===== */}
   <AnimatePresence>
@@ -1352,22 +1286,53 @@ export default function HomePageV3() {
     })()}
   </AnimatePresence>
 
-  {/* ===== VERTICAL SWIPE ZONE (right edge, owned tab only) ===== */}
+  {/* ===== VERTICAL SWIPE ZONE (full screen touch, owned tab only) ===== */}
   {charTab === 'owned' && (
-  <div className="fixed right-0 top-0 bottom-0 z-40 pointer-events-auto"
-    style={{ width: 64, touchAction: 'none' }}
+  <div className="fixed inset-0 z-40 pointer-events-auto"
+    style={{ touchAction: 'none' }}
     onPointerDown={onStripPointerDown}
     onPointerMove={onStripPointerMove}
     onPointerUp={onStripPointerUp}
     onPointerCancel={onStripPointerUp}>
-    <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 pointer-events-none">
-      <motion.div className="w-1 h-8 rounded-full"
-        animate={{ background: isT ? aT.color : 'rgba(255,255,255,0.08)', opacity: isT ? 0.6 : 0.2 }}
-        transition={{ duration: 0.3 }} />
-      <motion.div className="w-1 h-8 rounded-full"
-        animate={{ background: !isT ? aP.color : 'rgba(255,255,255,0.08)', opacity: !isT ? 0.6 : 0.2 }}
-        transition={{ duration: 0.3 }} />
-    </div>
+    {/* Arrow buttons */}
+    {!isT && (
+      <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => switchFocus('teacher')}
+        className="absolute left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full"
+        style={{
+          top: 'max(5rem, env(safe-area-inset-top, 4rem))',
+          background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+          border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'}`,
+          backdropFilter: 'blur(10px)',
+        }}>
+        <div className="flex items-center gap-2">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 10V2M6 2L2 6M6 2L10 6" stroke={theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span className="text-[10px] font-bold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>切换 AI 老师</span>
+        </div>
+      </motion.button>
+    )}
+    {isT && (
+      <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => switchFocus('partner')}
+        className="absolute left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full"
+        style={{
+          bottom: 'max(10rem, env(safe-area-inset-bottom, 8rem))',
+          background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+          border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'}`,
+          backdropFilter: 'blur(10px)',
+        }}>
+        <div className="flex items-center gap-2">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 2V10M6 10L2 6M6 10L10 6" stroke={theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span className="text-[10px] font-bold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>切换 AI 伙伴</span>
+        </div>
+      </motion.button>
+    )}
   </div>
   )}
 
@@ -1432,10 +1397,9 @@ export default function HomePageV3() {
                 <FrontRow chars={isT ? displayTeachers : displayPartners} selectedId={isT ? selTeacher : selPartner}
                   onSelect={isT ? setSelTeacher : setSelPartner} theme={theme}
                   flippedCard={flippedCard} onFlipCard={(id, rect) => { setFlippedCard(id); setFlipOrigin(rect || null); }}
-                  onAdd={() => navigate('/shop')}
+                  onAdd={() => setCharTab('unowned')}
                   newlyActivated={newlyActivated}
                   trialStates={trialStates}
-                  veteranMode={userMode === 'veteran'}
                   onVerticalSwipe={(dir) => {
                      if (dir === 'up' && focus === 'teacher') switchFocus('partner');
                      else if (dir === 'down' && focus === 'partner') switchFocus('teacher');
@@ -1460,69 +1424,82 @@ export default function HomePageV3() {
       </div>
       )}
 
-      {/* ===== UNOWNED TAB: V4-style dual column grid ===== */}
-      {charTab === 'unowned' && (
-        <div className="flex-1 min-h-0 relative z-10 overflow-y-auto px-4 pb-4"
-          style={{ scrollbarWidth: 'none' }}>
-          <div className="grid grid-cols-2 gap-3 w-full max-w-lg mx-auto">
-            {unownedAll.map((c, i) => {
-              const state = getCharacterState(c.id);
-              const isLocked = state.status === 'locked' && !isTrialExpired(c.id);
-              const isExpired = state.status === 'locked' && isTrialExpired(c.id);
+      {/* ===== UNOWNED TAB: Language-categorized grid ===== */}
+      {charTab === 'unowned' && (() => {
+        const LANG_GROUPS: { key: string; label: string; flag: string; ids: string[] }[] = [
+          { key: 'english', label: '英语 Agent', flag: '🇺🇸', ids: ['parrot', 'fox', 'olaf', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco'] },
+          { key: 'japanese', label: '日语 Agent', flag: '🇯🇵', ids: ['xizi'] },
+          { key: 'portuguese', label: '葡萄牙语 Agent', flag: '🇧🇷', ids: ['bull'] },
+          { key: 'arabic', label: '阿拉伯语 Agent', flag: '🇸🇦', ids: ['bred'] },
+        ];
+        const allChars = [...TEACHERS, ...PARTNERS];
+        return (
+          <div className="flex-1 min-h-0 relative z-10 overflow-y-auto px-4 pb-4"
+            style={{ scrollbarWidth: 'none' }}>
+            {LANG_GROUPS.map(group => {
+              const chars = group.ids.map(id => allChars.find(c => c.id === id)).filter(Boolean) as Character[];
+              if (chars.length === 0) return null;
               return (
-                <motion.div key={c.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setPurchaseModal({ char: c })}
-                  className="relative rounded-[1.5rem] overflow-hidden flex flex-col items-center cursor-pointer"
-                  style={{
-                    aspectRatio: '195 / 260',
-                    padding: '1rem 0.5rem 0.75rem',
-                    background: theme === 'dark'
-                      ? `linear-gradient(180deg, ${c.color}10 0%, ${c.accent} 50%, rgba(10,10,15,0.9) 100%)`
-                      : `linear-gradient(180deg, ${c.color}08 0%, ${c.accent} 50%, rgba(255,255,255,0.95) 100%)`,
-                    border: `1.5px solid ${c.color}20`,
-                    boxShadow: `0 4px 16px ${c.color}10`,
-                  }}>
-                  {/* Lock / trial badge */}
-                  <div className="absolute top-2 right-2 z-10">
-                    {isExpired ? (
-                      <span className="text-[9px] font-bold px-2 py-0.5 rounded-full"
-                        style={{ background: 'rgba(255,149,0,0.15)', color: '#FF9500' }}>试用结束</span>
-                    ) : isLocked ? (
-                      <Lock className="w-3.5 h-3.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }} />
-                    ) : null}
+                <div key={group.key} className="mb-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-lg">{group.flag}</span>
+                    <h3 className="text-sm font-extrabold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)' }}>
+                      {group.label}
+                    </h3>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                      style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)', color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
+                      {chars.length}个
+                    </span>
                   </div>
-                  {/* Character image */}
-                  <div className="flex-1 flex items-center justify-center w-full overflow-hidden">
-                    {c.component ? c.component : c.image ? (
-                      <img src={c.image} alt={c.name} className="w-full h-full object-contain" loading="lazy" />
-                    ) : null}
+                  <div className="grid grid-cols-2 gap-3 w-full">
+                    {chars.map((c, i) => (
+                      <motion.div key={c.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.05 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => setPurchaseModal({ char: c })}
+                        className="relative rounded-[1.5rem] overflow-hidden flex flex-col items-center cursor-pointer"
+                        style={{
+                          aspectRatio: '195 / 260',
+                          padding: '1rem 0.5rem 0.75rem',
+                          background: theme === 'dark'
+                            ? `linear-gradient(180deg, ${c.color}10 0%, ${c.accent} 50%, rgba(10,10,15,0.9) 100%)`
+                            : `linear-gradient(180deg, ${c.color}08 0%, ${c.accent} 50%, rgba(255,255,255,0.95) 100%)`,
+                          border: `1.5px solid ${c.color}20`,
+                          boxShadow: `0 4px 16px ${c.color}10`,
+                        }}>
+                        <div className="absolute top-2 right-2 z-10">
+                          <Lock className="w-3.5 h-3.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }} />
+                        </div>
+                        <div className="flex-1 flex items-center justify-center w-full overflow-hidden">
+                          {c.component ? c.component : c.image ? (
+                            <img src={c.image} alt={c.name} className="w-full h-full object-contain" loading="lazy" />
+                          ) : null}
+                        </div>
+                        <div className="text-center w-full px-1">
+                          <p className="font-bold text-[12px] truncate"
+                            style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)' }}>
+                            {c.name}
+                          </p>
+                          <p className="text-[9px] mt-0.5 truncate"
+                            style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
+                            {c.desc}
+                          </p>
+                        </div>
+                        <div className="mt-1.5 px-3 py-1 rounded-full text-[10px] font-bold"
+                          style={{ background: `${c.color}18`, color: c.color }}>
+                          ¥{getPromoPrice(c.id)}/月
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
-                  {/* Name + desc */}
-                  <div className="text-center w-full px-1">
-                    <p className="font-bold text-[12px] truncate"
-                      style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)' }}>
-                      {c.name}
-                    </p>
-                    <p className="text-[9px] mt-0.5 truncate"
-                      style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
-                      {c.desc}
-                    </p>
-                  </div>
-                  {/* Price badge */}
-                  <div className="mt-1.5 px-3 py-1 rounded-full text-[10px] font-bold"
-                    style={{ background: `${c.color}18`, color: c.color }}>
-                    ¥49 解锁
-                  </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* ===== ENGINE HIGHLIGHTS — 4 selling points ===== */}
       {!flippedCard && (
@@ -1820,6 +1797,18 @@ export default function HomePageV3() {
                         markPhysicalCardSent(c.id);
                       }
                       setPurchaseModal(null);
+                      // Jump to owned tab and select this character
+                      const isTeacherChar = TEACHERS.some(t => t.id === c.id);
+                      if (isTeacherChar) {
+                        setSelTeacher(c.id);
+                        setFocus('teacher');
+                        setSlideDir('up');
+                      } else {
+                        setSelPartner(c.id);
+                        setFocus('partner');
+                        setSlideDir('down');
+                      }
+                      setCharTab('owned');
                     }}
                     className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
                     style={{
@@ -1838,23 +1827,7 @@ export default function HomePageV3() {
         })()}
       </AnimatePresence>
 
-      {/* Mode toggle — always visible */}
-      <motion.button
-        className="fixed z-[100] flex items-center gap-1 px-2 py-1 rounded-full"
-        style={{
-          bottom: 'max(100px, env(safe-area-inset-bottom, 80px))',
-          left: 12,
-          background: 'rgba(20,20,30,0.85)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          backdropFilter: 'blur(10px)',
-        }}
-        whileTap={{ scale: 0.9 }}
-        onClick={toggleUserMode}
-      >
-        <span className="text-[8px] font-bold" style={{ color: 'rgba(255,255,255,0.4)' }}>
-          {userMode === 'new' ? '重置为新用户' : '切换新用户'}
-        </span>
-      </motion.button>
+
     </div>
   );
 }

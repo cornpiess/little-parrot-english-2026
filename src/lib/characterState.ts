@@ -113,6 +113,23 @@ export function subscribeCharacter(id: string): void {
   localStorage.setItem(purchaseKey(id), 'subscribed');
 }
 
+/** Unified activation — subscription and card activation both use this */
+export function activateCharacter(id: string): void {
+  localStorage.removeItem(trialUsageKey(id));
+  localStorage.removeItem(trialActiveKey(id));
+  localStorage.removeItem(`${trialActiveKey(id)}_start`);
+  localStorage.setItem(purchaseKey(id), 'subscribed');
+}
+
+/** Check if any character is owned */
+export function hasAnyOwned(): boolean {
+  return [...TEACHER_IDS, 'parrot', 'fox', 'olaf', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco']
+    .some(id => {
+      const s = getCharacterState(id);
+      return s.status === 'purchased' || s.status === 'subscribed';
+    });
+}
+
 export function formatTrialTime(ms: number | null): string {
   if (ms === null || ms <= 0) return '00:00';
   const totalSec = Math.ceil(ms / 1000);

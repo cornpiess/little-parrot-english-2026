@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, Wifi } from 'lucide-react';
 import FoxCharacter from '@/components/FoxCharacter';
+import { activateCharacter } from '@/lib/characterState';
 
 type ActivationPhase = 'intro' | 'scanning' | 'activating' | 'unboxing' | 'complete';
 
@@ -298,8 +299,7 @@ export default function CardActivation() {
   }, []);
 
   const handleGoHome = useCallback(() => {
-    localStorage.setItem('fox_activated', 'true');
-    localStorage.setItem('selected_character', 'fox');
+    activateCharacter('fox');
     localStorage.setItem('homev3_newlyActivated', 'fox');
     navigate('/home-v3');
   }, [navigate]);
