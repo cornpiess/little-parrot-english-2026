@@ -273,14 +273,6 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
         </motion.div>
       )}
 
-      {/* Purchased badge — top-right */}
-      {isFront && (trialState?.status === 'purchased' || trialState?.status === 'subscribed') && (
-        <div className="absolute top-2 right-2 z-30 w-5 h-5 rounded-full flex items-center justify-center"
-          style={{ background: trialState.status === 'subscribed' ? '#AF57DB' : '#58CC02' }}>
-          <Check className="w-3 h-3 text-white" strokeWidth={3} />
-        </div>
-      )}
-
       {/* Locked badge — small corner indicator */}
       {isFront && trialState?.status === 'locked' && (
         <div className="absolute top-2 left-2 z-30 px-1.5 py-0.5 rounded-full"
@@ -1115,61 +1107,58 @@ export default function HomePageV3() {
       {/* ===== HEADER ===== */}
       <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         className="relative z-20 flex-shrink-0"
-        style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top, 0px))', paddingBottom: 4 }}>
-        {/* Row 1: Onboarding entry + Tabs + Right buttons */}
-        <div className="flex items-center justify-between px-5 mb-2">
-          {/* Left: Onboarding entry */}
+        style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0px))', paddingBottom: 2 }}>
+        {/* Row 1: Onboarding icon + Tabs + Right buttons */}
+        <div className="flex items-center justify-between px-3">
+          {/* Left: Onboarding icon only */}
           <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/')}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl"
+            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
             style={{
               background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
               border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
             }}>
-            <span className="text-base">🏠</span>
-            <span className="text-[11px] font-bold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
-              新手引导
-            </span>
+            <span className="text-sm">🏠</span>
           </motion.button>
 
           {/* Center: Tabs */}
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             {(['owned', 'unowned'] as const).map(t => {
               const count = t === 'owned' ? (ownedTeachers.length + ownedPartners.length) : unownedAll.length;
               const isActive = charTab === t;
               return (
                 <motion.button key={t} whileTap={{ scale: 0.95 }}
                   onClick={() => { setCharTab(t); setFlippedCard(null); setFlipOrigin(null); }}
-                  className="px-4 py-2.5 rounded-2xl font-extrabold transition-all"
+                  className="px-3 py-1.5 rounded-xl font-extrabold transition-all whitespace-nowrap"
                   style={{
-                    fontSize: 13,
+                    fontSize: 12,
                     background: isActive
                       ? (theme === 'dark' ? 'rgba(255,255,255,0.12)' : `${effectiveActiveChar.color}18`)
                       : (theme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'),
                     color: isActive
                       ? (theme === 'dark' ? 'white' : '#1f2937')
                       : (theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)'),
-                    border: `2px solid ${isActive ? (theme === 'dark' ? 'rgba(255,255,255,0.15)' : `${effectiveActiveChar.color}30`) : 'transparent'}`,
+                    border: `1.5px solid ${isActive ? (theme === 'dark' ? 'rgba(255,255,255,0.15)' : `${effectiveActiveChar.color}30`) : 'transparent'}`,
                   }}>
-                  {t === 'owned' ? `已拥有 ${count}` : `未拥有 ${count}`}
+                  {t === 'owned' ? `已拥有${count}` : `未拥有${count}`}
                 </motion.button>
               );
             })}
           </div>
 
           {/* Right: Theme + Simulate card activation */}
-          <div className="flex items-center gap-2">
-            <motion.button whileTap={{ scale: 0.85 }} onClick={toggleTheme} className="w-9 h-9 rounded-full flex items-center justify-center"
+          <div className="flex items-center gap-1.5 flex-shrink-0">
+            <motion.button whileTap={{ scale: 0.85 }} onClick={toggleTheme} className="w-8 h-8 rounded-full flex items-center justify-center"
               style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)' }}>
-              {theme === 'dark' ? <Sun className="w-4 h-4 text-yellow-400" /> : <Moon className="w-4 h-4 text-gray-600" />}
+              {theme === 'dark' ? <Sun className="w-3.5 h-3.5 text-yellow-400" /> : <Moon className="w-3.5 h-3.5 text-gray-600" />}
             </motion.button>
             <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/activate')}
-              className="h-9 px-3 rounded-full flex items-center gap-1.5"
+              className="h-8 px-2.5 rounded-full flex items-center gap-1"
               style={{
                 background: theme === 'dark' ? 'rgba(232,112,64,0.12)' : 'rgba(232,112,64,0.08)',
                 border: '1px solid rgba(232,112,64,0.25)',
               }}>
-              <Wifi className="w-3.5 h-3.5" style={{ color: '#E87040', transform: 'rotate(90deg)' }} />
-              <span className="text-[10px] font-bold" style={{ color: '#E87040' }}>模拟卡片激活</span>
+              <Wifi className="w-3 h-3" style={{ color: '#E87040', transform: 'rotate(90deg)' }} />
+              <span className="text-[9px] font-bold" style={{ color: '#E87040' }}>模拟激活</span>
             </motion.button>
           </div>
         </div>
@@ -1216,17 +1205,24 @@ export default function HomePageV3() {
                   {isT ? '↑ 上滑切换到小伙伴' : '↓ 下滑切换到 AI 老师'}
                 </p>
               </div>
-              {/* Shipping address tip — inline */}
+              {/* Shipping address tip — scrolling banner */}
               {!hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
-                <motion.button whileTap={{ scale: 0.95 }}
+                <motion.button whileTap={{ scale: 0.98 }}
                   onClick={() => navigate('/shipping-address')}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl flex-shrink-0"
+                  className="flex items-center gap-1 px-2 py-1 rounded-lg flex-shrink-0 max-w-[160px] overflow-hidden"
                   style={{
-                    background: 'rgba(255,183,0,0.12)',
-                    border: '1px solid rgba(255,183,0,0.25)',
+                    background: 'rgba(255,183,0,0.1)',
+                    border: '1px solid rgba(255,183,0,0.2)',
                   }}>
-                  <span className="text-sm">🎁</span>
-                  <span className="text-[9px] font-bold" style={{ color: '#FFB700' }}>填写地址</span>
+                  <span className="text-[10px] flex-shrink-0">🎁</span>
+                  <div className="overflow-hidden flex-1 min-w-0">
+                    <motion.p className="text-[9px] font-bold whitespace-nowrap"
+                      style={{ color: '#FFB700' }}
+                      animate={{ x: [0, -60, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}>
+                      恭喜获得实体卡片！点击填写收货地址 →
+                    </motion.p>
+                  </div>
                 </motion.button>
               )}
             </div>
@@ -1382,7 +1378,7 @@ export default function HomePageV3() {
       {/* ===== UNOWNED TAB: Language-categorized grid ===== */}
       {charTab === 'unowned' && (() => {
         const LANG_GROUPS: { key: string; label: string; flag: string; ids: string[] }[] = [
-          { key: 'english', label: '英语 Agent', flag: '🇺🇸', ids: ['parrot', 'fox', 'olaf', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco'] },
+          { key: 'english', label: '英语Agent', flag: '🇺🇸', ids: ['parrot', 'fox', 'olaf', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco'] },
           { key: 'japanese', label: '日语 Agent', flag: '🇯🇵', ids: ['xizi'] },
           { key: 'portuguese', label: '葡萄牙语 Agent', flag: '🇧🇷', ids: ['bull'] },
           { key: 'arabic', label: '阿拉伯语 Agent', flag: '🇸🇦', ids: ['bred'] },
@@ -1414,10 +1410,10 @@ export default function HomePageV3() {
                         transition={{ delay: i * 0.05 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => setPurchaseModal({ char: c })}
-                        className="relative rounded-[1.5rem] overflow-hidden flex flex-col items-center cursor-pointer"
+                        className="relative rounded-[1.2rem] flex flex-col items-center cursor-pointer overflow-hidden"
                         style={{
-                          aspectRatio: '195 / 260',
-                          padding: '1rem 0.5rem 0.75rem',
+                          aspectRatio: '3 / 4',
+                          padding: '0.75rem 0.5rem 0.5rem',
                           background: theme === 'dark'
                             ? `linear-gradient(180deg, ${c.color}10 0%, ${c.accent} 50%, rgba(10,10,15,0.9) 100%)`
                             : `linear-gradient(180deg, ${c.color}08 0%, ${c.accent} 50%, rgba(255,255,255,0.95) 100%)`,
@@ -1427,8 +1423,8 @@ export default function HomePageV3() {
                         <div className="absolute top-2 right-2 z-10">
                           <Lock className="w-3.5 h-3.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }} />
                         </div>
-                        <div className="flex-1 flex items-center justify-center w-full overflow-hidden">
-                          {c.component ? c.component : c.image ? (
+                        <div className="flex-1 flex items-center justify-center w-full min-h-0 overflow-hidden">
+                          {c.component ? <div className="transform scale-75">{c.component}</div> : c.image ? (
                             <img src={c.image} alt={c.name} className="w-full h-full object-contain" loading="lazy" />
                           ) : null}
                         </div>
