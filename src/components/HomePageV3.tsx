@@ -391,14 +391,13 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
     if (t.dir === 'h') {
       const cur = x.get();
       if (cur > centerOffset + 20) { animate(x, centerOffset, { type: 'spring', stiffness: 350, damping: 30 }); onSelect(chars[0].id); return; }
-      if (cur < minX - 20) { animate(x, minX, { type: 'spring', stiffness: 350, damping: 30 }); onAdd?.(); return; }
+      if (cur < minX - 20) { animate(x, minX, { type: 'spring', stiffness: 350, damping: 30 }); return; }
       let ci = Math.round((centerOffset - cur) / (CARD_W + GAP));
       ci = Math.max(0, Math.min(maxIdx, ci));
       if (ci >= chars.length) {
-        // Scrolled to add card position
+        // Scrolled to add card — just center it visually, don't switch tab
         const addX = centerOffset - chars.length * (CARD_W + GAP);
         animate(x, addX, { type: 'spring', stiffness: 350, damping: 30 });
-        onAdd?.();
       } else {
         onSelect(chars[ci].id);
       }
