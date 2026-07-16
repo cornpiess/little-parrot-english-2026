@@ -1228,7 +1228,7 @@ export default function HomePageV3() {
               <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
             ) : null}
           </div>
-          {/* Right: Info */}
+          {/* Right: Info + Price */}
           <div className="flex-1 flex flex-col justify-center min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <h2 className="text-lg font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
@@ -1239,34 +1239,21 @@ export default function HomePageV3() {
                 {isTeacher ? 'AI老师' : 'AI伙伴'}
               </span>
             </div>
-            <p className="text-xs mb-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)' }}>
+            <p className="text-xs mb-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)' }}>
               {recChar.desc}
             </p>
-            <p className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
-              {CHARACTER_STORIES[recId]?.slice(0, 60)}...
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Price + CTA */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                style={{ background: '#FF4D4F', color: 'white' }}>新人专享</span>
-              <span className="text-[11px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
+            <div className="flex items-baseline gap-2">
+              <span className="text-xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
+              <span className="text-[10px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
                 ¥{getOriginalPrice(recId)}/月
               </span>
             </div>
-            <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
-              <span className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>解锁</span>
-            </div>
           </div>
-          <p className="text-[10px] mb-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
-            🎁 解锁后赠送实体{isTeacher ? '老师' : '伙伴'}角色卡片
-          </p>
+        </motion.div>
+
+        {/* CTA */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}>
           <motion.button whileTap={{ scale: 0.95 }}
             onClick={() => setPurchaseModal({ char: recChar })}
             className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
@@ -1276,7 +1263,7 @@ export default function HomePageV3() {
             }}>
             ¥8.99 解锁 {recChar.name}
           </motion.button>
-          <p className="text-center text-[9px] mt-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }}>
+          <p className="text-center text-[10px] mt-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
             或浏览更多角色 ↓
           </p>
         </motion.div>
@@ -1551,7 +1538,7 @@ export default function HomePageV3() {
             const isDone = status === 'done';
             return (
             <motion.button key={i} whileTap={{ scale: 0.96 }} onClick={() => setActiveHighlight(i)}
-              className="flex-1 rounded-2xl p-2.5 flex flex-col items-center gap-1 text-center cursor-pointer"
+              className="flex-1 aspect-square rounded-2xl p-2 flex flex-col items-center justify-center gap-0.5 text-center cursor-pointer"
               style={{
                 background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.6)',
                 border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
