@@ -5,7 +5,7 @@ import { BookOpen, Users, Sun, Moon, Wifi, X, HelpCircle, Sparkles, Lock, Check 
 import ParrotCharacter from '@/components/ParrotCharacter';
 import FoxCharacter from '@/components/FoxCharacter';
 import OlafCharacter from '@/components/OlafCharacter';
-import { getCharacterState, startTrial, purchaseCharacter, subscribeCharacter, activateCharacter, formatTrialTime, CHARACTER_STORIES, CharacterState, getBondLevel, addBondExp, getLearningProgress, markActiveDay, beginLearningSession, endLearningSession, getTrialDurationMs, isTrialExpired, getOriginalPrice, getPromoPrice, setAutoRenew as setAutoRenewState, markPhysicalCardSent, hasPhysicalCard, hasShippingAddress, hasAnyOwned, getRecommendedCharId, getOnboardingData } from '@/lib/characterState';
+import { getCharacterState, startTrial, purchaseCharacter, subscribeCharacter, activateCharacter, formatTrialTime, CHARACTER_STORIES, CharacterState, getBondLevel, addBondExp, getLearningProgress, markActiveDay, beginLearningSession, endLearningSession, getTrialDurationMs, isTrialExpired, getOriginalPrice, getPromoPrice, setAutoRenew as setAutoRenewState, markPhysicalCardSent, hasPhysicalCard, hasShippingAddress, hasAnyOwned, getRecommendedCharId, getOnboardingData, getRecommendationPhase, getRecommendedTeacherId, getRecommendedPartnerId, hasOwnedTeacher, hasOwnedPartner } from '@/lib/characterState';
 
 import imgTeacher1 from '@/assets/1ebf0cda2cde974b5ed9ae6990f1305cc10602a8.webp';
 import imgTeacher2 from '@/assets/18466f7d75c7f0003c756fab4f226f5acaf0b786.webp';
@@ -1231,16 +1231,38 @@ export default function HomePageV3() {
         )}
       </motion.div>
 
-  {/* ===== NEW USER RECOMMENDATION SCREEN ===== */}
-  {!hasAnyOwned() && (() => {
-    const recId = getRecommendedCharId();
+  {/* ===== PROGRESSIVE RECOMMENDATION SCREEN ===== */}
+  {(() => {
+    const phase = getRecommendationPhase();
+    if (phase === 'voice') return null; // No recommendation overlay when user has both
+
     const allChars = [...TEACHERS, ...PARTNERS];
-    const recChar = allChars.find(c => c.id === recId);
-    if (!recChar) return null;
     const onboardingData = getOnboardingData();
     const targetLang = onboardingData.targetLanguage || 'english';
     const langLabels: Record<string, string> = { english: '英语', japanese: '日语', portuguese: '葡萄牙语', arabic: '阿拉伯语' };
+
+    let recId: string | null = null;
+    let badgeText = '';
+    let compareText = '';
+
+    if (phase === 'initial') {
+      recId = getRecommendedCharId();
+      badgeText = `AI 根据${childName}的${langLabels[targetLang] || '英语'}学习基础信息推荐`;
+    } else if (phase === 'need-teacher') {
+      recId = getRecommendedTeacherId();
+      badgeText = '您已有 AI 伙伴，再搭配一位 AI 老师';
+      compareText = 'AI 老师专注知识传授与答疑解惑，AI 伙伴注重语言环境培养和情绪陪伴';
+    } else if (phase === 'need-partner') {
+      recId = getRecommendedPartnerId();
+      badgeText = '您已有 AI 老师，再搭配一位 AI 伙伴';
+      compareText = 'AI 伙伴营造沉浸式语言环境，提供情绪价值和快乐陪伴';
+    }
+
+    if (!recId) return null;
+    const recChar = allChars.find(c => c.id === recId);
+    if (!recChar) return null;
     const isTeacher = TEACHERS.some(t => t.id === recId);
+
     return (
       <div className="flex-1 px-5 pt-2 pb-8 relative z-10 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
         {/* AI recommendation badge */}
@@ -1252,11 +1274,18 @@ export default function HomePageV3() {
               border: '1px solid rgba(88,204,2,0.25)',
             }}>
             <span className="text-xs">🤖</span>
-            <span className="text-[11px] font-bold" style={{ color: '#58CC02' }}>
-              AI 根据{childName}的{langLabels[targetLang] || '英语'}学习基础信息推荐
-            </span>
+            <span className="text-[11px] font-bold" style={{ color: '#58CC02' }}>{badgeText}</span>
           </div>
         </motion.div>
+
+        {/* Comparison text (for phase 2 & 3) */}
+        {compareText && (
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
+            className="text-center text-[11px] mb-4 px-4 leading-relaxed"
+            style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
+            {compareText}
+          </motion.p>
+        )}
 
         {/*
           ═══════════════════════════════════════════════════════
@@ -1265,6 +1294,8 @@ export default function HomePageV3() {
           2. 与推荐角色打了招呼（GREETINGS 弹窗）
           3. 体验了一节 demo 课（LessonFlow / AITeacherMode）
           4. 到达此页面 → AI 根据基础信息推荐角色 → 引导付费解锁
+          5. 解锁一个伙伴后 → 推荐老师（说明区别）
+          6. 都解锁后 → 语音按钮，AI 根据对话推荐第三个角色
           ═══════════════════════════════════════════════════════
         */}
 
@@ -1278,14 +1309,12 @@ export default function HomePageV3() {
               : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
             border: `1.5px solid ${recChar.color}25`,
           }}>
-          {/* Left: Character image */}
           <div className="w-28 h-36 rounded-2xl flex-shrink-0 flex items-center justify-center overflow-visible"
             style={{ background: `${recChar.color}10` }}>
             {recChar.component ? <div className="transform scale-75 origin-center">{recChar.component}</div> : recChar.image ? (
               <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
             ) : null}
           </div>
-          {/* Right: Info */}
           <div className="flex-1 flex flex-col justify-center min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <h2 className="text-lg font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
@@ -1313,7 +1342,7 @@ export default function HomePageV3() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                  style={{ background: '#FF4D4F', color: 'white' }}>新人限时</span>
+                  style={{ background: '#FF4D4F', color: 'white' }}>限时优惠</span>
                 <span className="text-[10px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
                   ¥{getOriginalPrice(recId)}/月
                 </span>
@@ -1516,6 +1545,36 @@ export default function HomePageV3() {
         return (
           <div className="flex-1 min-h-0 relative z-10 overflow-y-auto px-4 pb-4"
             style={{ scrollbarWidth: 'none' }}>
+            {/* Voice recommendation button — when user has both teacher and partner */}
+            {hasOwnedTeacher() && hasOwnedPartner() && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                className="mb-4 rounded-2xl p-4"
+                style={{
+                  background: theme === 'dark' ? 'rgba(88,204,2,0.08)' : 'rgba(88,204,2,0.05)',
+                  border: '1.5px solid rgba(88,204,2,0.2)',
+                }}>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: 'rgba(88,204,2,0.15)' }}>
+                    <span className="text-xl">🎙️</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
+                      告诉 AI 你的需求
+                    </p>
+                    <p className="text-[11px] mt-0.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>
+                      和 AI 讲讲宝贝的情况，获取个性化推荐
+                    </p>
+                  </div>
+                  <motion.button whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate('/ai-parrot')}
+                    className="px-4 py-2 rounded-xl font-bold text-xs text-white flex-shrink-0"
+                    style={{ background: 'linear-gradient(135deg, #58CC02, #58CC02CC)' }}>
+                    开始对话
+                  </motion.button>
+                </div>
+              </motion.div>
+            )}
             {LANG_GROUPS.map(group => {
               const chars = group.ids
                 .map(id => allChars.find(c => c.id === id))

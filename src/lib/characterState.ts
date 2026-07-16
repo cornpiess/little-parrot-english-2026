@@ -161,6 +161,48 @@ export function hasOnboarding(): boolean {
   return localStorage.getItem('onboarding_completed') === 'true';
 }
 
+/** Check if user owns any teacher */
+export function hasOwnedTeacher(): boolean {
+  return TEACHER_IDS.some(id => isOwned(id));
+}
+
+/** Check if user owns any partner */
+export function hasOwnedPartner(): boolean {
+  return ['parrot', 'fox', 'olaf', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco']
+    .some(id => isOwned(id));
+}
+
+/** Get recommended teacher (unowned) */
+export function getRecommendedTeacherId(): string | null {
+  const candidates = ['einstein', 'beethoven', 'deer'];
+  return candidates.find(id => !isOwned(id)) || null;
+}
+
+/** Get recommended partner (unowned) */
+export function getRecommendedPartnerId(): string | null {
+  const data = getOnboardingData();
+  const targetLang = data.targetLanguage || 'english';
+  const gender = data.gender;
+  const byLang: Record<string, string[]> = {
+    english: gender === 'girl' ? ['parrot', 'olaf'] : ['fox', 'parrot'],
+    japanese: ['xizi'],
+    portuguese: ['bull'],
+    arabic: ['bred'],
+  };
+  const candidates = byLang[targetLang] || byLang.english;
+  return candidates.find(id => !isOwned(id)) || null;
+}
+
+/** Get recommendation phase */
+export function getRecommendationPhase(): 'initial' | 'need-teacher' | 'need-partner' | 'voice' {
+  const hasT = hasOwnedTeacher();
+  const hasP = hasOwnedPartner();
+  if (!hasT && !hasP) return 'initial';
+  if (!hasT && hasP) return 'need-teacher';
+  if (hasT && !hasP) return 'need-partner';
+  return 'voice';
+}
+
 export function formatTrialTime(ms: number | null): string {
   if (ms === null || ms <= 0) return '00:00';
   const totalSec = Math.ceil(ms / 1000);
