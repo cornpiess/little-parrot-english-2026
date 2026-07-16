@@ -1343,7 +1343,7 @@ export default function HomePageV3() {
           </motion.p>
         )}
 
-        {/* Character card — adaptive height */}
+        {/* Character card — compact height */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="rounded-3xl p-3 mb-3 flex gap-3 relative"
@@ -1352,31 +1352,32 @@ export default function HomePageV3() {
               ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
               : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
             border: `1.5px solid ${recChar.color}25`,
+            maxHeight: 120,
           }}>
           {/* AI 推荐角标 */}
           <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-bold z-10"
             style={{ background: 'rgba(88,204,2,0.9)', color: 'white' }}>
             AI 推荐
           </div>
-          {/* Character image — adaptive height */}
-          <div className="w-20 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden self-start"
-            style={{ background: `${recChar.color}10`, minHeight: 80 }}>
-            {recChar.component ? <div className="transform scale-[0.42] origin-center">{recChar.component}</div> : recChar.image ? (
-              <img src={recChar.image} alt={recChar.name} className="w-full h-auto object-contain" />
+          {/* Character image — fixed height */}
+          <div className="w-16 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden"
+            style={{ background: `${recChar.color}10`, height: 80 }}>
+            {recChar.component ? <div className="transform scale-[0.35] origin-center">{recChar.component}</div> : recChar.image ? (
+              <img src={recChar.image} alt={recChar.name} className="w-full h-full object-cover" />
             ) : null}
           </div>
           {/* Info — grows with content */}
-          <div className="flex-1 flex flex-col justify-center min-w-0 py-1">
+          <div className="flex-1 flex flex-col justify-center min-w-0 py-1 overflow-hidden">
             <div className="flex items-center gap-2 mb-1">
-              <h2 className="text-lg font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
+              <h2 className="text-base font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
                 {recChar.name}
               </h2>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0"
+              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
                 style={{ background: `${recChar.color}18`, color: recChar.color }}>
                 {isTeacher ? 'AI老师' : 'AI伙伴'}
               </span>
             </div>
-            <p className="text-[11px] leading-relaxed" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}>
+            <p className="text-[10px] leading-snug line-clamp-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}>
               {CHARACTER_STORIES[recId] || recChar.desc}
             </p>
           </div>
@@ -1385,7 +1386,7 @@ export default function HomePageV3() {
         {/* Price + Countdown + CTA */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}>
-          <div className="rounded-2xl p-3 mb-3"
+          <div className="rounded-2xl p-2.5 mb-2"
             style={{
               background: `linear-gradient(135deg, ${recChar.color}08, ${recChar.color}04)`,
               border: `1px solid ${recChar.color}20`,
