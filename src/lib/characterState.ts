@@ -216,3 +216,57 @@ export function markActiveDay(): void {
     });
   }
 }
+
+/* ═══════════════════════════════════════
+   Pricing & Subscription Logic
+   ═══════════════════════════════════════ */
+
+export type CharacterCategory = 'teacher' | 'partner';
+
+const TEACHER_IDS = ['einstein', 'beethoven', 'deer'];
+
+export function getCharacterCategory(id: string): CharacterCategory {
+  return TEACHER_IDS.includes(id) ? 'teacher' : 'partner';
+}
+
+export function getOriginalPrice(id: string): number {
+  return getCharacterCategory(id) === 'teacher' ? 79 : 49;
+}
+
+export function getPromoPrice(id: string): number {
+  return getOriginalPrice(id) / 2;
+}
+
+// Auto-renew
+function autoRenewKey(id: string) { return `char_autorenew_${id}`; }
+
+export function isAutoRenew(id: string): boolean {
+  return localStorage.getItem(autoRenewKey(id)) === 'true';
+}
+
+export function setAutoRenew(id: string, value: boolean): void {
+  if (value) localStorage.setItem(autoRenewKey(id), 'true');
+  else localStorage.removeItem(autoRenewKey(id));
+}
+
+// Physical card
+function physicalCardKey(id: string) { return `char_physical_card_${id}`; }
+
+export function hasPhysicalCard(id: string): boolean {
+  return localStorage.getItem(physicalCardKey(id)) === 'true';
+}
+
+export function markPhysicalCardSent(id: string): void {
+  localStorage.setItem(physicalCardKey(id), 'true');
+}
+
+// Shipping address
+const SHIPPING_ADDR_KEY = 'shipping_address_filled';
+
+export function hasShippingAddress(): boolean {
+  return localStorage.getItem(SHIPPING_ADDR_KEY) === 'true';
+}
+
+export function markShippingAddress(): void {
+  localStorage.setItem(SHIPPING_ADDR_KEY, 'true');
+}

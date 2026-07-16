@@ -21,6 +21,7 @@ import ShopPage from "./pages/ShopPage";
 import LessonFlow from "./pages/lessons/LessonFlow";
 import AdventureLesson from "./pages/lessons/AdventureLesson";
 import WhyPage from "./pages/WhyPage";
+import ShippingAddress from "./pages/ShippingAddress";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/lessons" element={<LessonFlow />} />
             <Route path="/adventure" element={<AdventureLesson />} />
             <Route path="/why" element={<WhyPage />} />
+            <Route path="/shipping-address" element={<ShippingAddress />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

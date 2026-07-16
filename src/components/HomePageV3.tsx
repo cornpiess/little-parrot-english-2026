@@ -5,7 +5,7 @@ import { BookOpen, Users, ShoppingBag, Sun, Moon, Wifi, X, ChevronDown, UserPlus
 import ParrotCharacter from '@/components/ParrotCharacter';
 import FoxCharacter from '@/components/FoxCharacter';
 import OlafCharacter from '@/components/OlafCharacter';
-import { getCharacterState, startTrial, purchaseCharacter, subscribeCharacter, formatTrialTime, CHARACTER_STORIES, CharacterState, getBondLevel, addBondExp, getLearningProgress, markActiveDay, beginLearningSession, endLearningSession, getTrialDurationMs, isTrialExpired } from '@/lib/characterState';
+import { getCharacterState, startTrial, purchaseCharacter, subscribeCharacter, formatTrialTime, CHARACTER_STORIES, CharacterState, getBondLevel, addBondExp, getLearningProgress, markActiveDay, beginLearningSession, endLearningSession, getTrialDurationMs, isTrialExpired, getOriginalPrice, getPromoPrice, setAutoRenew as setAutoRenewState, markPhysicalCardSent, hasPhysicalCard, hasShippingAddress } from '@/lib/characterState';
 
 import imgTeacher1 from '@/assets/1ebf0cda2cde974b5ed9ae6990f1305cc10602a8.webp';
 import imgTeacher2 from '@/assets/18466f7d75c7f0003c756fab4f226f5acaf0b786.webp';
@@ -874,7 +874,7 @@ export default function HomePageV3() {
   const [newlyActivated, setNewlyActivated] = useState<string | null>(() => localStorage.getItem('homev3_newlyActivated'));
   const [trialStates, setTrialStates] = useState<Record<string, CharacterState>>({});
   const [purchaseModal, setPurchaseModal] = useState<{ char: Character } | null>(null);
-  const [purchasePlan, setPurchasePlan] = useState<'buy' | 'subscribe'>('buy');
+  const [autoRenew, setAutoRenew] = useState(true);
   const [charTab, setCharTab] = useState<'owned' | 'unowned'>('owned');
 
   const switchFocus = (target: 'teacher' | 'partner') => {
@@ -1294,6 +1294,26 @@ export default function HomePageV3() {
         )}
       </motion.div>
 
+  {/* ===== SHIPPING ADDRESS TIP ===== */}
+  {!hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
+    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+      className="relative z-20 mx-4 mb-2 px-4 py-3 rounded-2xl flex items-center gap-3 cursor-pointer"
+      style={{
+        background: theme === 'dark' ? 'rgba(255,183,0,0.12)' : 'rgba(255,183,0,0.08)',
+        border: '1.5px solid rgba(255,183,0,0.25)',
+      }}
+      onClick={() => navigate('/shipping-address')}>
+      <span className="text-lg">🎁</span>
+      <div className="flex-1">
+        <p className="text-xs font-bold" style={{ color: '#FFB700' }}>恭喜获得实体角色卡片！</p>
+        <p className="text-[10px] mt-0.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>
+          点击添加收货地址，我们将尽快寄出
+        </p>
+      </div>
+      <span className="text-xs" style={{ color: '#FFB700' }}>→</span>
+    </motion.div>
+  )}
+
   {/* ===== FROSTED BACKDROP (when card is flipped) ===== */}
   <AnimatePresence>
     {flippedCard && (
@@ -1695,12 +1715,13 @@ export default function HomePageV3() {
         })()}
       </AnimatePresence>
 
-      {/* ===== PURCHASE MODAL — Story-driven ===== */}
+      {/* ===== PURCHASE MODAL — Subscription with promo ===== */}
       <AnimatePresence>
         {purchaseModal && (() => {
           const c = purchaseModal.char;
           const story = CHARACTER_STORIES[c.id] || '这个角色正等着和你一起冒险！';
-          const isBuy = purchasePlan === 'buy';
+          const original = getOriginalPrice(c.id);
+          const promo = getPromoPrice(c.id);
           return (
             <motion.div key="purchase-modal" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="fixed inset-0 z-[200] flex items-end justify-center" onClick={() => setPurchaseModal(null)}>
@@ -1709,7 +1730,7 @@ export default function HomePageV3() {
                 transition={{ type: 'spring', damping: 28, stiffness: 300 }}
                 onClick={(e) => e.stopPropagation()}
                 className="relative w-full max-w-lg rounded-t-3xl overflow-hidden pb-8"
-                style={{ background: theme === 'dark' ? '#12121A' : '#ffffff', boxShadow: `0 -4px 0 ${theme === 'dark' ? '#333' : '#E5E7EB'}` }}>
+                style={{ background: theme === 'dark' ? '#12121A' : '#ffffff', boxShadow: '0 -4px 0 ' + (theme === 'dark' ? '#333' : '#E5E7EB') }}>
 
                 {/* Section 1: Character Story */}
                 <div className="relative px-5 pt-6 pb-4">
@@ -1730,73 +1751,86 @@ export default function HomePageV3() {
                   <div className="rounded-2xl px-4 py-3"
                     style={{ background: `${c.color}08`, border: `1px solid ${c.color}15` }}>
                     <p className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.65)' }}>
-                      "{story}"
+                      &ldquo;{story}&rdquo;
                     </p>
                   </div>
                 </div>
 
-                {/* Section 2: Pricing Options */}
+                {/* Section 2: Promo Price */}
                 <div className="px-5 mb-4">
-                  <p className="text-xs font-bold mb-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)' }}>选择解锁方式</p>
-                  <div className="flex gap-3">
-                    {/* Buy option */}
-                    <motion.button whileTap={{ scale: 0.97 }}
-                      onClick={() => setPurchasePlan('buy')}
-                      className="flex-1 rounded-2xl p-3.5 text-left relative"
-                      style={{
-                        background: isBuy ? `${c.color}12` : theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
-                        border: `2px solid ${isBuy ? `${c.color}60` : theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-                      }}>
-                      {isBuy && <div className="absolute top-2 right-2 w-4 h-4 rounded-full flex items-center justify-center"
-                        style={{ background: c.color }}><Check className="w-2.5 h-2.5 text-white" strokeWidth={3} /></div>}
-                      <p className="text-xl font-extrabold mb-0.5" style={{ color: c.color }}>¥49</p>
-                      <p className="text-[10px] font-bold mb-1.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>永久买断</p>
-                      <div className="space-y-1">
-                        <p className="text-[9px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>✓ 永久解锁该角色</p>
-                        <p className="text-[9px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>✓ 赠送实体角色卡片</p>
-                        <p className="text-[9px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>✓ 独立情感羁绊</p>
-                      </div>
-                    </motion.button>
-                    {/* Subscribe option */}
-                    <motion.button whileTap={{ scale: 0.97 }}
-                      onClick={() => setPurchasePlan('subscribe')}
-                      className="flex-1 rounded-2xl p-3.5 text-left relative"
-                      style={{
-                        background: !isBuy ? '#AF57DB12' : theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
-                        border: `2px solid ${!isBuy ? '#AF57DB60' : theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-                      }}>
-                      {!isBuy && <div className="absolute top-2 right-2 w-4 h-4 rounded-full flex items-center justify-center"
-                        style={{ background: '#AF57DB' }}><Check className="w-2.5 h-2.5 text-white" strokeWidth={3} /></div>}
-                      <div className="flex items-baseline gap-1 mb-0.5">
-                        <p className="text-xl font-extrabold" style={{ color: '#AF57DB' }}>¥79</p>
-                        <span className="text-[10px] font-bold" style={{ color: '#AF57DB' }}>/月</span>
-                      </div>
-                      <p className="text-[10px] font-bold mb-1.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>连续包月</p>
-                      <div className="space-y-1">
-                        <p className="text-[9px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>✓ 月度自动续订解锁</p>
-                        <p className="text-[9px] font-bold" style={{ color: '#AF57DB' }}>✓ 送实体角色玩具/卡片</p>
-                        <p className="text-[9px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>✓ 独立情感羁绊</p>
-                        <p className="text-[9px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>✓ 持续内容更新</p>
-                      </div>
-                    </motion.button>
+                  <div className="rounded-2xl p-4 relative overflow-hidden"
+                    style={{
+                      background: `linear-gradient(135deg, ${c.color}12, ${c.color}08)`,
+                      border: `2px solid ${c.color}30`,
+                    }}>
+                    <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-extrabold text-white"
+                      style={{ background: '#FF4D4F' }}>
+                      首月5折
+                    </div>
+                    <p className="text-xs font-bold mb-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
+                      📦 首月特惠
+                    </p>
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <span className="text-[11px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
+                        ¥{original}/月
+                      </span>
+                      <span className="text-2xl font-extrabold" style={{ color: c.color }}>¥{promo}</span>
+                      <span className="text-xs font-bold" style={{ color: c.color }}>/月</span>
+                    </div>
+                    <p className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
+                      续费享同价，随时可取消
+                    </p>
                   </div>
                 </div>
 
-                {/* Section 3: CTA */}
+                {/* Section 3: Auto-renew toggle */}
+                <div className="px-5 mb-4">
+                  <motion.button whileTap={{ scale: 0.98 }}
+                    onClick={() => setAutoRenew(!autoRenew)}
+                    className="w-full rounded-2xl p-3.5 flex items-center gap-3"
+                    style={{
+                      background: autoRenew ? `${c.color}10` : (theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'),
+                      border: `1.5px solid ${autoRenew ? `${c.color}30` : 'transparent'}`,
+                    }}>
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{
+                        background: autoRenew ? c.color : 'transparent',
+                        border: autoRenew ? 'none' : `2px solid ${theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'}`,
+                      }}>
+                      {autoRenew && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+                    </div>
+                    <div className="flex-1 text-left">
+                      <p className="text-xs font-bold" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
+                        自动续费
+                      </p>
+                      <p className="text-[10px] mt-0.5" style={{ color: autoRenew ? c.color : (theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)') }}>
+                        {autoRenew ? '🎁 勾选续费免费送实体角色卡片' : '勾选续费可免费获得实体卡片'}
+                      </p>
+                    </div>
+                  </motion.button>
+                </div>
+
+                {/* Section 4: CTA */}
                 <div className="px-5">
                   <motion.button whileTap={{ scale: 0.95 }}
                     onClick={() => {
-                      if (isBuy) purchaseCharacter(c.id);
-                      else subscribeCharacter(c.id);
+                      subscribeCharacter(c.id);
+                      if (autoRenew) {
+                        setAutoRenewState(c.id, true);
+                        markPhysicalCardSent(c.id);
+                      }
                       setPurchaseModal(null);
                     }}
                     className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
                     style={{
-                      background: isBuy ? `linear-gradient(135deg, ${c.color}, ${c.color}CC)` : 'linear-gradient(135deg, #AF57DB, #9035C0)',
-                      boxShadow: isBuy ? `0 8px 32px ${c.color}40` : '0 8px 32px rgba(175,87,219,0.4)',
+                      background: `linear-gradient(135deg, ${c.color}, ${c.color}CC)`,
+                      boxShadow: `0 8px 32px ${c.color}40`,
                     }}>
-                    {isBuy ? `¥49 永久解锁 ${c.name}` : `¥79/月 连续包月 ${c.name}`}
+                    ¥{promo}/月 立即订阅 {c.name}
                   </motion.button>
+                  <p className="text-center text-[9px] mt-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
+                    订阅即同意《服务协议》和《隐私政策》
+                  </p>
                 </div>
               </motion.div>
             </motion.div>
