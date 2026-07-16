@@ -1766,8 +1766,8 @@ export default function HomePageV3() {
       </div>
       )}
 
-      {/* ===== BOTTOM BAR — Fixed floating deep tab (owned tab only) ===== */}
-      {charTab === 'owned' && (
+      {/* ===== BOTTOM BAR — Fixed floating deep tab (owned tab only, hidden when card is flipped) ===== */}
+      {charTab === 'owned' && !flippedCard && (
       <div className="fixed bottom-0 left-0 right-0 z-30"
         style={{
           paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))', paddingTop: 10,
