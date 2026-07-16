@@ -875,6 +875,7 @@ export default function HomePageV3() {
   const [trialStates, setTrialStates] = useState<Record<string, CharacterState>>({});
   const [purchaseModal, setPurchaseModal] = useState<{ char: Character } | null>(null);
   const [purchasePlan, setPurchasePlan] = useState<'buy' | 'subscribe'>('buy');
+  const [charTab, setCharTab] = useState<'owned' | 'unowned'>('owned');
 
   const switchFocus = (target: 'teacher' | 'partner') => {
     if (target !== focus) navigator.vibrate?.(15);
@@ -1057,17 +1058,40 @@ export default function HomePageV3() {
   const aP = PARTNERS.find(c => c.id === selPartner)!;
   const activeChar = isT ? aT : aP;
 
+  // Character ownership classification
+  const isOwned = (id: string) => {
+    const s = getCharacterState(id);
+    return s.status === 'purchased' || s.status === 'subscribed';
+  };
+  const ownedTeachers = TEACHERS.filter(c => isOwned(c.id));
+  const ownedPartners = PARTNERS.filter(c => isOwned(c.id));
+  const unownedAll = [...TEACHERS, ...PARTNERS].filter(c => !isOwned(c.id));
+  const hasOwned = ownedTeachers.length > 0 || ownedPartners.length > 0;
+
+  // For owned tab: use only owned characters in the existing carousel
+  const displayTeachers = charTab === 'owned' ? ownedTeachers : TEACHERS;
+  const displayPartners = charTab === 'owned' ? ownedPartners : PARTNERS;
+
+  // Active char respects ownership filter
+  const effectiveAT = displayTeachers.find(c => c.id === selTeacher) ?? displayTeachers[0] ?? aT;
+  const effectiveAP = displayPartners.find(c => c.id === selPartner) ?? displayPartners[0] ?? aP;
+  const effectiveActiveChar = charTab === 'owned'
+    ? (isT ? effectiveAT : effectiveAP)
+    : activeChar;
+
   const teacherBg = theme === 'dark' ? '#1a0f05' : '#fef6eb';
   const partnerBg = theme === 'dark' ? '#050d1a' : '#eaf2fe';
 
   return (
     <div className="h-screen flex flex-col relative overflow-hidden select-none"
       style={{
-        background: isT ? teacherBg : partnerBg,
+        background: charTab === 'unowned'
+          ? (theme === 'dark' ? '#0A0A0F' : '#F5F5F7')
+          : (isT ? teacherBg : partnerBg),
         transition: 'background 0.8s ease',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
-      onWheel={onWheel}>
+      onWheel={charTab === 'owned' ? onWheel : undefined}>
 
       <style>{`
         *::-webkit-scrollbar{display:none!important}
@@ -1089,24 +1113,24 @@ export default function HomePageV3() {
       {/* BG glow — strong, mode-specific */}
       <div className="absolute inset-0 pointer-events-none glow-drift" style={{
         background: theme === 'dark'
-          ? `radial-gradient(ellipse 90% 70% at 40% 40%, ${activeChar.color}35 0%, transparent 70%),
-             radial-gradient(ellipse 70% 60% at 65% 55%, ${activeChar.color}15 0%, transparent 60%)`
-          : `radial-gradient(ellipse 90% 70% at 40% 40%, ${activeChar.color}25 0%, transparent 70%),
-             radial-gradient(ellipse 70% 60% at 65% 55%, ${activeChar.color}12 0%, transparent 60%)`,
+          ? `radial-gradient(ellipse 90% 70% at 40% 40%, ${effectiveActiveChar.color}35 0%, transparent 70%),
+             radial-gradient(ellipse 70% 60% at 65% 55%, ${effectiveActiveChar.color}15 0%, transparent 60%)`
+          : `radial-gradient(ellipse 90% 70% at 40% 40%, ${effectiveActiveChar.color}25 0%, transparent 70%),
+             radial-gradient(ellipse 70% 60% at 65% 55%, ${effectiveActiveChar.color}12 0%, transparent 60%)`,
         transition: 'background 0.8s',
       }} />
       <div className="absolute inset-0 pointer-events-none glow-drift-alt" style={{
         background: theme === 'dark'
-          ? `radial-gradient(ellipse 60% 50% at 70% 30%, ${activeChar.color}20 0%, transparent 65%),
-             radial-gradient(ellipse 50% 40% at 20% 70%, ${activeChar.color}15 0%, transparent 60%)`
-          : `radial-gradient(ellipse 60% 50% at 70% 30%, ${activeChar.color}15 0%, transparent 65%),
-             radial-gradient(ellipse 50% 40% at 20% 70%, ${activeChar.color}10 0%, transparent 60%)`,
+          ? `radial-gradient(ellipse 60% 50% at 70% 30%, ${effectiveActiveChar.color}20 0%, transparent 65%),
+             radial-gradient(ellipse 50% 40% at 20% 70%, ${effectiveActiveChar.color}15 0%, transparent 60%)`
+          : `radial-gradient(ellipse 60% 50% at 70% 30%, ${effectiveActiveChar.color}15 0%, transparent 65%),
+             radial-gradient(ellipse 50% 40% at 20% 70%, ${effectiveActiveChar.color}10 0%, transparent 60%)`,
         transition: 'background 0.8s',
       }} />
       {/* Active character center glow — follows the card */}
       <motion.div className="absolute inset-0 pointer-events-none"
         animate={{
-          background: `radial-gradient(ellipse 50% 40% at 50% 50%, ${activeChar.color}60 0%, ${activeChar.color}25 35%, transparent 70%)`,
+          background: `radial-gradient(ellipse 50% 40% at 50% 50%, ${effectiveActiveChar.color}60 0%, ${effectiveActiveChar.color}25 35%, transparent 70%)`,
         }}
         transition={{ duration: 0.6 }}
         style={{ filter: 'blur(4px)' }} />
@@ -1124,7 +1148,7 @@ export default function HomePageV3() {
           width: 220,
           height: 300,
           borderRadius: '2rem',
-          background: `radial-gradient(ellipse at center, ${activeChar.color}30 0%, transparent 70%)`,
+          background: `radial-gradient(ellipse at center, ${effectiveActiveChar.color}30 0%, transparent 70%)`,
           filter: 'blur(20px)',
         }} />
       {/* Additional top corner glow */}
@@ -1138,51 +1162,49 @@ export default function HomePageV3() {
 
       {/* ===== HEADER ===== */}
       <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-        className="relative z-20 flex-shrink-0 px-6"
-        style={{ paddingTop: 'max(2.5rem, env(safe-area-inset-top, 0px))', paddingBottom: 4 }}>
-        <div className="flex items-start justify-between">
-          <div>
-            {/* Mode indicator */}
-            <motion.div
-              layout
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full mb-1.5"
-              style={{
-                background: `${activeChar.color}20`,
-                border: `1px solid ${activeChar.color}30`,
-              }}>
-              <motion.div className="w-1.5 h-1.5 rounded-full" animate={{ background: activeChar.color }} />
-              <span className="text-[10px] font-bold" style={{ color: activeChar.color }}>
-                {isT ? 'AI 老师' : 'AI 伙伴'}
-              </span>
-            </motion.div>
-            {/* Shared learning progress badge */}
-            {(() => {
-              const progress = getLearningProgress();
-              if (progress.wordsLearned === 0 && progress.streakDays === 0) return null;
+        className="relative z-20 flex-shrink-0"
+        style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top, 0px))', paddingBottom: 4 }}>
+        {/* Row 1: Onboarding entry + Tabs + Right buttons */}
+        <div className="flex items-center justify-between px-5 mb-2">
+          {/* Left: Onboarding entry */}
+          <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/')}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl"
+            style={{
+              background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
+            }}>
+            <span className="text-base">🏠</span>
+            <span className="text-[11px] font-bold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
+              新手引导
+            </span>
+          </motion.button>
+
+          {/* Center: Tabs */}
+          <div className="flex gap-2">
+            {(['owned', 'unowned'] as const).map(t => {
+              const count = t === 'owned' ? (ownedTeachers.length + ownedPartners.length) : unownedAll.length;
+              const isActive = charTab === t;
               return (
-                <div className="inline-flex items-center gap-2 mb-1.5 ml-2">
-                  {progress.wordsLearned > 0 && (
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                      style={{ background: 'rgba(88,204,2,0.12)', color: '#58CC02' }}>
-                      📖 {progress.wordsLearned}词
-                    </span>
-                  )}
-                  {progress.streakDays > 1 && (
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                      style={{ background: 'rgba(255,149,0,0.12)', color: '#FF9500' }}>
-                      🔥 {progress.streakDays}天连续
-                    </span>
-                  )}
-                </div>
+                <motion.button key={t} whileTap={{ scale: 0.95 }}
+                  onClick={() => { setCharTab(t); setFlippedCard(null); setFlipOrigin(null); }}
+                  className="px-4 py-2.5 rounded-2xl font-extrabold transition-all"
+                  style={{
+                    fontSize: 13,
+                    background: isActive
+                      ? (theme === 'dark' ? 'rgba(255,255,255,0.12)' : `${effectiveActiveChar.color}18`)
+                      : (theme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'),
+                    color: isActive
+                      ? (theme === 'dark' ? 'white' : '#1f2937')
+                      : (theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)'),
+                    border: `2px solid ${isActive ? (theme === 'dark' ? 'rgba(255,255,255,0.15)' : `${effectiveActiveChar.color}30`) : 'transparent'}`,
+                  }}>
+                  {t === 'owned' ? `已拥有 ${count}` : `未拥有 ${count}`}
+                </motion.button>
               );
-            })()}
-            <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-              {getGreeting()}，{childName}
-            </h1>
-            <p className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-white/30' : 'text-gray-500'}`}>
-              {isT ? '↑ 上滑切换到小伙伴' : '↓ 下滑切换到 AI 老师'}
-            </p>
+            })}
           </div>
+
+          {/* Right: Theme + Add menu */}
           <div className="flex items-center gap-2 relative">
             <motion.button whileTap={{ scale: 0.85 }} onClick={toggleTheme} className="w-9 h-9 rounded-full flex items-center justify-center"
               style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)' }}>
@@ -1228,6 +1250,48 @@ export default function HomePageV3() {
             </AnimatePresence>
           </div>
         </div>
+
+        {/* Row 2: Greeting + progress (only for owned tab) */}
+        {charTab === 'owned' && (
+          <div className="px-5">
+            <div className="flex items-center gap-2 mb-1">
+              {/* Mode indicator */}
+              <motion.div layout className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+                style={{ background: `${effectiveActiveChar.color}20`, border: `1px solid ${effectiveActiveChar.color}30` }}>
+                <motion.div className="w-1.5 h-1.5 rounded-full" animate={{ background: effectiveActiveChar.color }} />
+                <span className="text-[10px] font-bold" style={{ color: effectiveActiveChar.color }}>
+                  {isT ? 'AI 老师' : 'AI 伙伴'}
+                </span>
+              </motion.div>
+              {(() => {
+                const progress = getLearningProgress();
+                if (progress.wordsLearned === 0 && progress.streakDays === 0) return null;
+                return (
+                  <>
+                    {progress.wordsLearned > 0 && (
+                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+                        style={{ background: 'rgba(88,204,2,0.12)', color: '#58CC02' }}>
+                        📖 {progress.wordsLearned}词
+                      </span>
+                    )}
+                    {progress.streakDays > 1 && (
+                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+                        style={{ background: 'rgba(255,149,0,0.12)', color: '#FF9500' }}>
+                        🔥 {progress.streakDays}天连续
+                      </span>
+                    )}
+                  </>
+                );
+              })()}
+            </div>
+            <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+              {getGreeting()}，{childName}
+            </h1>
+            <p className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-white/30' : 'text-gray-500'}`}>
+              {isT ? '↑ 上滑切换到小伙伴' : '↓ 下滑切换到 AI 老师'}
+            </p>
+          </div>
+        )}
       </motion.div>
 
   {/* ===== FROSTED BACKDROP (when card is flipped) ===== */}
@@ -1268,7 +1332,8 @@ export default function HomePageV3() {
     })()}
   </AnimatePresence>
 
-  {/* ===== VERTICAL SWIPE ZONE (right edge) ===== */}
+  {/* ===== VERTICAL SWIPE ZONE (right edge, owned tab only) ===== */}
+  {charTab === 'owned' && (
   <div className="fixed right-0 top-0 bottom-0 z-40 pointer-events-auto"
     style={{ width: 64, touchAction: 'none' }}
     onPointerDown={onStripPointerDown}
@@ -1284,8 +1349,10 @@ export default function HomePageV3() {
         transition={{ duration: 0.3 }} />
     </div>
   </div>
+  )}
 
-      {/* ===== THREE ZONES ===== */}
+      {/* ===== OWNED TAB: Carousel ===== */}
+      {charTab === 'owned' && (
       <div className="flex-1 min-h-0 relative z-10 flex flex-col">
 
         {/* TOP zone — teachers behind (only when partner is in front) */}
@@ -1298,7 +1365,7 @@ export default function HomePageV3() {
           }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           style={{ borderBottom: isT ? 'none' : '1px solid rgba(255,255,255,0.04)', transformStyle: 'preserve-3d' }}>
-          <BackRow chars={TEACHERS} selectedId={selTeacher} theme={theme} trialStates={trialStates} />
+          <BackRow chars={displayTeachers} selectedId={selTeacher} theme={theme} trialStates={trialStates} />
         </motion.div>
 
         {/* MIDDLE zone — front cards */}
@@ -1342,7 +1409,7 @@ export default function HomePageV3() {
                 }}
                 style={{ transformStyle: 'preserve-3d', transformOrigin: 'center bottom' }}
                 className="w-full">
-                <FrontRow chars={isT ? TEACHERS : PARTNERS} selectedId={isT ? selTeacher : selPartner}
+                <FrontRow chars={isT ? displayTeachers : displayPartners} selectedId={isT ? selTeacher : selPartner}
                   onSelect={isT ? setSelTeacher : setSelPartner} theme={theme}
                   flippedCard={flippedCard} onFlipCard={(id, rect) => { setFlippedCard(id); setFlipOrigin(rect || null); }}
                   onAdd={() => navigate('/shop')}
@@ -1368,9 +1435,74 @@ export default function HomePageV3() {
           }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           style={{ borderTop: !isT ? 'none' : '1px solid rgba(255,255,255,0.04)', transformStyle: 'preserve-3d' }}>
-          <BackRow chars={PARTNERS} selectedId={selPartner} theme={theme} trialStates={trialStates} />
+          <BackRow chars={displayPartners} selectedId={selPartner} theme={theme} trialStates={trialStates} />
         </motion.div>
       </div>
+      )}
+
+      {/* ===== UNOWNED TAB: V4-style dual column grid ===== */}
+      {charTab === 'unowned' && (
+        <div className="flex-1 min-h-0 relative z-10 overflow-y-auto px-4 pb-4"
+          style={{ scrollbarWidth: 'none' }}>
+          <div className="grid grid-cols-2 gap-3 w-full max-w-lg mx-auto">
+            {unownedAll.map((c, i) => {
+              const state = getCharacterState(c.id);
+              const isLocked = state.status === 'locked' && !isTrialExpired(c.id);
+              const isExpired = state.status === 'locked' && isTrialExpired(c.id);
+              return (
+                <motion.div key={c.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setPurchaseModal({ char: c })}
+                  className="relative rounded-[1.5rem] overflow-hidden flex flex-col items-center cursor-pointer"
+                  style={{
+                    aspectRatio: '195 / 260',
+                    padding: '1rem 0.5rem 0.75rem',
+                    background: theme === 'dark'
+                      ? `linear-gradient(180deg, ${c.color}10 0%, ${c.accent} 50%, rgba(10,10,15,0.9) 100%)`
+                      : `linear-gradient(180deg, ${c.color}08 0%, ${c.accent} 50%, rgba(255,255,255,0.95) 100%)`,
+                    border: `1.5px solid ${c.color}20`,
+                    boxShadow: `0 4px 16px ${c.color}10`,
+                  }}>
+                  {/* Lock / trial badge */}
+                  <div className="absolute top-2 right-2 z-10">
+                    {isExpired ? (
+                      <span className="text-[9px] font-bold px-2 py-0.5 rounded-full"
+                        style={{ background: 'rgba(255,149,0,0.15)', color: '#FF9500' }}>试用结束</span>
+                    ) : isLocked ? (
+                      <Lock className="w-3.5 h-3.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }} />
+                    ) : null}
+                  </div>
+                  {/* Character image */}
+                  <div className="flex-1 flex items-center justify-center w-full overflow-hidden">
+                    {c.component ? c.component : c.image ? (
+                      <img src={c.image} alt={c.name} className="w-full h-full object-contain" loading="lazy" />
+                    ) : null}
+                  </div>
+                  {/* Name + desc */}
+                  <div className="text-center w-full px-1">
+                    <p className="font-bold text-[12px] truncate"
+                      style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)' }}>
+                      {c.name}
+                    </p>
+                    <p className="text-[9px] mt-0.5 truncate"
+                      style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
+                      {c.desc}
+                    </p>
+                  </div>
+                  {/* Price badge */}
+                  <div className="mt-1.5 px-3 py-1 rounded-full text-[10px] font-bold"
+                    style={{ background: `${c.color}18`, color: c.color }}>
+                    ¥49 解锁
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* ===== ENGINE HIGHLIGHTS — 4 selling points ===== */}
       {!flippedCard && (
@@ -1424,18 +1556,19 @@ export default function HomePageV3() {
       </div>
       )}
 
-      {/* ===== BOTTOM BAR — Liquid Glass with mode tint ===== */}
+      {/* ===== BOTTOM BAR — Liquid Glass with mode tint (owned tab only) ===== */}
+      {charTab === 'owned' && (
       <div className="flex-shrink-0 relative z-20"
         style={{
           paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))', paddingTop: 10,
           background: theme === 'dark'
-            ? `linear-gradient(180deg, ${activeChar.color}08 0%, ${activeChar.color}15 50%, ${activeChar.color}08 100%)`
-            : `linear-gradient(180deg, ${activeChar.color}08 0%, ${activeChar.color}12 50%, ${activeChar.color}08 100%)`,
+            ? `linear-gradient(180deg, ${effectiveActiveChar.color}08 0%, ${effectiveActiveChar.color}15 50%, ${effectiveActiveChar.color}08 100%)`
+            : `linear-gradient(180deg, ${effectiveActiveChar.color}08 0%, ${effectiveActiveChar.color}12 50%, ${effectiveActiveChar.color}08 100%)`,
           backdropFilter: 'blur(40px) saturate(1.8)', WebkitBackdropFilter: 'blur(40px) saturate(1.8)',
-          borderTop: `1px solid ${activeChar.color}30`,
+          borderTop: `1px solid ${effectiveActiveChar.color}30`,
           boxShadow: theme === 'dark'
-            ? `inset 0 1px 0 ${activeChar.color}15, inset 0 -1px 0 rgba(0,0,0,0.2), 0 -8px 32px ${activeChar.color}10`
-            : `inset 0 1px 0 ${activeChar.color}20, inset 0 -1px 0 rgba(0,0,0,0.05), 0 -8px 32px ${activeChar.color}10`,
+            ? `inset 0 1px 0 ${effectiveActiveChar.color}15, inset 0 -1px 0 rgba(0,0,0,0.2), 0 -8px 32px ${effectiveActiveChar.color}10`
+            : `inset 0 1px 0 ${effectiveActiveChar.color}20, inset 0 -1px 0 rgba(0,0,0,0.05), 0 -8px 32px ${effectiveActiveChar.color}10`,
           transition: 'background 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease',
         }}>
         {/* Liquid glass highlight */}
@@ -1443,30 +1576,30 @@ export default function HomePageV3() {
           style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)' }} />
         <div className="px-5">
           <div className="flex items-center gap-2 mb-2.5">
-            <motion.div className="w-2 h-2 rounded-full flex-shrink-0" animate={{ background: activeChar.color }} />
+            <motion.div className="w-2 h-2 rounded-full flex-shrink-0" animate={{ background: effectiveActiveChar.color }} />
             <p className={`text-sm font-bold truncate ${theme === 'dark' ? 'text-white/90' : 'text-gray-800'}`}>
-              {activeChar.name}
-              <span className="text-[10px] font-normal ml-1.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>{activeChar.subtitle}</span>
+              {effectiveActiveChar.name}
+              <span className="text-[10px] font-normal ml-1.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>{effectiveActiveChar.subtitle}</span>
             </p>
           </div>
           <div className="flex gap-3">
             {isT ? (
               <>
-                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(activeChar.id, 10); navigate('/lessons'); }}
+                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(effectiveActiveChar.id, 10); navigate('/lessons'); }}
                   className="flex-1 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"
                   style={{
-                    background: `linear-gradient(135deg, ${activeChar.color}, ${activeChar.color}CC)`,
-                    boxShadow: `0 8px 32px ${activeChar.color}40`, color: 'white', minHeight: 48,
+                    background: `linear-gradient(135deg, ${effectiveActiveChar.color}, ${effectiveActiveChar.color}CC)`,
+                    boxShadow: `0 8px 32px ${effectiveActiveChar.color}40`, color: 'white', minHeight: 48,
                   }}>
                   <BookOpen className="w-4 h-4" /> 一起学习
                 </motion.button>
-                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(activeChar.id, 10); navigate(`/why?teacher=${selTeacher}`); }}
+                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(effectiveActiveChar.id, 10); navigate(`/why?teacher=${selTeacher}`); }}
                   className="flex-1 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"
                   style={{
-                    background: `${activeChar.color}15`,
+                    background: `${effectiveActiveChar.color}15`,
                     color: theme === 'dark' ? 'white' : '#1f2937',
-                    border: `2px solid ${activeChar.color}50`,
-                    boxShadow: `0 0 20px ${activeChar.color}20, inset 0 1px 0 rgba(255,255,255,0.1)`,
+                    border: `2px solid ${effectiveActiveChar.color}50`,
+                    boxShadow: `0 0 20px ${effectiveActiveChar.color}20, inset 0 1px 0 rgba(255,255,255,0.1)`,
                     minHeight: 48,
                   }}>
                   <HelpCircle className="w-4 h-4" /> 十万个为什么
@@ -1474,21 +1607,21 @@ export default function HomePageV3() {
               </>
             ) : (
               <>
-                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(activeChar.id, 10); navigate('/adventure'); }}
+                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(effectiveActiveChar.id, 10); navigate('/adventure'); }}
                   className="flex-1 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"
                   style={{
-                    background: `linear-gradient(135deg, ${activeChar.color}, ${activeChar.color}CC)`,
-                    boxShadow: `0 8px 32px ${activeChar.color}40`, color: 'white', minHeight: 48,
+                    background: `linear-gradient(135deg, ${effectiveActiveChar.color}, ${effectiveActiveChar.color}CC)`,
+                    boxShadow: `0 8px 32px ${effectiveActiveChar.color}40`, color: 'white', minHeight: 48,
                   }}>
                   <Sparkles className="w-4 h-4" /> 一起冒险
                 </motion.button>
-                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(activeChar.id, 10); navigate('/ai-parrot'); }}
+                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(effectiveActiveChar.id, 10); navigate('/ai-parrot'); }}
                   className="flex-1 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"
                   style={{
-                    background: `${activeChar.color}15`,
+                    background: `${effectiveActiveChar.color}15`,
                     color: theme === 'dark' ? 'white' : '#1f2937',
-                    border: `2px solid ${activeChar.color}50`,
-                    boxShadow: `0 0 20px ${activeChar.color}20, inset 0 1px 0 rgba(255,255,255,0.1)`,
+                    border: `2px solid ${effectiveActiveChar.color}50`,
+                    boxShadow: `0 0 20px ${effectiveActiveChar.color}20, inset 0 1px 0 rgba(255,255,255,0.1)`,
                     minHeight: 48,
                   }}>
                   <Users className="w-4 h-4" /> 一起玩耍
@@ -1498,6 +1631,7 @@ export default function HomePageV3() {
           </div>
         </div>
       </div>
+      )}
 
       {/* ===== HIGHLIGHT MODAL ===== */}
       <AnimatePresence>
