@@ -846,6 +846,53 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
 }
 
 /* ═══════════════════════════════════════
+   New User Countdown — 24h offer timer
+   ═══════════════════════════════════════ */
+function NewUserCountdown({ color, theme }: { color: string; theme: 'dark' | 'light' }) {
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const start = localStorage.getItem('new_user_offer_start');
+    if (start) {
+      const elapsed = Date.now() - Number(start);
+      const remaining = 24 * 60 * 60 * 1000 - elapsed;
+      return remaining > 0 ? remaining : 0;
+    }
+    localStorage.setItem('new_user_offer_start', String(Date.now()));
+    return 24 * 60 * 60 * 1000;
+  });
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+    const t = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1000) { clearInterval(t); return 0; }
+        return prev - 1000;
+      });
+    }, 1000);
+    return () => clearInterval(t);
+  }, [timeLeft <= 0]);
+
+  const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+  const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+  if (timeLeft <= 0) return <span className="text-[10px] font-bold" style={{ color: '#999' }}>已过期</span>;
+
+  return (
+    <div className="flex items-center gap-0.5">
+      {[hours, mins, secs].map((v, i) => (
+        <span key={i} className="flex items-center">
+          <span className="text-[11px] font-extrabold px-1 py-0.5 rounded"
+            style={{ background: `${color}20`, color }}>
+            {String(v).padStart(2, '0')}
+          </span>
+          {i < 2 && <span className="text-[10px] font-bold mx-0.5" style={{ color }}>:</span>}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════
    Main
    ═══════════════════════════════════════ */
 export default function HomePageV3() {
@@ -1211,6 +1258,16 @@ export default function HomePageV3() {
           </div>
         </motion.div>
 
+        {/*
+          ═══════════════════════════════════════════════════════
+          TEAM NOTE: 用户到达此页面前已经历的流程：
+          1. Onboarding：填写幼儿姓名、年龄、性别、目标语言
+          2. 与推荐角色打了招呼（GREETINGS 弹窗）
+          3. 体验了一节 demo 课（LessonFlow / AITeacherMode）
+          4. 到达此页面 → AI 根据基础信息推荐角色 → 引导付费解锁
+          ═══════════════════════════════════════════════════════
+        */}
+
         {/* Character card — horizontal layout */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -1228,7 +1285,7 @@ export default function HomePageV3() {
               <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
             ) : null}
           </div>
-          {/* Right: Info + Price */}
+          {/* Right: Info */}
           <div className="flex-1 flex flex-col justify-center min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <h2 className="text-lg font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
@@ -1239,21 +1296,41 @@ export default function HomePageV3() {
                 {isTeacher ? 'AI老师' : 'AI伙伴'}
               </span>
             </div>
-            <p className="text-xs mb-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)' }}>
-              {recChar.desc}
+            <p className="text-[11px] leading-relaxed" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}>
+              {CHARACTER_STORIES[recId]?.slice(0, 50)}...
             </p>
-            <div className="flex items-baseline gap-2">
-              <span className="text-xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
-              <span className="text-[10px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
-                ¥{getOriginalPrice(recId)}/月
-              </span>
-            </div>
           </div>
         </motion.div>
 
-        {/* CTA */}
+        {/* Price + Countdown + CTA */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}>
+          <div className="rounded-2xl p-3 mb-3"
+            style={{
+              background: `linear-gradient(135deg, ${recChar.color}08, ${recChar.color}04)`,
+              border: `1px solid ${recChar.color}20`,
+            }}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                  style={{ background: '#FF4D4F', color: 'white' }}>新人限时</span>
+                <span className="text-[10px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
+                  ¥{getOriginalPrice(recId)}/月
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold" style={{ color: '#FF4D4F' }}>倒计时</span>
+                <NewUserCountdown color={recChar.color} theme={theme} />
+              </div>
+            </div>
+            <div className="flex items-baseline gap-2 mt-2">
+              <span className="text-2xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
+              <span className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>解锁</span>
+              <span className="text-[10px] ml-auto" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
+                🎁 送实体卡片
+              </span>
+            </div>
+          </div>
           <motion.button whileTap={{ scale: 0.95 }}
             onClick={() => setPurchaseModal({ char: recChar })}
             className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
