@@ -908,7 +908,6 @@ export default function HomePageV3() {
   const [trialStates, setTrialStates] = useState<Record<string, CharacterState>>({});
   const [purchaseModal, setPurchaseModal] = useState<{ char: Character } | null>(null);
   const [autoRenew, setAutoRenew] = useState(true);
-  const [voiceRecording, setVoiceRecording] = useState(false);
   const [charTab, setCharTab] = useState<'owned' | 'unowned'>(() => hasAnyOwned() ? 'owned' : 'unowned');
 
   const switchFocus = (target: 'teacher' | 'partner') => {
@@ -1232,19 +1231,38 @@ export default function HomePageV3() {
         )}
       </motion.div>
 
-  {/* ===== BUNDLE RECOMMENDATION SCREEN (new user) ===== */}
-  {!hasAnyOwned() && charTab === 'unowned' && (() => {
+  {/* ===== PROGRESSIVE RECOMMENDATION SCREEN ===== */}
+  {(() => {
+    const phase = getRecommendationPhase();
+    // Only show in unowned tab or when no characters owned
+    if (hasAnyOwned() && charTab === 'owned') return null;
+
     const allChars = [...TEACHERS, ...PARTNERS];
     const onboardingData = getOnboardingData();
     const targetLang = onboardingData.targetLanguage || 'english';
     const langLabels: Record<string, string> = { english: '英语', japanese: '日语', portuguese: '葡萄牙语', arabic: '阿拉伯语' };
 
-    // Pick recommended teacher + partner
-    const teacherId = getRecommendedTeacherId() || 'einstein';
-    const partnerId = getRecommendedPartnerId() || 'parrot';
-    const teacher = allChars.find(c => c.id === teacherId);
-    const partner = allChars.find(c => c.id === partnerId);
-    if (!teacher || !partner) return null;
+    let recId: string | null = null;
+    let badgeText = '';
+    let compareText = '';
+
+    if (phase === 'initial') {
+      recId = getRecommendedCharId();
+      badgeText = `AI 为${childName}推荐的${langLabels[targetLang] || '英语'}学习伙伴`;
+    } else if (phase === 'need-teacher') {
+      recId = getRecommendedTeacherId();
+      badgeText = '您已有 AI 伙伴，再搭配一位 AI 老师';
+      compareText = 'AI 老师专注知识传授与答疑解惑';
+    } else if (phase === 'need-partner') {
+      recId = getRecommendedPartnerId();
+      badgeText = '您已有 AI 老师，再搭配一位 AI 伙伴';
+      compareText = 'AI 伙伴营造语言环境，提供情绪陪伴';
+    }
+
+    if (!recId) return null;
+    const recChar = allChars.find(c => c.id === recId);
+    if (!recChar) return null;
+    const isTeacher = TEACHERS.some(t => t.id === recId);
 
     return (
       <div className="flex-1 px-5 pt-2 pb-8 relative z-10 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
@@ -1254,7 +1272,7 @@ export default function HomePageV3() {
           1. Onboarding：填写幼儿姓名、年龄、性别、目标语言
           2. 与推荐角色打了招呼（GREETINGS 弹窗）
           3. 体验了一节 demo 课（LessonFlow / AITeacherMode）
-          4. 到达此页面 → AI 推荐联合购买 AI老师+AI伙伴 → 引导付费
+          4. 到达此页面 → 先推荐 AI 伙伴 → 再推荐 AI 老师
           5. 都解锁后 → 语音按钮，AI 根据对话推荐第三个角色
           ═══════════════════════════════════════════════════════
         */}
@@ -1268,65 +1286,47 @@ export default function HomePageV3() {
               border: '1px solid rgba(88,204,2,0.25)',
             }}>
             <span className="text-xs">🤖</span>
-            <span className="text-[11px] font-bold" style={{ color: '#58CC02' }}>
-              AI 为{childName}推荐的{langLabels[targetLang] || '英语'}学习搭档
-            </span>
+            <span className="text-[11px] font-bold" style={{ color: '#58CC02' }}>{badgeText}</span>
           </div>
         </motion.div>
 
-        {/* Bundle card — teacher + partner side by side */}
+        {compareText && (
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
+            className="text-center text-[11px] mb-3 px-4"
+            style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
+            {compareText}
+          </motion.p>
+        )}
+
+        {/* Character card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="rounded-3xl p-4 mb-4"
+          className="rounded-3xl p-4 mb-4 flex gap-4"
           style={{
             background: theme === 'dark'
-              ? 'linear-gradient(135deg, rgba(88,204,2,0.08), rgba(15,15,25,0.9))'
-              : 'linear-gradient(135deg, rgba(88,204,2,0.05), rgba(255,255,255,0.95))',
-            border: '1.5px solid rgba(88,204,2,0.2)',
+              ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
+              : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
+            border: `1.5px solid ${recChar.color}25`,
           }}>
-          <div className="flex gap-3">
-            {/* Teacher */}
-            <div className="flex-1 flex gap-2 items-center">
-              <div className="w-16 h-20 rounded-xl flex-shrink-0 flex items-center justify-center overflow-visible"
-                style={{ background: `${teacher.color}10` }}>
-                {teacher.image ? <img src={teacher.image} alt={teacher.name} className="w-full h-full object-contain" /> : null}
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-1 mb-0.5">
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                    style={{ background: `${teacher.color}18`, color: teacher.color }}>AI老师</span>
-                </div>
-                <p className="text-xs font-bold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
-                  {teacher.name}
-                </p>
-                <p className="text-[9px] truncate" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
-                  知识传授 · 答疑解惑
-                </p>
-              </div>
+          <div className="w-28 h-36 rounded-2xl flex-shrink-0 flex items-center justify-center overflow-visible"
+            style={{ background: `${recChar.color}10` }}>
+            {recChar.component ? <div className="transform scale-75 origin-center">{recChar.component}</div> : recChar.image ? (
+              <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
+            ) : null}
+          </div>
+          <div className="flex-1 flex flex-col justify-center min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <h2 className="text-lg font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
+                {recChar.name}
+              </h2>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0"
+                style={{ background: `${recChar.color}18`, color: recChar.color }}>
+                {isTeacher ? 'AI老师' : 'AI伙伴'}
+              </span>
             </div>
-            {/* Divider */}
-            <div className="w-px self-stretch" style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' }} />
-            {/* Partner */}
-            <div className="flex-1 flex gap-2 items-center">
-              <div className="w-16 h-20 rounded-xl flex-shrink-0 flex items-center justify-center overflow-visible"
-                style={{ background: `${partner.color}10` }}>
-                {partner.component ? <div className="transform scale-50">{partner.component}</div> : partner.image ? (
-                  <img src={partner.image} alt={partner.name} className="w-full h-full object-contain" />
-                ) : null}
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-1 mb-0.5">
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                    style={{ background: `${partner.color}18`, color: partner.color }}>AI伙伴</span>
-                </div>
-                <p className="text-xs font-bold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
-                  {partner.name}
-                </p>
-                <p className="text-[9px] truncate" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
-                  语言环境 · 情绪陪伴
-                </p>
-              </div>
-            </div>
+            <p className="text-[11px] leading-relaxed" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}>
+              {CHARACTER_STORIES[recId]?.slice(0, 50)}...
+            </p>
           </div>
         </motion.div>
 
@@ -1335,42 +1335,38 @@ export default function HomePageV3() {
           transition={{ delay: 0.2 }}>
           <div className="rounded-2xl p-3 mb-3"
             style={{
-              background: 'linear-gradient(135deg, rgba(88,204,2,0.06), rgba(88,204,2,0.02))',
-              border: '1px solid rgba(88,204,2,0.15)',
+              background: `linear-gradient(135deg, ${recChar.color}08, ${recChar.color}04)`,
+              border: `1px solid ${recChar.color}20`,
             }}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                  style={{ background: '#FF4D4F', color: 'white' }}>限时联合购买</span>
+                  style={{ background: '#FF4D4F', color: 'white' }}>限时优惠</span>
+                <span className="text-[10px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
+                  ¥{getOriginalPrice(recId)}/月
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-bold" style={{ color: '#FF4D4F' }}>倒计时</span>
-                <NewUserCountdown color="#58CC02" theme={theme} />
+                <NewUserCountdown color={recChar.color} theme={theme} />
               </div>
             </div>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-2xl font-extrabold" style={{ color: '#58CC02' }}>¥8.99</span>
-              <span className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>解锁两个角色</span>
+              <span className="text-2xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
+              <span className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>解锁</span>
               <span className="text-[10px] ml-auto" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
                 🎁 送实体卡片
               </span>
             </div>
           </div>
           <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              // Unlock both characters
-              subscribeCharacter(teacherId);
-              subscribeCharacter(partnerId);
-              setCharTab('owned');
-              setSelTeacher(teacherId);
-              setSelPartner(partnerId);
-            }}
+            onClick={() => setPurchaseModal({ char: recChar })}
             className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
             style={{
-              background: 'linear-gradient(135deg, #58CC02, #58CC02CC)',
-              boxShadow: '0 8px 32px rgba(88,204,2,0.4)',
+              background: `linear-gradient(135deg, ${recChar.color}, ${recChar.color}CC)`,
+              boxShadow: `0 8px 32px ${recChar.color}40`,
             }}>
-            ¥8.99 解锁 {teacher.name} + {partner.name}
+            ¥8.99 解锁 {recChar.name}
           </motion.button>
           <p className="text-center text-[10px] mt-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
             或浏览更多角色 ↓
@@ -1570,7 +1566,6 @@ export default function HomePageV3() {
                     </p>
                   </div>
                   <motion.button whileTap={{ scale: 0.95 }}
-                    onClick={() => setVoiceRecording(true)}
                     className="px-4 py-2 rounded-xl font-bold text-xs text-white flex-shrink-0"
                     style={{ background: 'linear-gradient(135deg, #58CC02, #58CC02CC)' }}>
                     开始对话
@@ -2053,61 +2048,6 @@ export default function HomePageV3() {
           重置为新用户
         </span>
       </motion.button>
-
-      {/* ===== VOICE RECORDING MODAL ===== */}
-      <AnimatePresence>
-        {voiceRecording && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[250] flex items-center justify-center"
-            onClick={() => setVoiceRecording(false)}>
-            <div className="absolute inset-0 bg-black/60" />
-            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-64 rounded-3xl p-8 text-center"
-              style={{
-                background: theme === 'dark' ? 'rgba(20,20,30,0.95)' : 'rgba(255,255,255,0.95)',
-                border: `2px solid ${theme === 'dark' ? 'rgba(88,204,2,0.3)' : 'rgba(88,204,2,0.2)'}`,
-                boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
-              }}>
-              {/* Recording animation */}
-              <div className="relative w-20 h-20 mx-auto mb-4">
-                <motion.div className="absolute inset-0 rounded-full"
-                  style={{ background: 'rgba(88,204,2,0.15)' }}
-                  animate={{ scale: [1, 1.4, 1], opacity: [0.5, 0.2, 0.5] }}
-                  transition={{ duration: 1.5, repeat: Infinity }} />
-                <motion.div className="absolute inset-2 rounded-full"
-                  style={{ background: 'rgba(88,204,2,0.25)' }}
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.6, 0.3, 0.6] }}
-                  transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }} />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.div className="w-12 h-12 rounded-full flex items-center justify-center"
-                    style={{ background: '#58CC02' }}
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 0.8, repeat: Infinity }}>
-                    <Mic className="w-6 h-6 text-white" />
-                  </motion.div>
-                </div>
-              </div>
-              <p className="text-sm font-bold mb-1" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
-                正在聆听...
-              </p>
-              <p className="text-[11px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>
-                请告诉 AI 宝贝的学习需求
-              </p>
-              <motion.button whileTap={{ scale: 0.95 }}
-                onClick={() => setVoiceRecording(false)}
-                className="mt-4 px-6 py-2 rounded-xl text-xs font-bold"
-                style={{
-                  background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
-                  color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)',
-                }}>
-                取消
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
     </div>
   );
