@@ -1289,11 +1289,11 @@ export default function HomePageV3() {
         )}
       </motion.div>
 
-  {/* ===== PROGRESSIVE RECOMMENDATION SCREEN ===== */}
+  {/* ===== PROGRESSIVE RECOMMENDATION SCREEN (new users only) ===== */}
   {(() => {
     const phase = getRecommendationPhase();
-    // Only show in unowned tab or when no characters owned
-    if (hasAnyOwned() && charTab === 'owned') return null;
+    // Only show when user has NO owned characters
+    if (hasAnyOwned()) return null;
 
     const allChars = [...TEACHERS, ...PARTNERS];
     const onboardingData = getOnboardingData();
@@ -1322,109 +1322,172 @@ export default function HomePageV3() {
     if (!recChar) return null;
     const isTeacher = TEACHERS.some(t => t.id === recId);
 
+    // Character grid data for unowned tab
+    const LANG_GROUPS: { key: string; label: string; flag: string; bg: string; ids: string[] }[] = [
+      { key: 'english', label: '英语', flag: '🇺🇸', bg: 'rgba(28,176,246,0.06)', ids: ['parrot', 'fox', 'olaf', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco'] },
+      { key: 'japanese', label: '日语', flag: '🇯🇵', bg: 'rgba(255,107,157,0.06)', ids: ['xizi'] },
+      { key: 'portuguese', label: '葡萄牙语', flag: '🇧🇷', bg: 'rgba(255,149,0,0.06)', ids: ['bull'] },
+      { key: 'arabic', label: '阿拉伯语', flag: '🇸🇦', bg: 'rgba(175,87,219,0.06)', ids: ['bred'] },
+    ];
+
     return (
-      <div className="flex-1 px-5 pt-2 pb-8 relative z-10 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
-        {/*
-          ═══════════════════════════════════════════════════════
-          TEAM NOTE: 用户到达此页面前已经历的流程：
-          1. Onboarding：填写幼儿姓名、年龄、性别、目标语言
-          2. 与推荐角色打了招呼（GREETINGS 弹窗）
-          3. 体验了一节 demo 课（LessonFlow / AITeacherMode）
-          4. 到达此页面 → 先推荐 AI 伙伴 → 再推荐 AI 老师
-          5. 都解锁后 → 语音按钮，AI 根据对话推荐第三个角色
-          ═══════════════════════════════════════════════════════
-        */}
+      <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
+        {/* Fixed recommendation card + purchase button */}
+        <div className="flex-shrink-0 px-5 pt-2 pb-3">
+          {compareText && (
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              className="text-center text-[11px] mb-3 px-4"
+              style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
+              {compareText}
+            </motion.p>
+          )}
 
-        {compareText && (
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            className="text-center text-[11px] mb-3 px-4"
-            style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>
-            {compareText}
-          </motion.p>
-        )}
-
-        {/* Character card — compact height */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="rounded-3xl p-3 mb-3 flex gap-3 relative"
-          style={{
-            background: theme === 'dark'
-              ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
-              : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
-            border: `1.5px solid ${recChar.color}25`,
-            maxHeight: 120,
-          }}>
-          {/* AI 推荐角标 */}
-          <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-bold z-10"
-            style={{ background: 'rgba(88,204,2,0.9)', color: 'white' }}>
-            AI 推荐
-          </div>
-          {/* Character image — fixed height */}
-          <div className="w-16 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden"
-            style={{ background: `${recChar.color}10`, height: 80 }}>
-            {recChar.component ? <div className="transform scale-[0.35] origin-center">{recChar.component}</div> : recChar.image ? (
-              <img src={recChar.image} alt={recChar.name} className="w-full h-full object-cover" />
-            ) : null}
-          </div>
-          {/* Info — grows with content */}
-          <div className="flex-1 flex flex-col justify-center min-w-0 py-1 overflow-hidden">
-            <div className="flex items-center gap-2 mb-1">
-              <h2 className="text-base font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
-                {recChar.name}
-              </h2>
-              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
-                style={{ background: `${recChar.color}18`, color: recChar.color }}>
-                {isTeacher ? 'AI老师' : 'AI伙伴'}
-              </span>
-            </div>
-            <p className="text-[10px] leading-snug line-clamp-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}>
-              {CHARACTER_STORIES[recId] || recChar.desc}
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Price + Countdown + CTA */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}>
-          <div className="rounded-2xl p-2.5 mb-2"
+          {/* Character card — compact height */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="rounded-3xl p-3 mb-3 flex gap-3 relative"
             style={{
-              background: `linear-gradient(135deg, ${recChar.color}08, ${recChar.color}04)`,
-              border: `1px solid ${recChar.color}20`,
+              background: theme === 'dark'
+                ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
+                : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
+              border: `1.5px solid ${recChar.color}25`,
+              maxHeight: 120,
             }}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                  style={{ background: '#FF4D4F', color: 'white' }}>限时优惠</span>
-                <span className="text-[10px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
-                  ¥{getOriginalPrice(recId)}/月
+            {/* AI 推荐角标 */}
+            <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-bold z-10"
+              style={{ background: 'rgba(88,204,2,0.9)', color: 'white' }}>
+              AI 推荐
+            </div>
+            {/* Character image — fixed height */}
+            <div className="w-16 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden"
+              style={{ background: `${recChar.color}10`, height: 80 }}>
+              {recChar.component ? <div className="transform scale-[0.35] origin-center">{recChar.component}</div> : recChar.image ? (
+                <img src={recChar.image} alt={recChar.name} className="w-full h-full object-cover" />
+              ) : null}
+            </div>
+            {/* Info — grows with content */}
+            <div className="flex-1 flex flex-col justify-center min-w-0 py-1 overflow-hidden">
+              <div className="flex items-center gap-2 mb-1">
+                <h2 className="text-base font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
+                  {recChar.name}
+                </h2>
+                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
+                  style={{ background: `${recChar.color}18`, color: recChar.color }}>
+                  {isTeacher ? 'AI老师' : 'AI伙伴'}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold" style={{ color: '#FF4D4F' }}>倒计时</span>
-                <NewUserCountdown color={recChar.color} theme={theme} />
+              <p className="text-[10px] leading-snug line-clamp-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}>
+                {CHARACTER_STORIES[recId] || recChar.desc}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Price + Countdown + CTA — always visible */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}>
+            <div className="rounded-2xl p-2.5 mb-2"
+              style={{
+                background: `linear-gradient(135deg, ${recChar.color}08, ${recChar.color}04)`,
+                border: `1px solid ${recChar.color}20`,
+              }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                    style={{ background: '#FF4D4F', color: 'white' }}>限时优惠</span>
+                  <span className="text-[10px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
+                    ¥{getOriginalPrice(recId)}/月
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold" style={{ color: '#FF4D4F' }}>倒计时</span>
+                  <NewUserCountdown color={recChar.color} theme={theme} />
+                </div>
+              </div>
+              <div className="flex items-baseline gap-2 mt-2">
+                <span className="text-2xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
+                <span className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>解锁</span>
+                <span className="text-[10px] ml-auto" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
+                  🎁 送实体卡片
+                </span>
               </div>
             </div>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-2xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
-              <span className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>解锁</span>
-              <span className="text-[10px] ml-auto" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
-                🎁 送实体卡片
-              </span>
-            </div>
-          </div>
-          <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => setPurchaseModal({ char: recChar })}
-            className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
-            style={{
-              background: `linear-gradient(135deg, ${recChar.color}, ${recChar.color}CC)`,
-              boxShadow: `0 8px 32px ${recChar.color}40`,
-            }}>
-            ¥8.99 解锁 {recChar.name}
-          </motion.button>
-          <p className="text-center text-[10px] mt-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
+            <motion.button whileTap={{ scale: 0.95 }}
+              onClick={() => setPurchaseModal({ char: recChar })}
+              className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
+              style={{
+                background: `linear-gradient(135deg, ${recChar.color}, ${recChar.color}CC)`,
+                boxShadow: `0 8px 32px ${recChar.color}40`,
+              }}>
+              ¥8.99 解锁 {recChar.name}
+            </motion.button>
+          </motion.div>
+        </div>
+
+        {/* Scrollable character grid below */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4" style={{ scrollbarWidth: 'none' }}>
+          <p className="text-center text-[10px] mb-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
             或浏览更多角色 ↓
           </p>
-        </motion.div>
+          {LANG_GROUPS.map(group => {
+            const chars = group.ids
+              .map(id => allChars.find(c => c.id === id))
+              .filter((c): c is Character => !!c && !isOwned(c.id));
+            if (chars.length === 0) return null;
+            return (
+              <div key={group.key} className="mb-4 rounded-2xl p-3" style={{ background: group.bg }}>
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <span className="text-base">{group.flag}</span>
+                  <h3 className="text-sm font-extrabold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)' }}>
+                    {group.label}
+                  </h3>
+                </div>
+                <div className="grid grid-cols-2 gap-3 w-full">
+                  {chars.map((c, i) => (
+                    <motion.div key={c.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => setPurchaseModal({ char: c })}
+                      className="relative rounded-[1.2rem] flex flex-col items-center cursor-pointer overflow-hidden"
+                      style={{
+                        aspectRatio: '3 / 4',
+                        padding: '0.75rem 0.5rem 0.5rem',
+                        background: theme === 'dark'
+                          ? `linear-gradient(180deg, ${c.color}10 0%, ${c.accent} 50%, rgba(10,10,15,0.9) 100%)`
+                          : `linear-gradient(180deg, ${c.color}08 0%, ${c.accent} 50%, rgba(255,255,255,0.95) 100%)`,
+                        border: `1.5px solid ${c.color}20`,
+                        boxShadow: `0 4px 16px ${c.color}10`,
+                      }}>
+                      <div className="absolute top-2 right-2 z-10">
+                        <Lock className="w-3.5 h-3.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }} />
+                      </div>
+                      <div className="flex-1 flex items-center justify-center w-full min-h-0 overflow-hidden">
+                        {c.component ? <div className="transform scale-75">{c.component}</div> : c.image ? (
+                          <img src={c.image} alt={c.name} className="w-full h-full object-contain" loading="lazy" />
+                        ) : null}
+                      </div>
+                      <div className="text-center w-full px-1">
+                        <p className="font-bold text-[12px] truncate"
+                          style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)' }}>
+                          {c.name}
+                        </p>
+                        <p className="text-[9px] mt-0.5 truncate"
+                          style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
+                          {c.desc}
+                        </p>
+                      </div>
+                      <div className="mt-1.5 px-3 py-1 rounded-full text-[10px] font-bold"
+                        style={{ background: `${c.color}18`, color: c.color }}>
+                        ¥{getPromoPrice(c.id)}/月
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   })()}
