@@ -34,7 +34,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Onboarding />} />
+            <Route path="/" element={<HomePageV3 />} />
+            <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/initial-assessment" element={<InitialAssessment />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/home-v2" element={<HomePageV2 />} />
