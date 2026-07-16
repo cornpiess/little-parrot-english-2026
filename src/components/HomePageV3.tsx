@@ -1301,16 +1301,16 @@ export default function HomePageV3() {
         {/* Character card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="rounded-3xl p-4 mb-4 flex gap-4"
+          className="rounded-3xl p-3 mb-3 flex gap-3"
           style={{
             background: theme === 'dark'
               ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
               : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
             border: `1.5px solid ${recChar.color}25`,
           }}>
-          <div className="w-28 h-36 rounded-2xl flex-shrink-0 flex items-center justify-center overflow-visible"
+          <div className="w-20 h-24 rounded-xl flex-shrink-0 flex items-center justify-center overflow-visible"
             style={{ background: `${recChar.color}10` }}>
-            {recChar.component ? <div className="transform scale-75 origin-center">{recChar.component}</div> : recChar.image ? (
+            {recChar.component ? <div className="transform scale-60 origin-center">{recChar.component}</div> : recChar.image ? (
               <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
             ) : null}
           </div>
