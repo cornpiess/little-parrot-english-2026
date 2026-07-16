@@ -1140,7 +1140,7 @@ export default function HomePageV3() {
                 border: '1px solid rgba(232,112,64,0.2)',
               }}>
               <Wifi className="w-2.5 h-2.5" style={{ color: '#E87040', transform: 'rotate(90deg)' }} />
-              <span className="text-[8px] font-bold" style={{ color: '#E87040' }}>激活</span>
+              <span className="text-[8px] font-bold" style={{ color: '#E87040' }}>模拟卡片激活</span>
             </motion.button>
           </div>
         </div>
@@ -1867,6 +1867,39 @@ export default function HomePageV3() {
         })()}
       </AnimatePresence>
 
+      {/* Reset to new user — debug button */}
+      <motion.button
+        className="fixed z-[100] flex items-center gap-1 px-2 py-1 rounded-full"
+        style={{
+          bottom: 'max(16px, env(safe-area-inset-bottom, 12px))',
+          left: 12,
+          background: 'rgba(20,20,30,0.85)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          backdropFilter: 'blur(10px)',
+        }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => {
+          [...TEACHERS, ...PARTNERS].forEach(c => {
+            localStorage.removeItem(`char_purchased_${c.id}`);
+            localStorage.removeItem(`char_trial_${c.id}`);
+            localStorage.removeItem(`char_trial_used_${c.id}`);
+            localStorage.removeItem(`char_trial_active_${c.id}`);
+            localStorage.removeItem(`char_trial_active_${c.id}_start`);
+            localStorage.removeItem(`char_autorenew_${c.id}`);
+            localStorage.removeItem(`char_physical_card_${c.id}`);
+          });
+          localStorage.removeItem('shipping_address_filled');
+          localStorage.removeItem('homev3_newlyActivated');
+          setCharTab('unowned');
+          setFlippedCard(null);
+          setFlipOrigin(null);
+          window.location.reload();
+        }}
+      >
+        <span className="text-[8px] font-bold" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          重置为新用户
+        </span>
+      </motion.button>
 
     </div>
   );
