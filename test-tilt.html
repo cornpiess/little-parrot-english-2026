@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; display: flex; justify-content: center; align-items: center; height: 100vh; gap: 40px; font-family: sans-serif; color: white; }
+
+  .card {
+    width: 195px; height: 270px; border-radius: 2rem; background: linear-gradient(135deg, #1CB0F6, #0A8ED9);
+    display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;
+    position: relative; cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.12s ease-out;
+  }
+
+  .label { position: absolute; bottom: -30px; text-align: center; width: 100%; font-size: 12px; color: #888; }
+
+  /* 测试1: 纯 CSS transition (V2Card 方式) */
+  #card1:hover {
+    transform: perspective(800px) rotateX(12deg) rotateY(-12deg) scale3d(1.06,1.06,1.06);
+  }
+
+  /* 测试2: CSS animation forwards + transition (当前 SpinCard 方式) */
+  @keyframes spinEnter {
+    0% { transform: perspective(800px) rotateY(0deg) scale(0.3); }
+    100% { transform: perspective(800px) rotateY(360deg) scale(1); }
+  }
+  #card2 {
+    animation: spinEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  #card2:hover {
+    transform: perspective(800px) rotateX(12deg) rotateY(-12deg) scale3d(1.06,1.06,1.06);
+  }
+
+  /* 测试3: CSS animation 无 forwards + transition */
+  @keyframes spinEnter2 {
+    0% { transform: perspective(800px) rotateY(0deg) scale(0.3); }
+    99.9% { transform: perspective(800px) rotateY(360deg) scale(1); }
+    100% { transform: perspective(800px) rotateY(0deg) scale(1); }
+  }
+  #card3 {
+    animation: spinEnter2 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  #card3:hover {
+    transform: perspective(800px) rotateX(12deg) rotateY(-12deg) scale3d(1.06,1.06,1.06);
+  }
+
+  /* 测试4: 动画结束后移除 animation 属性 */
+  #card4 {
+    animation: spinEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  #card4:hover {
+    transform: perspective(800px) rotateX(12deg) rotateY(-12deg) scale3d(1.06,1.06,1.06);
+  }
+</style>
+</head>
+<body>
+  <div style="position:relative">
+    <div id="card1" class="card">V2Card<br>纯transition</div>
+    <div class="label">✓ 正确参照</div>
+  </div>
+  <div style="position:relative">
+    <div id="card2" class="card">SpinCard<br>forwards+hover</div>
+    <div class="label">❓ forwards 冲突?</div>
+  </div>
+  <div style="position:relative">
+    <div id="card3" class="card">SpinCard<br>无forwards+hover</div>
+    <div class="label">❓ 无forwards?</div>
+  </div>
+  <div style="position:relative">
+    <div id="card4" class="card">SpinCard<br>JS移除animation</div>
+    <div class="label">❓ JS移除?</div>
+  </div>
+
+  <script>
+    // 测试4: 动画结束后用JS移除animation属性
+    const card4 = document.getElementById('card4');
+    card4.addEventListener('animationend', () => {
+      card4.style.animation = 'none';
+      console.log('Card4: animation removed after flip');
+    });
+  </script>
+</body>
+</html>

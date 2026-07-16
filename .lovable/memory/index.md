@@ -1,0 +1,22 @@
+Design system and project structure for 小鹦鹉AI (Little Parrot AI)
+
+- App name: 小鹦鹉AI
+- Background: var(--gradient-page) = linear-gradient(145deg, #FFF5F0, #F0F7FF, #F0FFF4, #FFF8E7, #FFF0F5) — soft pastel rainbow
+- Candy Colors: #1CB0F6 (Blue), #58CC02 (Green), #AF57DB (Purple), #FF4B4B (Red)
+- Glass style: backdrop-blur, translucent bg, no solid borders
+- Motion library: motion/react (framer-motion v11+)
+- Routes: / (onboarding→conversational), /home (tab homepage with AI partners/teachers), /ai-parrot (AI小鹦鹉 secondary page), /characters (IP角色选择), /painting, /play-together, /lessons
+- Homepage (/home): tab layout with AI character entry card, AI partner/teacher marquees, AI engine status, bottom bar with 一起学习/一起玩耍
+- AI小鹦鹉 (/ai-parrot): full-screen parrot with auto-cycling modules, accessed from homepage
+- Onboarding: parrot-guided conversation flow, cached via localStorage('onboarding_completed'), redirects to /home
+- Character selection (/characters): Main character switcher (parrot/fox) + AI teachers & partners grid, 一起学习/一起玩耍 as auxiliary at bottom
+- AI Teacher: ai_tutor.png used in onboarding steps via AITeacherGuide component
+- Character system: AICharacter wrapper renders ParrotCharacter or FoxCharacter based on localStorage('selected_character')
+- FoxCharacter: SVG-based with motion animations for states
+- ParrotCharacter: SVG-based with detailed wing/beak/eye animations
+- PlayTogether (/play-together): mode selection (过家家/画画/聊天/拍照问问)
+- LessonFlow: AI generates lesson plan with mix of animation, ebook, music
+- AI Teacher module parrot placement: animation=top-right, ebook=above book, music=inside, drawing/roleplay/assessment=inside
+- AI Teacher: hide X button and title when module is active, show only when module is down
+- PWA: CacheFirst for images, service worker auto-update
+- Assets: webp files in src/assets/ imported as ES modules
