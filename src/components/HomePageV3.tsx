@@ -1115,9 +1115,12 @@ export default function HomePageV3() {
       <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         className="relative z-20 flex-shrink-0"
         style={{ paddingTop: 'max(0.5rem, env(safe-area-inset-top, 0px))', paddingBottom: 2 }}>
-        {/* Row 1: Right buttons only */}
-        <div className="flex items-center justify-end px-3 mb-1">
-          <div className="flex items-center gap-1">
+        {/* Row 1: Greeting + Right buttons */}
+        <div className="flex items-center justify-between px-5">
+          <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            {getGreeting()}，{childName}
+          </h1>
+          <div className="flex items-center gap-1 flex-shrink-0">
             <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/')}
               className="w-7 h-7 rounded-full flex items-center justify-center"
               style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' }}>
@@ -1142,41 +1145,32 @@ export default function HomePageV3() {
           </div>
         </div>
 
-        {/* Row 2: Greeting (both tabs) + shipping tip */}
-        <div className="px-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                {getGreeting()}，{childName}
-              </h1>
-
-            </div>
-            {/* Shipping address tip — scrolling marquee (owned tab only) */}
-            {charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
-              <motion.button whileTap={{ scale: 0.97 }}
-                onClick={() => navigate('/shipping-address')}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl flex-shrink-0 max-w-[220px] overflow-hidden"
-                style={{
-                  background: 'rgba(255,183,0,0.1)',
-                  border: '1px solid rgba(255,183,0,0.2)',
-                }}>
-                <span className="text-base flex-shrink-0">🎁</span>
-                <div className="overflow-hidden flex-1 min-w-0">
-                  <motion.div className="whitespace-nowrap"
-                    animate={{ x: ['0%', '-50%'] }}
-                    transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}>
-                    <span className="text-[11px] font-bold" style={{ color: '#FFB700' }}>
-                      恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;
-                    </span>
-                  </motion.div>
-                </div>
-              </motion.button>
-            )}
+        {/* Shipping address tip — scrolling marquee (owned tab only) */}
+        {charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
+          <div className="px-5 mt-1">
+            <motion.button whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/shipping-address')}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl overflow-hidden w-full"
+              style={{
+                background: 'rgba(255,183,0,0.1)',
+                border: '1px solid rgba(255,183,0,0.2)',
+              }}>
+              <span className="text-base flex-shrink-0">🎁</span>
+              <div className="overflow-hidden flex-1 min-w-0">
+                <motion.div className="whitespace-nowrap"
+                  animate={{ x: ['0%', '-50%'] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}>
+                  <span className="text-[11px] font-bold" style={{ color: '#FFB700' }}>
+                    恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;
+                  </span>
+                </motion.div>
+              </div>
+            </motion.button>
           </div>
-        </div>
+        )}
 
-        {/* Row 3: Tabs — below greeting, centered */}
-        <div className="flex justify-center px-4 mt-2">
+        {/* Row 2: Tabs — left-aligned */}
+        <div className="flex px-4 mt-2">
           <div className="flex rounded-2xl overflow-hidden"
             style={{
               background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
