@@ -323,13 +323,14 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
    ═══════════════════════════════════════ */
 const sharedX = { current: typeof window !== 'undefined' ? window.innerWidth / 2 - 195 / 2 : 0 };
 
-function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flippedCard, onFlipCard, onAdd, newlyActivated, trialStates }: {
+function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flippedCard, onFlipCard, onAdd, newlyActivated, trialStates, rowType }: {
   chars: Character[]; selectedId: string; onSelect: (id: string) => void; theme: 'dark' | 'light';
   onVerticalSwipe?: (direction: 'up' | 'down') => void;
   flippedCard: string | null; onFlipCard: (id: string | null, rect?: DOMRect) => void;
   onAdd?: () => void;
   newlyActivated?: string | null;
   trialStates?: Record<string, CharacterState>;
+  rowType?: 'teacher' | 'partner';
 }) {
   const CARD_W = 195;
   const GAP = 16;
@@ -389,8 +390,9 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
     touchRef.current.dir = '';
   }, [chars, maxIdx, centerOffset, minX, onSelect, x, CARD_W, GAP, onVerticalSwipe]);
 
+  const addLabel = rowType === 'teacher' ? '添加AI老师角色' : '添加AI伙伴角色';
   const addCard: Character = {
-    id: '__add__', name: '添加角色', subtitle: '',
+    id: '__add__', name: addLabel, subtitle: '',
     color: theme === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)',
     accent: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)',
     language: 'english',
@@ -1215,54 +1217,80 @@ export default function HomePageV3() {
     const onboardingData = getOnboardingData();
     const targetLang = onboardingData.targetLanguage || 'english';
     const langLabels: Record<string, string> = { english: '英语', japanese: '日语', portuguese: '葡萄牙语', arabic: '阿拉伯语' };
+    const isTeacher = TEACHERS.some(t => t.id === recId);
     return (
-      <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-sm text-center">
-          {/* Recommended character */}
-          <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.2 }}
-            className="w-40 h-52 mx-auto mb-5 rounded-3xl overflow-hidden flex items-center justify-center"
+      <div className="flex-1 px-5 pt-2 pb-4 relative z-10 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+        {/* AI recommendation badge */}
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-center gap-2 mb-4">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
             style={{
-              background: `linear-gradient(180deg, ${recChar.color}15 0%, ${recChar.color}05 100%)`,
-              border: `2px solid ${recChar.color}30`,
-              boxShadow: `0 16px 40px ${recChar.color}25`,
+              background: theme === 'dark' ? 'rgba(88,204,2,0.12)' : 'rgba(88,204,2,0.08)',
+              border: '1px solid rgba(88,204,2,0.25)',
             }}>
-            {recChar.component ? <div className="transform scale-110">{recChar.component}</div> : recChar.image ? (
+            <span className="text-xs">🤖</span>
+            <span className="text-[11px] font-bold" style={{ color: '#58CC02' }}>
+              AI 根据{childName}的{langLabels[targetLang] || '英语'}学习基础信息推荐
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Character card — horizontal layout */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-3xl p-4 mb-4 flex gap-4"
+          style={{
+            background: theme === 'dark'
+              ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
+              : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
+            border: `1.5px solid ${recChar.color}25`,
+          }}>
+          {/* Left: Character image */}
+          <div className="w-28 h-36 rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center"
+            style={{ background: `${recChar.color}10` }}>
+            {recChar.component ? <div className="transform scale-90">{recChar.component}</div> : recChar.image ? (
               <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
             ) : null}
-          </motion.div>
-
-          <p className="text-xs mb-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>
-            根据{langLabels[targetLang] || '英语'}学习推荐
-          </p>
-          <h2 className="text-xl font-extrabold mb-1" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
-            {recChar.name}
-          </h2>
-          <p className="text-sm mb-4" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)' }}>
-            {recChar.desc}
-          </p>
-
-          {/* New user price */}
-          <div className="rounded-2xl p-4 mb-4"
-            style={{
-              background: `linear-gradient(135deg, ${recChar.color}10, ${recChar.color}05)`,
-              border: `1.5px solid ${recChar.color}25`,
-            }}>
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                style={{ background: '#FF4D4F', color: 'white' }}>新人专享</span>
+          </div>
+          {/* Right: Info */}
+          <div className="flex-1 flex flex-col justify-center min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <h2 className="text-lg font-extrabold truncate" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
+                {recChar.name}
+              </h2>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0"
+                style={{ background: `${recChar.color}18`, color: recChar.color }}>
+                {isTeacher ? 'AI老师' : 'AI伙伴'}
+              </span>
             </div>
-            <div className="flex items-baseline justify-center gap-1">
-              <span className="text-3xl font-extrabold" style={{ color: recChar.color }}>¥0.01</span>
-              <span className="text-xs" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>解锁</span>
-            </div>
-            <p className="text-[10px] mt-1" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
-              解锁后赠送实体角色卡片
+            <p className="text-xs mb-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)' }}>
+              {recChar.desc}
+            </p>
+            <p className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
+              {CHARACTER_STORIES[recId]?.slice(0, 60)}...
             </p>
           </div>
+        </motion.div>
 
-          {/* CTA */}
+        {/* Price + CTA */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                style={{ background: '#FF4D4F', color: 'white' }}>新人专享</span>
+              <span className="text-[11px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
+                ¥{getOriginalPrice(recId)}/月
+              </span>
+            </div>
+            <div className="flex items-baseline gap-1">
+              <span className="text-2xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
+              <span className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)' }}>解锁</span>
+            </div>
+          </div>
+          <p className="text-[10px] mb-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
+            🎁 解锁后赠送实体{isTeacher ? '老师' : '伙伴'}角色卡片
+          </p>
           <motion.button whileTap={{ scale: 0.95 }}
             onClick={() => setPurchaseModal({ char: recChar })}
             className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
@@ -1270,10 +1298,9 @@ export default function HomePageV3() {
               background: `linear-gradient(135deg, ${recChar.color}, ${recChar.color}CC)`,
               boxShadow: `0 8px 32px ${recChar.color}40`,
             }}>
-            ¥0.01 解锁 {recChar.name}
+            ¥8.99 解锁 {recChar.name}
           </motion.button>
-
-          <p className="text-[9px] mt-3" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }}>
+          <p className="text-center text-[9px] mt-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }}>
             或浏览更多角色 ↓
           </p>
         </motion.div>
@@ -1407,7 +1434,7 @@ export default function HomePageV3() {
                 }}
                 style={{ transformStyle: 'preserve-3d', transformOrigin: 'center bottom' }}
                 className="w-full">
-                <FrontRow chars={isT ? displayTeachers : displayPartners} selectedId={isT ? selTeacher : selPartner}
+                <FrontRow chars={isT ? displayTeachers : displayPartners} selectedId={isT ? selTeacher : selPartner} rowType={isT ? 'teacher' : 'partner'}
                   onSelect={isT ? setSelTeacher : setSelPartner} theme={theme}
                   flippedCard={flippedCard} onFlipCard={(id, rect) => { setFlippedCard(id); setFlipOrigin(rect || null); }}
                   onAdd={() => setCharTab('unowned')}
@@ -1749,7 +1776,7 @@ export default function HomePageV3() {
                 {/* Section 2: Promo Price */}
                 <div className="px-5 mb-4">
                   {!hasAnyOwned() ? (
-                    /* New user: 0.01 yuan */
+                    /* New user: 8.99 yuan */
                     <div className="rounded-2xl p-4 relative overflow-hidden"
                       style={{
                         background: `linear-gradient(135deg, ${c.color}12, ${c.color}08)`,
@@ -1766,7 +1793,7 @@ export default function HomePageV3() {
                         <span className="text-[11px] line-through" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>
                           ¥{original}/月
                         </span>
-                        <span className="text-2xl font-extrabold" style={{ color: c.color }}>¥0.01</span>
+                        <span className="text-2xl font-extrabold" style={{ color: c.color }}>¥8.99</span>
                       </div>
                       <p className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)' }}>
                         解锁后赠送实体角色卡片
@@ -1855,7 +1882,7 @@ export default function HomePageV3() {
                       background: `linear-gradient(135deg, ${c.color}, ${c.color}CC)`,
                       boxShadow: `0 8px 32px ${c.color}40`,
                     }}>
-                    {!hasAnyOwned() ? `¥0.01 解锁 ${c.name}` : `¥${promo}/月 立即订阅 ${c.name}`}
+                    {!hasAnyOwned() ? `¥8.99 解锁 ${c.name}` : `¥${promo}/月 立即订阅 ${c.name}`}
                   </motion.button>
                   <p className="text-center text-[9px] mt-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
                     订阅即同意《服务协议》和《隐私政策》
