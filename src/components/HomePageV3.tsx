@@ -88,6 +88,7 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
   const [mx, setMx] = useState(50);
   const [my, setMy] = useState(50);
   const [hovered, setHovered] = useState(false);
+  const [tapWobble, setTapWobble] = useState(false);
   const flipped = isFlipped ?? false;
 
   const onMove = useCallback((cx: number, cy: number) => {
@@ -101,6 +102,11 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
 
   const handleClick = useCallback(() => {
     if (isFront) {
+      // On mobile tap, trigger wobble effect
+      if (!hovered && !flipped) {
+        setTapWobble(true);
+        setTimeout(() => setTapWobble(false), 2000);
+      }
       const next = !flipped;
       const rect = cardRef.current?.getBoundingClientRect();
       if (onFlip) {
@@ -110,7 +116,7 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
       }
       setTilt({ x: 0, y: 0 });
     }
-  }, [isFront, flipped, onFlip, onClick]);
+  }, [isFront, flipped, onFlip, onClick, hovered]);
 
   /* When flipped, render invisible placeholder — parent shows expanded overlay */
   if (isFront && flipped) {
@@ -122,7 +128,7 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
 
   return (
     <motion.div
-      className={`flex-shrink-0 relative rounded-[2rem] ${isFront ? 'cursor-pointer' : ''} ${isActive && isFront ? 'card-wobble card-glow' : ''}`}
+      className={`flex-shrink-0 relative rounded-[2rem] ${isFront ? 'cursor-pointer' : ''} ${(isActive || tapWobble) && isFront ? 'card-wobble card-glow' : ''}`}
       /* Landing animation for newly activated characters */
       initial={isNew ? { y: -300, opacity: 0, scale: 0.5, rotateZ: -10 } : false}
       animate={isNew ? { y: 0, opacity: 1, scale: 1, rotateZ: 0 } : undefined}
@@ -409,7 +415,7 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
           const ts = trialStates?.[c.id];
           const isLocked = ts?.status === 'locked';
           return (
-          <V2Card key={c.id} char={c} isActive={c.id === selectedId && !isLocked} size="front"
+          <V2Card key={`${c.id}-${flippedCard === c.id ? 'open' : 'closed'}`} char={c} isActive={c.id === selectedId && !isLocked} size="front"
             onClick={() => onSelect(c.id)}
             theme={theme}
             isFlipped={flippedCard === c.id}
@@ -1108,59 +1114,63 @@ export default function HomePageV3() {
       {/* ===== HEADER ===== */}
       <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         className="relative z-20 flex-shrink-0"
-        style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0px))', paddingBottom: 2 }}>
-        {/* Row 1: Tabs (left) + Right buttons */}
-        <div className="flex items-center justify-between px-4">
-          {/* Left: Tabs — bigger, left-aligned */}
-          <div className="flex gap-2">
+        style={{ paddingTop: 'max(0.5rem, env(safe-area-inset-top, 0px))', paddingBottom: 2 }}>
+        <div className="flex items-center justify-between px-3">
+          {/* Left: Segmented tab control */}
+          <div className="flex rounded-2xl overflow-hidden"
+            style={{
+              background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'}`,
+            }}>
             {(['owned', 'unowned'] as const).map(t => {
               const count = t === 'owned' ? (ownedTeachers.length + ownedPartners.length) : unownedAll.length;
               const isActive = charTab === t;
               return (
                 <motion.button key={t} whileTap={{ scale: 0.95 }}
                   onClick={() => { setCharTab(t); setFlippedCard(null); setFlipOrigin(null); }}
-                  className="px-4 py-2 rounded-2xl font-extrabold transition-all whitespace-nowrap"
+                  className="px-3.5 py-1.5 font-bold transition-all whitespace-nowrap relative"
                   style={{
-                    fontSize: 13,
-                    background: isActive
-                      ? (theme === 'dark' ? 'rgba(255,255,255,0.12)' : `${effectiveActiveChar.color}18`)
-                      : (theme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'),
+                    fontSize: 12,
                     color: isActive
                       ? (theme === 'dark' ? 'white' : '#1f2937')
                       : (theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)'),
-                    border: `2px solid ${isActive ? (theme === 'dark' ? 'rgba(255,255,255,0.15)' : `${effectiveActiveChar.color}30`) : 'transparent'}`,
                   }}>
-                  {t === 'owned' ? `已拥有 ${count}` : `未拥有 ${count}`}
+                  {isActive && (
+                    <motion.div layoutId="tab-bg" className="absolute inset-0 rounded-2xl"
+                      style={{
+                        background: theme === 'dark' ? 'rgba(255,255,255,0.1)' : `${effectiveActiveChar.color}15`,
+                        border: `1.5px solid ${theme === 'dark' ? 'rgba(255,255,255,0.12)' : `${effectiveActiveChar.color}25`}`,
+                      }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
+                  )}
+                  <span className="relative z-10">{t === 'owned' ? `已${count}` : `未${count}`}</span>
                 </motion.button>
               );
             })}
           </div>
 
-          {/* Right: Profile + Theme + Simulate activation */}
-          <div className="flex items-center gap-1.5 flex-shrink-0">
+          {/* Right: Profile + Theme + Activation */}
+          <div className="flex items-center gap-1 flex-shrink-0">
             <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/')}
-              className="w-8 h-8 rounded-full flex items-center justify-center"
-              style={{
-                background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
-                border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
-              }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              className="w-7 h-7 rounded-full flex items-center justify-center"
+              style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
             </motion.button>
-            <motion.button whileTap={{ scale: 0.85 }} onClick={toggleTheme} className="w-8 h-8 rounded-full flex items-center justify-center"
+            <motion.button whileTap={{ scale: 0.85 }} onClick={toggleTheme} className="w-7 h-7 rounded-full flex items-center justify-center"
               style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)' }}>
-              {theme === 'dark' ? <Sun className="w-3.5 h-3.5 text-yellow-400" /> : <Moon className="w-3.5 h-3.5 text-gray-600" />}
+              {theme === 'dark' ? <Sun className="w-3 h-3 text-yellow-400" /> : <Moon className="w-3 h-3 text-gray-600" />}
             </motion.button>
             <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/activate')}
-              className="h-8 px-2.5 rounded-full flex items-center gap-1"
+              className="h-7 px-2 rounded-full flex items-center gap-1"
               style={{
                 background: theme === 'dark' ? 'rgba(232,112,64,0.12)' : 'rgba(232,112,64,0.08)',
-                border: '1px solid rgba(232,112,64,0.25)',
+                border: '1px solid rgba(232,112,64,0.2)',
               }}>
-              <Wifi className="w-3 h-3" style={{ color: '#E87040', transform: 'rotate(90deg)' }} />
-              <span className="text-[9px] font-bold" style={{ color: '#E87040' }}>模拟激活</span>
+              <Wifi className="w-2.5 h-2.5" style={{ color: '#E87040', transform: 'rotate(90deg)' }} />
+              <span className="text-[8px] font-bold" style={{ color: '#E87040' }}>激活</span>
             </motion.button>
           </div>
         </div>
@@ -1433,25 +1443,28 @@ export default function HomePageV3() {
                 </div>
               );
             })}
-            {/* Back to owned tab button */}
-            {hasAnyOwned() && (
-              <motion.button whileTap={{ scale: 0.95 }}
-                onClick={() => setCharTab('owned')}
-                className="w-full py-3 rounded-2xl font-bold text-sm mt-2 mb-4"
-                style={{
-                  background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
-                  color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)',
-                  border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
-                }}>
-                ← 返回已拥有角色
-              </motion.button>
-            )}
           </div>
         );
       })()}
+      {/* Floating back button for unowned tab */}
+      {charTab === 'unowned' && hasAnyOwned() && (
+        <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setCharTab('owned')}
+          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-30 px-5 py-2.5 rounded-full font-bold text-sm"
+          style={{
+            background: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
+            color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)',
+            border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'}`,
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+          }}>
+          ← 返回已拥有角色
+        </motion.button>
+      )}
 
-      {/* ===== ENGINE HIGHLIGHTS — 4 selling points ===== */}
-      {!flippedCard && (
+      {/* ===== ENGINE HIGHLIGHTS — 4 selling points (owned tab only) ===== */}
+      {!flippedCard && charTab === 'owned' && (
       <div className="flex-shrink-0 relative z-30 px-4 pb-2">
         <div className="flex gap-2">
           {ENGINE_HIGHLIGHTS.map((h, i) => {
