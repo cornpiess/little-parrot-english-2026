@@ -1147,30 +1147,6 @@ export default function HomePageV3() {
           </div>
         </div>
 
-        {/* Shipping address tip — scrolling marquee (owned tab only) */}
-        {hasAnyOwned() && charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
-          <div className="px-5 mt-1">
-            <motion.button whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/shipping-address')}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl overflow-hidden w-full"
-              style={{
-                background: 'rgba(255,183,0,0.1)',
-                border: '1px solid rgba(255,183,0,0.2)',
-              }}>
-              <span className="text-base flex-shrink-0">🎁</span>
-              <div className="overflow-hidden flex-1 min-w-0">
-                <motion.div className="whitespace-nowrap"
-                  animate={{ x: ['0%', '-50%'] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}>
-                  <span className="text-[11px] font-bold" style={{ color: '#FFB700' }}>
-                    恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;
-                  </span>
-                </motion.div>
-              </div>
-            </motion.button>
-          </div>
-        )}
-
         {/* Row 2: Tabs — only shown when user has owned characters */}
         {hasAnyOwned() && (
         <div className="flex px-4 mt-2">
@@ -1219,7 +1195,7 @@ export default function HomePageV3() {
     const langLabels: Record<string, string> = { english: '英语', japanese: '日语', portuguese: '葡萄牙语', arabic: '阿拉伯语' };
     const isTeacher = TEACHERS.some(t => t.id === recId);
     return (
-      <div className="flex-1 px-5 pt-2 pb-4 relative z-10 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex-1 px-5 pt-2 pb-8 relative z-10 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
         {/* AI recommendation badge */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
           className="flex items-center justify-center gap-2 mb-4">
@@ -1540,6 +1516,30 @@ export default function HomePageV3() {
         );
       })()}
 
+
+      {/* ===== SHIPPING ADDRESS TIP — above highlights ===== */}
+      {hasAnyOwned() && charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
+        <div className="flex-shrink-0 relative z-20 px-4 pb-2">
+          <motion.button whileTap={{ scale: 0.97 }}
+            onClick={() => navigate('/shipping-address')}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl overflow-hidden w-full"
+            style={{
+              background: 'rgba(255,183,0,0.1)',
+              border: '1.5px solid rgba(255,183,0,0.25)',
+            }}>
+            <span className="text-lg flex-shrink-0">🎁</span>
+            <div className="overflow-hidden flex-1 min-w-0">
+              <motion.div className="whitespace-nowrap"
+                animate={{ x: ['0%', '-50%'] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}>
+                <span className="text-xs font-bold" style={{ color: '#FFB700' }}>
+                  恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+              </motion.div>
+            </div>
+          </motion.button>
+        </div>
+      )}
 
       {/* ===== ENGINE HIGHLIGHTS — 4 selling points (owned tab only) ===== */}
       {!flippedCard && charTab === 'owned' && (
