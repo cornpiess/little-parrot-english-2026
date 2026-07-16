@@ -1115,42 +1115,9 @@ export default function HomePageV3() {
       <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         className="relative z-20 flex-shrink-0"
         style={{ paddingTop: 'max(0.5rem, env(safe-area-inset-top, 0px))', paddingBottom: 2 }}>
-        <div className="flex items-center justify-between px-3">
-          {/* Left: Segmented tab control */}
-          <div className="flex rounded-2xl overflow-hidden"
-            style={{
-              background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
-              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'}`,
-            }}>
-            {(['owned', 'unowned'] as const).map(t => {
-              const count = t === 'owned' ? (ownedTeachers.length + ownedPartners.length) : unownedAll.length;
-              const isActive = charTab === t;
-              return (
-                <motion.button key={t} whileTap={{ scale: 0.95 }}
-                  onClick={() => { setCharTab(t); setFlippedCard(null); setFlipOrigin(null); }}
-                  className="px-3.5 py-1.5 font-bold transition-all whitespace-nowrap relative"
-                  style={{
-                    fontSize: 12,
-                    color: isActive
-                      ? (theme === 'dark' ? 'white' : '#1f2937')
-                      : (theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)'),
-                  }}>
-                  {isActive && (
-                    <motion.div layoutId="tab-bg" className="absolute inset-0 rounded-2xl"
-                      style={{
-                        background: theme === 'dark' ? 'rgba(255,255,255,0.1)' : `${effectiveActiveChar.color}15`,
-                        border: `1.5px solid ${theme === 'dark' ? 'rgba(255,255,255,0.12)' : `${effectiveActiveChar.color}25`}`,
-                      }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
-                  )}
-                  <span className="relative z-10">{t === 'owned' ? `已${count}` : `未${count}`}</span>
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {/* Right: Profile + Theme + Activation */}
-          <div className="flex items-center gap-1 flex-shrink-0">
+        {/* Row 1: Right buttons only */}
+        <div className="flex items-center justify-end px-3 mb-1">
+          <div className="flex items-center gap-1">
             <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/')}
               className="w-7 h-7 rounded-full flex items-center justify-center"
               style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' }}>
@@ -1175,42 +1142,76 @@ export default function HomePageV3() {
           </div>
         </div>
 
-        {/* Row 2: Greeting + shipping tip (only for owned tab) */}
-        {charTab === 'owned' && (
-          <div className="px-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  {getGreeting()}，{childName}
-                </h1>
+        {/* Row 2: Greeting (both tabs) + shipping tip */}
+        <div className="px-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                {getGreeting()}，{childName}
+              </h1>
+              {charTab === 'owned' && (
                 <p className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-white/30' : 'text-gray-500'}`}>
                   {isT ? '↑ 上滑切换到小伙伴' : '↓ 下滑切换到 AI 老师'}
                 </p>
-              </div>
-              {/* Shipping address tip — scrolling marquee */}
-              {!hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
-                <motion.button whileTap={{ scale: 0.97 }}
-                  onClick={() => navigate('/shipping-address')}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl flex-shrink-0 max-w-[220px] overflow-hidden"
-                  style={{
-                    background: 'rgba(255,183,0,0.1)',
-                    border: '1px solid rgba(255,183,0,0.2)',
-                  }}>
-                  <span className="text-base flex-shrink-0">🎁</span>
-                  <div className="overflow-hidden flex-1 min-w-0">
-                    <motion.div className="whitespace-nowrap"
-                      animate={{ x: ['0%', '-50%'] }}
-                      transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}>
-                      <span className="text-[11px] font-bold" style={{ color: '#FFB700' }}>
-                        恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;
-                      </span>
-                    </motion.div>
-                  </div>
-                </motion.button>
               )}
             </div>
+            {/* Shipping address tip — scrolling marquee (owned tab only) */}
+            {charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
+              <motion.button whileTap={{ scale: 0.97 }}
+                onClick={() => navigate('/shipping-address')}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl flex-shrink-0 max-w-[220px] overflow-hidden"
+                style={{
+                  background: 'rgba(255,183,0,0.1)',
+                  border: '1px solid rgba(255,183,0,0.2)',
+                }}>
+                <span className="text-base flex-shrink-0">🎁</span>
+                <div className="overflow-hidden flex-1 min-w-0">
+                  <motion.div className="whitespace-nowrap"
+                    animate={{ x: ['0%', '-50%'] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}>
+                    <span className="text-[11px] font-bold" style={{ color: '#FFB700' }}>
+                      恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;
+                    </span>
+                  </motion.div>
+                </div>
+              </motion.button>
+            )}
           </div>
-        )}
+        </div>
+
+        {/* Row 3: Tabs — below greeting, centered */}
+        <div className="flex justify-center px-4 mt-2">
+          <div className="flex rounded-2xl overflow-hidden"
+            style={{
+              background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'}`,
+            }}>
+            {(['owned', 'unowned'] as const).map(t => {
+              const isActive = charTab === t;
+              return (
+                <motion.button key={t} whileTap={{ scale: 0.95 }}
+                  onClick={() => { setCharTab(t); setFlippedCard(null); setFlipOrigin(null); }}
+                  className="px-5 py-1.5 font-bold transition-all whitespace-nowrap relative"
+                  style={{
+                    fontSize: 13,
+                    color: isActive
+                      ? (theme === 'dark' ? 'white' : '#1f2937')
+                      : (theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)'),
+                  }}>
+                  {isActive && (
+                    <motion.div layoutId="tab-bg" className="absolute inset-0 rounded-2xl"
+                      style={{
+                        background: theme === 'dark' ? 'rgba(255,255,255,0.1)' : `${effectiveActiveChar.color}15`,
+                        border: `1.5px solid ${theme === 'dark' ? 'rgba(255,255,255,0.12)' : `${effectiveActiveChar.color}25`}`,
+                      }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
+                  )}
+                  <span className="relative z-10">{t === 'owned' ? '已拥有' : '未拥有'}</span>
+                </motion.button>
+              );
+            })}
+          </div>
+        </div>
       </motion.div>
 
   {/* ===== FROSTED BACKDROP (when card is flipped) ===== */}
@@ -1446,18 +1447,18 @@ export default function HomePageV3() {
           </div>
         );
       })()}
-      {/* Floating back button for unowned tab */}
+      {/* Floating back button for unowned tab — wide, centered, tab-like */}
       {charTab === 'unowned' && hasAnyOwned() && (
         <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setCharTab('owned')}
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-30 px-5 py-2.5 rounded-full font-bold text-sm"
+          className="fixed bottom-20 left-1/2 -translate-x-1/2 z-30 px-8 py-3 rounded-2xl font-bold text-sm"
           style={{
-            background: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
+            background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
             color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)',
-            border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'}`,
+            border: `1.5px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)'}`,
             backdropFilter: 'blur(10px)',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
           }}>
           ← 返回已拥有角色
         </motion.button>
