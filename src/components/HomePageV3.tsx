@@ -1728,9 +1728,9 @@ export default function HomePageV3() {
       </div>
       )}
 
-      {/* ===== BOTTOM BAR — Liquid Glass with mode tint (owned tab only) ===== */}
+      {/* ===== BOTTOM BAR — Fixed floating deep tab (owned tab only) ===== */}
       {charTab === 'owned' && (
-      <div className="flex-shrink-0 relative z-20"
+      <div className="fixed bottom-0 left-0 right-0 z-30"
         style={{
           paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))', paddingTop: 10,
           background: theme === 'dark'
