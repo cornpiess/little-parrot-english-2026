@@ -376,7 +376,7 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
       onSelect(chars[ci].id);
     } else if (t.dir === 'v') {
       const dy = e.clientY - t.startY;
-      if (Math.abs(dy) > 30 && onVerticalSwipe) {
+      if (Math.abs(dy) > 15 && onVerticalSwipe) {
         onVerticalSwipe(dy < 0 ? 'up' : 'down');
       }
     }
@@ -1167,14 +1167,6 @@ export default function HomePageV3() {
         {charTab === 'owned' && (
           <div className="px-5">
             <div className="flex items-center gap-2 mb-1">
-              {/* Mode indicator */}
-              <motion.div layout className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-                style={{ background: `${effectiveActiveChar.color}20`, border: `1px solid ${effectiveActiveChar.color}30` }}>
-                <motion.div className="w-1.5 h-1.5 rounded-full" animate={{ background: effectiveActiveChar.color }} />
-                <span className="text-[10px] font-bold" style={{ color: effectiveActiveChar.color }}>
-                  {isT ? 'AI 老师' : 'AI 伙伴'}
-                </span>
-              </motion.div>
               {(() => {
                 const progress = getLearningProgress();
                 if (progress.wordsLearned === 0 && progress.streakDays === 0) return null;
@@ -1268,23 +1260,34 @@ export default function HomePageV3() {
     })()}
   </AnimatePresence>
 
-  {/* ===== VERTICAL SWIPE (right edge strip, owned tab only) ===== */}
+  {/* ===== VERTICAL SWIPE (left + right edge strips, owned tab only) ===== */}
   {charTab === 'owned' && (
-  <div className="fixed right-0 top-0 bottom-0 z-40 pointer-events-auto"
-    style={{ width: 64, touchAction: 'none' }}
+  <>
+  {/* Right edge strip */}
+  <div className="fixed right-0 z-40 pointer-events-auto"
+    style={{ width: 48, top: 'max(4rem, env(safe-area-inset-top, 3rem))', bottom: 'max(6rem, env(safe-area-inset-bottom, 5rem))', touchAction: 'none' }}
     onPointerDown={onStripPointerDown}
     onPointerMove={onStripPointerMove}
     onPointerUp={onStripPointerUp}
     onPointerCancel={onStripPointerUp}>
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 pointer-events-none">
-      <motion.div className="w-1 h-8 rounded-full"
+      <motion.div className="w-1 h-6 rounded-full"
         animate={{ background: isT ? aT.color : 'rgba(255,255,255,0.08)', opacity: isT ? 0.6 : 0.2 }}
         transition={{ duration: 0.3 }} />
-      <motion.div className="w-1 h-8 rounded-full"
+      <motion.div className="w-1 h-6 rounded-full"
         animate={{ background: !isT ? aP.color : 'rgba(255,255,255,0.08)', opacity: !isT ? 0.6 : 0.2 }}
         transition={{ duration: 0.3 }} />
     </div>
   </div>
+  {/* Left edge strip */}
+  <div className="fixed left-0 z-40 pointer-events-auto"
+    style={{ width: 48, top: 'max(4rem, env(safe-area-inset-top, 3rem))', bottom: 'max(6rem, env(safe-area-inset-bottom, 5rem))', touchAction: 'none' }}
+    onPointerDown={onStripPointerDown}
+    onPointerMove={onStripPointerMove}
+    onPointerUp={onStripPointerUp}
+    onPointerCancel={onStripPointerUp}>
+  </div>
+  </>
   )}
 
       {/* ===== OWNED TAB: Carousel ===== */}
@@ -1402,6 +1405,7 @@ export default function HomePageV3() {
                       {chars.length}个
                     </span>
                   </div>
+
                   <div className="grid grid-cols-2 gap-3 w-full">
                     {chars.map((c, i) => (
                       <motion.div key={c.id}
@@ -1448,6 +1452,19 @@ export default function HomePageV3() {
                 </div>
               );
             })}
+            {/* Back to owned tab button */}
+            {hasAnyOwned() && (
+              <motion.button whileTap={{ scale: 0.95 }}
+                onClick={() => setCharTab('owned')}
+                className="w-full py-3 rounded-2xl font-bold text-sm mt-2 mb-4"
+                style={{
+                  background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+                  color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)',
+                  border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
+                }}>
+                ← 返回已拥有角色
+              </motion.button>
+            )}
           </div>
         );
       })()}
