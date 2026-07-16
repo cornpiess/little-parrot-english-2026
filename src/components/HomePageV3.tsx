@@ -1308,9 +1308,9 @@ export default function HomePageV3() {
               : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
             border: `1.5px solid ${recChar.color}25`,
           }}>
-          <div className="w-20 h-24 rounded-xl flex-shrink-0 flex items-center justify-center overflow-visible"
+          <div className="w-20 h-24 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden"
             style={{ background: `${recChar.color}10` }}>
-            {recChar.component ? <div className="transform scale-60 origin-center">{recChar.component}</div> : recChar.image ? (
+            {recChar.component ? <div className="transform scale-[0.45] origin-center">{recChar.component}</div> : recChar.image ? (
               <img src={recChar.image} alt={recChar.name} className="w-full h-full object-contain" />
             ) : null}
           </div>
