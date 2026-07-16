@@ -1333,7 +1333,7 @@ export default function HomePageV3() {
     return (
       <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
         {/* Fixed recommendation card + purchase button */}
-        <div className="flex-shrink-0 px-5 pt-2 pb-3">
+        <div className="px-5 pt-2 pb-3">
           {compareText && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               className="text-center text-[11px] mb-3 px-4"
@@ -1342,7 +1342,7 @@ export default function HomePageV3() {
             </motion.p>
           )}
 
-          {/* Character card — compact height */}
+          {/* Character card — adaptive height */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="rounded-3xl p-3 mb-3 flex gap-3 relative"
@@ -1351,7 +1351,6 @@ export default function HomePageV3() {
                 ? `linear-gradient(135deg, ${recChar.color}10, rgba(15,15,25,0.9))`
                 : `linear-gradient(135deg, ${recChar.color}08, rgba(255,255,255,0.95))`,
               border: `1.5px solid ${recChar.color}25`,
-              maxHeight: 120,
             }}>
             {/* AI 推荐角标 */}
             <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-bold z-10"
