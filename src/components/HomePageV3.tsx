@@ -908,6 +908,7 @@ export default function HomePageV3() {
   const [trialStates, setTrialStates] = useState<Record<string, CharacterState>>({});
   const [purchaseModal, setPurchaseModal] = useState<{ char: Character } | null>(null);
   const [autoRenew, setAutoRenew] = useState(true);
+  const [voiceRecording, setVoiceRecording] = useState(false);
   const [charTab, setCharTab] = useState<'owned' | 'unowned'>(() => hasAnyOwned() ? 'owned' : 'unowned');
 
   const switchFocus = (target: 'teacher' | 'partner') => {
@@ -1235,6 +1236,8 @@ export default function HomePageV3() {
   {(() => {
     const phase = getRecommendationPhase();
     if (phase === 'voice') return null; // No recommendation overlay when user has both
+    // Only show recommendation in unowned tab or when no characters owned
+    if (hasAnyOwned() && charTab === 'owned') return null;
 
     const allChars = [...TEACHERS, ...PARTNERS];
     const onboardingData = getOnboardingData();
@@ -1560,14 +1563,14 @@ export default function HomePageV3() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
-                      告诉 AI 你的需求
+                      获取个性化角色推荐
                     </p>
                     <p className="text-[11px] mt-0.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>
-                      和 AI 讲讲宝贝的情况，获取个性化推荐
+                      和 AI 讲讲宝贝的情况，推荐专属角色
                     </p>
                   </div>
                   <motion.button whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate('/ai-parrot')}
+                    onClick={() => setVoiceRecording(true)}
                     className="px-4 py-2 rounded-xl font-bold text-xs text-white flex-shrink-0"
                     style={{ background: 'linear-gradient(135deg, #58CC02, #58CC02CC)' }}>
                     开始对话
@@ -2050,6 +2053,61 @@ export default function HomePageV3() {
           重置为新用户
         </span>
       </motion.button>
+
+      {/* ===== VOICE RECORDING MODAL ===== */}
+      <AnimatePresence>
+        {voiceRecording && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[250] flex items-center justify-center"
+            onClick={() => setVoiceRecording(false)}>
+            <div className="absolute inset-0 bg-black/60" />
+            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-64 rounded-3xl p-8 text-center"
+              style={{
+                background: theme === 'dark' ? 'rgba(20,20,30,0.95)' : 'rgba(255,255,255,0.95)',
+                border: `2px solid ${theme === 'dark' ? 'rgba(88,204,2,0.3)' : 'rgba(88,204,2,0.2)'}`,
+                boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
+              }}>
+              {/* Recording animation */}
+              <div className="relative w-20 h-20 mx-auto mb-4">
+                <motion.div className="absolute inset-0 rounded-full"
+                  style={{ background: 'rgba(88,204,2,0.15)' }}
+                  animate={{ scale: [1, 1.4, 1], opacity: [0.5, 0.2, 0.5] }}
+                  transition={{ duration: 1.5, repeat: Infinity }} />
+                <motion.div className="absolute inset-2 rounded-full"
+                  style={{ background: 'rgba(88,204,2,0.25)' }}
+                  animate={{ scale: [1, 1.2, 1], opacity: [0.6, 0.3, 0.6] }}
+                  transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <motion.div className="w-12 h-12 rounded-full flex items-center justify-center"
+                    style={{ background: '#58CC02' }}
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 0.8, repeat: Infinity }}>
+                    <Mic className="w-6 h-6 text-white" />
+                  </motion.div>
+                </div>
+              </div>
+              <p className="text-sm font-bold mb-1" style={{ color: theme === 'dark' ? 'white' : '#1f2937' }}>
+                正在聆听...
+              </p>
+              <p className="text-[11px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>
+                请告诉 AI 宝贝的学习需求
+              </p>
+              <motion.button whileTap={{ scale: 0.95 }}
+                onClick={() => setVoiceRecording(false)}
+                className="mt-4 px-6 py-2 rounded-xl text-xs font-bold"
+                style={{
+                  background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+                  color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)',
+                }}>
+                取消
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
