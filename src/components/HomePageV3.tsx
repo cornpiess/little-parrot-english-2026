@@ -1670,10 +1670,10 @@ export default function HomePageV3() {
 
       {/* ===== SHIPPING ADDRESS TIP — above highlights ===== */}
       {hasAnyOwned() && charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
-        <div className="flex-shrink-0 relative z-20 px-4 pb-2">
+        <div className="flex-shrink-0 relative z-20 px-4 pb-1">
           <motion.button whileTap={{ scale: 0.97 }}
             onClick={() => navigate('/shipping-address')}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl overflow-hidden w-full"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl overflow-hidden w-full"
             style={{
               background: 'rgba(255,183,0,0.1)',
               border: '1.5px solid rgba(255,183,0,0.25)',
@@ -1694,7 +1694,7 @@ export default function HomePageV3() {
 
       {/* ===== ENGINE HIGHLIGHTS — 4 selling points (owned tab only) ===== */}
       {!flippedCard && charTab === 'owned' && (
-      <div className="flex-shrink-0 relative z-30 px-4 pb-6">
+      <div className="flex-shrink-0 relative z-30 px-4 pb-8">
         <div className="flex gap-2 justify-center max-w-sm mx-auto">
           {ENGINE_HIGHLIGHTS.map((h, i) => {
             const status = engineStatus[i];
