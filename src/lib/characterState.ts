@@ -146,7 +146,7 @@ export function getRecommendedCharId(): string {
   const gender = data.gender;
   // Map target language to recommended character
   const recommendations: Record<string, string[]> = {
-    english: gender === 'girl' ? ['parrot', 'olaf', 'deer'] : ['fox', 'parrot', 'einstein'],
+    english: ['parrot', 'fox', 'olaf', 'einstein', 'deer'],
     japanese: ['xizi'],
     portuguese: ['bull'],
     arabic: ['bred'],
