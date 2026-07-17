@@ -95,8 +95,8 @@ function useTapDetector(onTap: () => void) {
   useEffect(() => {
     const handler = () => { onTap(); };
     window.addEventListener('click', handler);
-    window.addEventListener('touchstart', handler);
-    return () => { window.removeEventListener('click', handler); window.removeEventListener('touchstart', handler); };
+    window.addEventListener('touchend', handler);
+    return () => { window.removeEventListener('click', handler); window.removeEventListener('touchend', handler); };
   }, [onTap]);
 }
 
@@ -1041,8 +1041,9 @@ function WorldIntroScene({ onComplete }: { onComplete: () => void }) {
     : { y: { duration: 2, repeat: Infinity, ease: 'easeInOut' } };
 
   return (
-    <div className="min-h-screen flex flex-col relative" style={{ background: 'linear-gradient(180deg, #0d1b2a, #1b2838)' }}
-      onClick={startIntro}>
+    <div className="min-h-screen flex flex-col relative" style={{ background: 'linear-gradient(180deg, #0d1b2a, #1b2838)', WebkitTapHighlightColor: 'transparent' }}
+      onClick={startIntro}
+      onTouchEnd={(e) => { e.preventDefault(); startIntro(); }}>
       <div className="flex-1 flex flex-col items-center justify-center px-6">
           {phase === 'start' && (
             <motion.div key="start" className="text-center space-y-6"
