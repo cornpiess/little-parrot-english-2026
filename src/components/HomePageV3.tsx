@@ -971,29 +971,45 @@ export default function HomePageV3() {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle newly activated character — auto-navigate to adventure
+  // Handle newly activated character — open SpinCard on home page
   useEffect(() => {
     if (!newlyActivated) return;
     // Select the new character
     const isPartner = PARTNERS.some(p => p.id === newlyActivated);
     if (isPartner) {
+      setFocus('partner');
+      setSlideDir('down');
       setSelPartner(newlyActivated);
       localStorage.setItem('homev3_selPartner', newlyActivated);
+      localStorage.setItem('homev3_focus', 'partner');
     } else {
+      setFocus('teacher');
+      setSlideDir('up');
       setSelTeacher(newlyActivated);
       localStorage.setItem('homev3_selTeacher', newlyActivated);
+      localStorage.setItem('homev3_focus', 'teacher');
     }
     // Jump to owned tab
     setCharTab('owned');
-    // Auto-navigate to adventure after a short delay
+    // Open SpinCard after a short delay
     const t = setTimeout(() => {
-      setNewlyActivated(null);
-      localStorage.removeItem('homev3_newlyActivated');
-      navigate(`/adventure?character=${newlyActivated}`);
-    }, 800);
+      setFlippedCard(newlyActivated);
+      setFlipOrigin({ x: window.innerWidth / 2 - 150, y: window.innerHeight * 0.12, w: 300, h: 420 });
+    }, 400);
     return () => clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run only on mount
+
+  // Clear newlyActivated when SpinCard is dismissed
+  const prevFlippedRef = useRef(flippedCard);
+  useEffect(() => {
+    const prev = prevFlippedRef.current;
+    prevFlippedRef.current = flippedCard;
+    if (newlyActivated && prev === newlyActivated && flippedCard === null) {
+      setNewlyActivated(null);
+      localStorage.removeItem('homev3_newlyActivated');
+    }
+  }, [flippedCard, newlyActivated]);
 
   // Learning session — begin/end when SpinCard opens/closes for trial characters
   useEffect(() => {
@@ -1190,7 +1206,7 @@ export default function HomePageV3() {
             {getGreeting()}，{childName}
           </h1>
           <div className="flex items-center gap-1 flex-shrink-0">
-            <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/')}
+            <motion.button whileTap={{ scale: 0.92 }} onClick={() => navigate('/onboarding')}
               className="w-7 h-7 rounded-full flex items-center justify-center"
               style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
