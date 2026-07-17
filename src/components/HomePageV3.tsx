@@ -1438,7 +1438,12 @@ export default function HomePageV3() {
             { label: '十万个为什么', icon: <HelpCircle className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate(`/why?teacher=${flippedCard}`); } },
           ] : [
             { label: '一起冒险', icon: <Sparkles className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate('/adventure'); } },
-            { label: '一起玩耍', icon: <Users className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate('/ai-parrot'); } },
+            { label: '一起玩耍', icon: <Users className="w-4 h-4" />, onClick: () => {
+              const charId = flippedCard || 'parrot';
+              if (flippedCard) addBondExp(flippedCard, 10);
+              setFlippedCard(null); setFlipOrigin(null);
+              navigate(`/ai-parrot?character=${charId}`);
+            } },
           ]}
         />
       );
@@ -1804,7 +1809,7 @@ export default function HomePageV3() {
                   }}>
                   <Sparkles className="w-4 h-4" /> 一起冒险
                 </motion.button>
-                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(effectiveActiveChar.id, 10); navigate('/ai-parrot'); }}
+                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(effectiveActiveChar.id, 10); navigate(`/ai-parrot?character=${effectiveActiveChar.id}`); }}
                   className="flex-1 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"
                   style={{
                     background: `${effectiveActiveChar.color}15`,

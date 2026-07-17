@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, PanInfo } from 'motion/react';
 import { X, Mic, Palette, BookOpen, Film, Music, Theater, Gamepad2, Volume2, Sparkles, Loader2, Camera, Users, UserCircle, ArrowLeft, Languages } from 'lucide-react';
 import AICharacter, { getCharacterName } from './AICharacter';
@@ -1012,8 +1012,17 @@ function ModuleContainer({ module, onClose }: { module: ModuleInfo; onClose: () 
 
 // ========== Main AI Teacher Mode ==========
 export default function AITeacherMode({ onClose, childName: childNameProp }: AITeacherModeProps) {
+  const [searchParams] = useSearchParams();
   const [childName, setChildNameState] = useState(childNameProp || '小朋友');
-  
+
+  // Set character from URL param
+  useEffect(() => {
+    const charParam = searchParams.get('character');
+    if (charParam) {
+      localStorage.setItem('selected_character', charParam);
+    }
+  }, [searchParams]);
+
   useEffect(() => {
     if (!childNameProp) {
       const stored = localStorage.getItem('child_name');
