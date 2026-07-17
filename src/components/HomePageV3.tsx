@@ -1694,15 +1694,15 @@ export default function HomePageV3() {
 
       {/* ===== ENGINE HIGHLIGHTS — 4 selling points (owned tab only) ===== */}
       {!flippedCard && charTab === 'owned' && (
-      <div className="flex-shrink-0 relative z-30 px-4 pb-2">
-        <div className="flex gap-2">
+      <div className="flex-shrink-0 relative z-30 px-4 pb-4">
+        <div className="flex gap-2 justify-center max-w-md mx-auto">
           {ENGINE_HIGHLIGHTS.map((h, i) => {
             const status = engineStatus[i];
             const isLoading = status === 'loading';
             const isDone = status === 'done';
             return (
             <motion.button key={i} whileTap={{ scale: 0.96 }} onClick={() => setActiveHighlight(i)}
-              className="flex-1 aspect-square rounded-2xl p-2 flex flex-col items-center justify-center gap-0.5 text-center cursor-pointer"
+              className="flex-1 max-w-[72px] aspect-square rounded-2xl p-2 flex flex-col items-center justify-center gap-0.5 text-center cursor-pointer"
               style={{
                 background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.6)',
                 border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
