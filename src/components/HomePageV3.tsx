@@ -928,6 +928,7 @@ export default function HomePageV3() {
   const [trialStates, setTrialStates] = useState<Record<string, CharacterState>>({});
   const [purchaseModal, setPurchaseModal] = useState<{ char: Character } | null>(null);
   const [autoRenew, setAutoRenew] = useState(true);
+  const [paymentState, setPaymentState] = useState<'idle' | 'paying' | 'success'>('idle');
   const [charTab, setCharTab] = useState<'owned' | 'unowned'>(() => hasAnyOwned() ? 'owned' : 'unowned');
 
   const switchFocus = (target: 'teacher' | 'partner') => {
@@ -1332,7 +1333,7 @@ export default function HomePageV3() {
             border: `1.5px solid ${recChar.color}25`,
           }}>
           {/* AI 推荐角标 */}
-          <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-bold z-10"
+          <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-bold z-10"
             style={{ background: 'rgba(88,204,2,0.9)', color: 'white' }}>
             AI 推荐
           </div>
@@ -1385,7 +1386,7 @@ export default function HomePageV3() {
               <span className="text-2xl font-extrabold" style={{ color: recChar.color }}>¥8.99</span>
               <span className="text-[10px]" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)' }}>解锁</span>
               <span className="text-[10px] ml-auto" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
-                🎁 送实体卡片
+                🎁 送实体卡片/玩具
               </span>
             </div>
           </div>
@@ -2007,34 +2008,57 @@ export default function HomePageV3() {
 
                 {/* Section 4: CTA */}
                 <div className="px-5">
-                  <motion.button whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      subscribeCharacter(c.id);
-                      if (autoRenew) {
-                        setAutoRenewState(c.id, true);
-                        markPhysicalCardSent(c.id);
-                      }
-                      setPurchaseModal(null);
-                      // Jump to owned tab and select this character
-                      const isTeacherChar = TEACHERS.some(t => t.id === c.id);
-                      if (isTeacherChar) {
-                        setSelTeacher(c.id);
-                        setFocus('teacher');
-                        setSlideDir('up');
-                      } else {
-                        setSelPartner(c.id);
-                        setFocus('partner');
-                        setSlideDir('down');
-                      }
-                      setCharTab('owned');
-                    }}
-                    className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
-                    style={{
-                      background: `linear-gradient(135deg, ${c.color}, ${c.color}CC)`,
-                      boxShadow: `0 8px 32px ${c.color}40`,
-                    }}>
-                    {!hasAnyOwned() ? `¥8.99 解锁 ${c.name}` : `¥${promo}/月 立即订阅 ${c.name}`}
-                  </motion.button>
+                  {paymentState === 'idle' ? (
+                    <motion.button whileTap={{ scale: 0.95 }}
+                      onClick={() => {
+                        setPaymentState('paying');
+                        setTimeout(() => {
+                          subscribeCharacter(c.id);
+                          if (autoRenew) {
+                            setAutoRenewState(c.id, true);
+                            markPhysicalCardSent(c.id);
+                          }
+                          setPaymentState('success');
+                          setTimeout(() => {
+                            setPaymentState('idle');
+                            setPurchaseModal(null);
+                            const isTeacherChar = TEACHERS.some(t => t.id === c.id);
+                            if (isTeacherChar) {
+                              setSelTeacher(c.id);
+                              setFocus('teacher');
+                              setSlideDir('up');
+                            } else {
+                              setSelPartner(c.id);
+                              setFocus('partner');
+                              setSlideDir('down');
+                            }
+                            setCharTab('owned');
+                          }, 1000);
+                        }, 1500);
+                      }}
+                      className="w-full py-3.5 rounded-2xl font-bold text-white text-sm"
+                      style={{
+                        background: `linear-gradient(135deg, ${c.color}, ${c.color}CC)`,
+                        boxShadow: `0 8px 32px ${c.color}40`,
+                      }}>
+                      {!hasAnyOwned() ? `¥8.99 解锁 ${c.name}` : `¥${promo}/月 立即订阅 ${c.name}`}
+                    </motion.button>
+                  ) : paymentState === 'paying' ? (
+                    <div className="w-full py-3.5 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"
+                      style={{ background: `${c.color}20`, color: c.color }}>
+                      <motion.div className="w-4 h-4 rounded-full border-2 border-current"
+                        style={{ borderColor: `${c.color}40`, borderTopColor: c.color }}
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} />
+                      支付中...
+                    </div>
+                  ) : (
+                    <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}
+                      className="w-full py-3.5 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"
+                      style={{ background: '#58CC0220', color: '#58CC02' }}>
+                      <Check className="w-4 h-4" /> 支付成功
+                    </motion.div>
+                  )}
                   <p className="text-center text-[9px] mt-2" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)' }}>
                     订阅即同意《服务协议》和《隐私政策》
                   </p>
