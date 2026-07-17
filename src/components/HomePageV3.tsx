@@ -1285,7 +1285,7 @@ export default function HomePageV3() {
     const isTeacher = TEACHERS.some(t => t.id === recId);
 
     return (
-      <div className="flex-1 px-5 pt-2 pb-8 relative z-10 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex-1 px-5 pt-2 pb-8 relative z-10" style={{ scrollbarWidth: 'none' }}>
         {/*
           ═══════════════════════════════════════════════════════
           TEAM NOTE: 用户到达此页面前已经历的流程：
@@ -1321,9 +1321,9 @@ export default function HomePageV3() {
             AI 推荐
           </div>
           {/* Character image — adaptive height */}
-          <div className="w-20 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden self-start"
-            style={{ background: `${recChar.color}10`, minHeight: 80 }}>
-            {recChar.component ? <div className="transform scale-[0.42] origin-center">{recChar.component}</div> : recChar.image ? (
+          <div className="w-28 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden self-start"
+            style={{ background: `${recChar.color}10`, minHeight: 90 }}>
+            {recChar.component ? <div className="transform scale-[0.55] origin-center">{recChar.component}</div> : recChar.image ? (
               <img src={recChar.image} alt={recChar.name} className="w-full h-auto object-contain" />
             ) : null}
           </div>
