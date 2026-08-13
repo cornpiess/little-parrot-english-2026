@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import ParrotCharacter from './ParrotCharacter';
 import FoxCharacter from './FoxCharacter';
 import OlafCharacter from './OlafCharacter';
@@ -41,7 +40,7 @@ interface MascotProps {
 }
 
 export default function Mascot({ state, size = 1, character, onWakeUp, held, looking = true }: MascotProps) {
-  const id = useMemo<MascotId>(() => character ?? getMascotId(), [character]);
+  const id: MascotId = character ?? getMascotId();
   if (id === 'fox') return <FoxCharacter state={state} size={size} onWakeUp={onWakeUp} held={held} looking={looking} />;
   if (id === 'olaf') return <OlafCharacter state={state} size={size} held={held} looking={looking} />;
   if (id === 'dino') return <DinoCharacter state={state} size={size} onWakeUp={onWakeUp} held={held} looking={looking} />;

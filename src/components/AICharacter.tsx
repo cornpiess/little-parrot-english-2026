@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import Mascot, { getMascotId, type MascotId } from './Mascot';
 import type { MascotState } from './ParrotCharacter';
 
@@ -16,9 +15,12 @@ interface AICharacterProps {
 /**
  * Wrapper that renders any mascot (parrot/fox/olaf/dino) based on the
  * `character` prop or localStorage('selected_character').
+ *
+ * 注意：不用 useMemo 缓存角色 id。AITeacherMode 会在渲染期间同步写入
+ * localStorage（首帧就需要正确角色），若这里缓存，切换角色后不会刷新。
  */
 export default function AICharacter({ state, size, onWakeUp, character, held, looking }: AICharacterProps) {
-  const id = useMemo<MascotId>(() => character ?? getMascotId(), [character]);
+  const id: MascotId = character ?? getMascotId();
   return <Mascot state={state} size={size} onWakeUp={onWakeUp} character={id} held={held} looking={looking} />;
 }
 

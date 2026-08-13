@@ -47,7 +47,7 @@ export function ParrotChoice({ onChoose }: Props) {
       exit={{ opacity: 0, x: -300 }}
       transition={{ duration: 0.4 }}
     >
-      <div className="relative min-h-full flex flex-col items-center justify-center px-5 py-6">
+      <div className="relative min-h-full flex flex-col items-center justify-center px-5 py-6 portrait:justify-start portrait:pt-60">
         <motion.div
           initial={{ y: 16, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

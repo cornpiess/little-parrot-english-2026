@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import Mascot from '../../../components/Mascot';
@@ -27,9 +27,17 @@ interface ChatNode {
   held?: string; // 提问时小鸟手里拿的东西（如 🍎）
 }
 
+// 打招呼开场白：不同角色用各自的自我介绍（幼儿靠声音 + 大图标区分角色）
+const GREETING_LINES: Record<'parrot' | 'fox' | 'olaf' | 'dino', string> = {
+  parrot: 'Hello there, friend! I am Little Parrot. Who are you?',
+  fox: 'Hi hi, friend! I am Little Fox. Who are you?',
+  olaf: 'Hello, friend! I am Olaf, the happy snowman. Who are you?',
+  dino: 'Roar! I am a little dinosaur. Who are you?',
+};
+
 const chatFlow: ChatNode[] = [
   {
-    q: 'Hello there, friend! I am Little Parrot. Who are you?',
+    q: GREETING_LINES.parrot,
     emotion: 'greeting',
     hint: 'Tap to say hi!',
     buttons: [
@@ -168,7 +176,7 @@ function Farewell({ world, onDone, character = 'parrot' }: { world: 'dino' | 'an
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <div className="min-h-full flex flex-col items-center justify-center py-6 w-full max-w-md">
+      <div className="min-h-full flex flex-col items-center justify-center py-6 w-full max-w-md portrait:justify-start portrait:pt-60">
         {/* 小鹦鹉（情绪由它自己表现） */}
         <motion.div
           animate={{ y: [0, -12, 0] }}
@@ -260,6 +268,13 @@ function ChatGreeting({ onDone, character = 'parrot' }: { onDone: () => void; ch
   const [chatEmoji, setChatEmoji] = useState('');
   const [held, setHeld] = useState<string | undefined>();
 
+  // 第一个问题用当前角色的自我介绍
+  const flow: ChatNode[] = useMemo(() => {
+    if (chatFlow.length === 0) return [];
+    const first = { ...chatFlow[0], q: GREETING_LINES[character] ?? GREETING_LINES.parrot };
+    return [first, ...chatFlow.slice(1)];
+  }, [character]);
+
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const later = (fn: () => void, ms: number) => {
     const t = setTimeout(fn, ms);
@@ -276,8 +291,8 @@ function ChatGreeting({ onDone, character = 'parrot' }: { onDone: () => void; ch
   // 聊天问答
   useEffect(() => {
     if (phase !== 'qa') return;
-    if (chatIndex < chatFlow.length) {
-      const node = chatFlow[chatIndex];
+    if (chatIndex < flow.length) {
+      const node = flow[chatIndex];
       setChatText(node.q);
       setChatHint(node.hint);
       setChatEmoji('');
@@ -298,10 +313,10 @@ function ChatGreeting({ onDone, character = 'parrot' }: { onDone: () => void; ch
       setChatEmoji('🚀');
       sayLines(['Ready! Let us go and find adventure!'], () => setPhase('done'));
     }
-  }, [phase, chatIndex, sayLines, setParrot]);
+  }, [phase, chatIndex, sayLines, setParrot, flow]);
 
   const handleChildAnswer = (isYes: boolean) => {
-    if (phase !== 'qa' || chatIndex >= chatFlow.length) return;
+    if (phase !== 'qa' || chatIndex >= flow.length) return;
     const resp = isYes ? node.yes : node.alt;
     timersRef.current.forEach(clearTimeout);
     timersRef.current = [];
@@ -318,7 +333,7 @@ function ChatGreeting({ onDone, character = 'parrot' }: { onDone: () => void; ch
     }, 1100);
   };
 
-  const node = phase === 'qa' && chatIndex < chatFlow.length ? chatFlow[chatIndex] : null;
+  const node = phase === 'qa' && chatIndex < flow.length ? flow[chatIndex] : null;
 
   return (
     <motion.div
@@ -353,7 +368,7 @@ function ChatGreeting({ onDone, character = 'parrot' }: { onDone: () => void; ch
         ))}
       </div>
 
-      <div className="relative min-h-full flex flex-col items-center justify-center px-4 py-6">
+      <div className="relative min-h-full flex flex-col items-center justify-center px-4 py-6 portrait:justify-start portrait:pt-60">
         <motion.div
           initial={{ y: 100, opacity: 0, scale: 0.8 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}

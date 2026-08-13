@@ -119,9 +119,10 @@ export default function ParrotDinoAdventure() {
 
   // 产品特色：任意角色（小鹦鹉/小狐狸/雪宝/小恐龙）都能带领学习。
   // 进入冒险前把 ?character=xxx 写入 localStorage，整条课程都用该角色。
+  const charParam = searchParams.get('character');
   const character: MascotId =
-    searchParams.get('character') === 'fox' || searchParams.get('character') === 'olaf' || searchParams.get('character') === 'dino'
-      ? searchParams.get('character') as MascotId
+    charParam === 'fox' || charParam === 'olaf' || charParam === 'dino' || charParam === 'parrot'
+      ? charParam as MascotId
       : getMascotId();
   useEffect(() => {
     localStorage.setItem('selected_character', character);
@@ -175,13 +176,18 @@ export default function ParrotDinoAdventure() {
     step === 'pick' || step === 'travel' ||
     step === 'adventure';
   const isColorAdventure = step === 'adventure' && world === 'color';
+  // 竖屏下，把摄像头+伙伴座挪到屏幕顶部，腾出下半屏给选择按钮（幼儿点选大按钮）。
+  // 飞行/冒险阶段仍放在左下角（沉浸式驾驶舱）；打招呼/选目的地/告别才需要竖屏避让。
+  const seatsOnTop =
+    step === 'greet' || step === 'pick' || step === 'farewell';
+  const seatsClass = seatsOnTop
+    ? 'portrait:top-20 portrait:bottom-auto'
+    : '';
   // 前置「舷窗」装饰：根据目的地世界切换成 飞船驾驶舱 / 缩小服 氛围框
   const hudTheme: 'cockpit' | 'shrink' | null =
     step === 'travel' && world === 'dino' ? 'cockpit' :
     step === 'travel' && world === 'ant' ? 'shrink' : null;
   const windshieldStyle: React.CSSProperties = {
-    left: 16,
-    bottom: 16,
     width: 150,
     height: 150,
     borderColor: 'rgba(255,255,255,0.6)',
@@ -212,7 +218,7 @@ export default function ParrotDinoAdventure() {
 
       {/* 常驻「组长」摄像头 HUD（永不卸载） */}
       <div
-        className="fixed z-40 overflow-hidden rounded-2xl shadow-lg"
+        className={`fixed z-40 overflow-hidden rounded-2xl shadow-lg left-4 bottom-4 ${seatsClass}`}
         style={{ ...windshieldStyle, background: '#222', border: '3px solid rgba(255,255,255,0.6)' }}
       >
         <video
@@ -249,8 +255,8 @@ export default function ParrotDinoAdventure() {
           和摄像头一样是正方形，避免角色被上下裁切。 */}
       {companionOn && (
         <div
-          className="fixed z-40 rounded-2xl shadow-lg overflow-hidden border-[3px] border-white/70"
-          style={{ left: 174, bottom: 16, width: 150, height: 150, background: 'linear-gradient(160deg,#6A1B9A,#4A148C)' }}
+          className={`fixed z-40 rounded-2xl shadow-lg overflow-hidden border-[3px] border-white/70 left-[174px] bottom-4 ${seatsClass}`}
+          style={{ width: 150, height: 150, background: 'linear-gradient(160deg,#6A1B9A,#4A148C)' }}
         >
           {isColorAdventure
             ? <LiveParrotSeat fallback="wave" character={character} />

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, PanInfo } from 'motion/react';
 import { X, Mic, Palette, BookOpen, Film, Music, Theater, Gamepad2, Volume2, Sparkles, Loader2, Camera, Users, UserCircle, ArrowLeft, Languages } from 'lucide-react';
 import AICharacter, { getCharacterName } from './AICharacter';
+import { getMascotId, type MascotId } from './Mascot';
 
 type ParrotState = 'idle' | 'listening' | 'thinking' | 'speaking' | 'sleeping';
 type ConversationState = 'listening' | 'thinking' | 'speaking';
@@ -32,6 +33,9 @@ const STATUS_LABELS: Record<ParrotState, string> = {
   speaking: `${getCharacterName()}说…`,
   sleeping: '休息中… 点我唤醒',
 };
+
+/** 说话状态标签：角色名在渲染时读取（随当前角色变化） */
+const SPEAKING_LABEL = () => `${getCharacterName()}说…`;
 
 const STATUS_COLORS: Record<ParrotState, string> = {
   idle: 'hsla(199, 92%, 54%, 0.8)',
@@ -1015,13 +1019,19 @@ export default function AITeacherMode({ onClose, childName: childNameProp }: AIT
   const [searchParams] = useSearchParams();
   const [childName, setChildNameState] = useState(childNameProp || '小朋友');
 
-  // Set character from URL param
+  // 从 URL 参数同步解析当前角色（不能用 useEffect：AICharacter 在首帧就渲染，
+  // 若先渲染再写 localStorage，首帧会显示上一次的角色）。
+  const charParam = searchParams.get('character');
+  const character: MascotId =
+    charParam === 'fox' || charParam === 'olaf' || charParam === 'dino' || charParam === 'parrot'
+      ? (charParam as MascotId)
+      : getMascotId();
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('selected_character', character);
+  }
   useEffect(() => {
-    const charParam = searchParams.get('character');
-    if (charParam) {
-      localStorage.setItem('selected_character', charParam);
-    }
-  }, [searchParams]);
+    localStorage.setItem('selected_character', character);
+  }, [character]);
 
   useEffect(() => {
     if (!childNameProp) {
@@ -1241,7 +1251,7 @@ export default function AITeacherMode({ onClose, childName: childNameProp }: AIT
             </motion.div>
 
             <motion.div key={parrotState} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="mt-4">
-              <span className="text-sm font-semibold text-muted-foreground">{STATUS_LABELS[parrotState]}</span>
+              <span className="text-sm font-semibold text-muted-foreground">{parrotState === 'speaking' ? SPEAKING_LABEL() : STATUS_LABELS[parrotState]}</span>
             </motion.div>
           </motion.div>
         )}
