@@ -88,6 +88,43 @@ function CockpitShrinkFrame({ theme }: { theme: 'cockpit' | 'shrink' | null }) {
   return null;
 }
 
+// 伙伴座底色：跟随角色主题色。
+function seatBg(character: MascotId): string {
+  switch (character) {
+    case 'fox': return 'linear-gradient(160deg,#FF8A65,#D84315)';
+    case 'olaf': return 'linear-gradient(160deg,#4FC3F7,#0277BD)';
+    case 'dino': return 'linear-gradient(160deg,#66BB6A,#2E7D32)';
+    default: return 'linear-gradient(160deg,#FFCA28,#F57C00)';
+  }
+}
+
+// ============================================================
+// 双座舱带背景：跟随「角色 + 场景」变化，避免全场都是黄色。
+//  - greet/pick：按当前角色主题色（鹦鹉暖黄 / 狐狸橙 / 雪宝冰雪蓝 / 恐龙嫩绿）
+//  - travel/adventure（dino/ant）：沉浸式暗色座舱，配合夜空/地洞氛围
+//  - adventure color（颜色乐园）：浅蓝，配合课堂主背景
+//  - farewell：粉紫，配合告别舞台
+// ============================================================
+function dockBandBg(step: Step, world: World, character: MascotId): string {
+  if (step === 'travel') {
+    return world === 'dino'
+      ? 'linear-gradient(180deg,#2E3560,#1A1F42)'
+      : 'linear-gradient(180deg,#2E5D3A,#1F3B25)';
+  }
+  if (step === 'adventure') {
+    if (world === 'dino') return 'linear-gradient(180deg,#3A3A6E,#26265A)';
+    if (world === 'ant') return 'linear-gradient(180deg,#5D4037,#3E2723)';
+    return 'linear-gradient(180deg,#B3E5FC,#81D4FA)';
+  }
+  if (step === 'farewell') return 'linear-gradient(180deg,#E1BEE7,#CE93D8)';
+  switch (character) {
+    case 'fox': return 'linear-gradient(180deg,#FFB74D,#FF8A65)';
+    case 'olaf': return 'linear-gradient(180deg,#B3E5FC,#81D4FA)';
+    case 'dino': return 'linear-gradient(180deg,#A5D6A7,#66BB6A)';
+    default: return 'linear-gradient(180deg,#FFE082,#FFB74D)';
+  }
+}
+
 // ============================================================
 // 小鹦鹉冒险（可任选：恐龙世界 / 蚂蚁王国 / 颜色乐园）
 // 阶段：打招呼 → 自主选目的地 → 前往（飞船/缩小机器）→ 落地冒险 → 告别回程
@@ -176,13 +213,8 @@ export default function ParrotDinoAdventure() {
     step === 'pick' || step === 'travel' ||
     step === 'adventure';
   const isColorAdventure = step === 'adventure' && world === 'color';
-  // 竖屏下，把摄像头+伙伴座挪到屏幕顶部，腾出下半屏给选择按钮（幼儿点选大按钮）。
-  // 飞行/冒险阶段仍放在左下角（沉浸式驾驶舱）；打招呼/选目的地/告别才需要竖屏避让。
-  const seatsOnTop =
-    step === 'greet' || step === 'pick' || step === 'farewell';
-  const seatsClass = seatsOnTop
-    ? 'portrait:top-20 portrait:bottom-auto'
-    : '';
+  // 双座舱带（摄像头+伙伴座）常驻屏幕底部文档流中，课程内容区在其上方，
+  // 内容永远不可能滑到座舱底下 —— 幼儿的 ✅/❌ 大按钮绝不会被遮挡。
   // 前置「舷窗」装饰：根据目的地世界切换成 飞船驾驶舱 / 缩小服 氛围框
   const hudTheme: 'cockpit' | 'shrink' | null =
     step === 'travel' && world === 'dino' ? 'cockpit' :
@@ -204,7 +236,7 @@ export default function ParrotDinoAdventure() {
     `${characterName} · Buddy ${character === 'fox' ? '🦊' : character === 'olaf' ? '⛄' : character === 'dino' ? '🦖' : '🦜'}`;
 
   return (
-    <div className="fixed inset-0 overflow-hidden" style={{ background: '#FFF8E1' }}>
+    <div className="fixed inset-0 overflow-hidden flex flex-col" style={{ background: '#FFF8E1' }}>
       {/* 返回按钮 */}
       <button
         onClick={goBack}
@@ -216,96 +248,107 @@ export default function ParrotDinoAdventure() {
 
       <LessonTimer startTimeRef={startTimeRef} />
 
-      {/* 常驻「组长」摄像头 HUD（永不卸载） */}
+      {/* 课程内容区：永远在座舱带上方（flex-1），座舱带下方 shrink-0，
+          两者是文档流上下关系而非叠加，天然互不遮挡。 */}
+      <div className="relative flex-1 min-h-0">
+        <AnimatePresence mode="wait">
+          {step === 'greet' && (
+            <ParrotGreeting key="greet" mode="chat" character={character} onDone={() => goTo('pick')} />
+          )}
+          {step === 'pick' && <ParrotChoice key="pick" onChoose={(w) => {
+            setWorld(w);
+            // 颜色乐园直接进入 5 步法整课（无需飞行/缩小旅程）
+            if (w === 'color') { goTo('adventure'); } else { goTo('travel'); }
+          }} />}
+          {step === 'adventure' && world === 'color' && (
+            <ParrotColorAdventure key="color-adventure" onDone={() => goTo('farewell')} />
+          )}
+          {step === 'travel' && (world === 'dino'
+            ? <ParrotFlight key="flight" onDone={() => goTo('adventure')} />
+            : <ParrotAntTravel key="ant-travel" onDone={() => goTo('adventure')} />)}
+          {step === 'adventure' && world === 'dino' && (
+            <ParrotAdventureStage
+              key="adventure"
+              scene={scene}
+              setScene={setScene}
+              onDone={() => goTo('farewell')}
+            />
+          )}
+          {step === 'adventure' && world === 'ant' && (
+            <ParrotAntAdventure key="ant-adventure" onDone={() => goTo('farewell')} />
+          )}
+          {step === 'farewell' && (
+            <ParrotGreeting key="farewell" mode="farewell" world={world} character={character} onDone={() => goTo('greet')} />
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* 常驻「组长 + 伙伴」双座舱带：幼儿摄像头（组长）与小鹦鹉（伙伴）永远并肩。
+          位于页面底部文档流，不覆盖任何课程内容（✅/❌ 按钮、选择按钮都不会被挡）。
+          颜色乐园里伙伴座实时跟随课程动作；其他阶段保持固定打招呼。 */}
       <div
-        className={`fixed z-40 overflow-hidden rounded-2xl shadow-lg left-4 bottom-4 ${seatsClass}`}
-        style={{ ...windshieldStyle, background: '#222', border: '3px solid rgba(255,255,255,0.6)' }}
+        className="shrink-0 flex items-center justify-center gap-3 px-3 pt-2"
+        style={{ background: dockBandBg(step, world, character), borderTop: '3px solid rgba(255,255,255,0.7)' }}
       >
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-          style={{ transform: mirrored ? 'scaleX(-1)' : 'none' }}
-        />
-        <CameraProp kind={getProp()} />
+        {/* 组长摄像头 HUD（永不卸载） */}
+        <div
+          className="relative overflow-hidden rounded-2xl shadow-lg"
+          style={{ ...windshieldStyle, background: '#222', border: '3px solid rgba(255,255,255,0.6)' }}
+        >
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+            style={{ transform: mirrored ? 'scaleX(-1)' : 'none' }}
+          />
+          <CameraProp kind={getProp()} />
 
-        {/* 舷窗主题装饰框：飞船驾驶舱 / 缩小服 */}
-        <CockpitShrinkFrame theme={hudTheme} />
+          {/* 舷窗主题装饰框：飞船驾驶舱 / 缩小服 */}
+          <CockpitShrinkFrame theme={hudTheme} />
 
-        {!cameraReady && !cameraError && (
-          <div className="absolute inset-0 flex items-center justify-center text-white/80 text-xs">camera…</div>
-        )}
-        {cameraError && (
-          <div className="absolute inset-0 flex items-center justify-center text-white/90 text-xs px-2 text-center">
-            camera off
-          </div>
-        )}
-        <div className="absolute top-1 left-1 rounded-full bg-red-500 w-2.5 h-2.5 animate-pulse" />
+          {!cameraReady && !cameraError && (
+            <div className="absolute inset-0 flex items-center justify-center text-white/80 text-xs">camera…</div>
+          )}
+          {cameraError && (
+            <div className="absolute inset-0 flex items-center justify-center text-white/90 text-xs px-2 text-center">
+              camera off
+            </div>
+          )}
+          <div className="absolute top-1 left-1 rounded-full bg-red-500 w-2.5 h-2.5 animate-pulse" />
+          {companionOn && (
+            <div className="absolute inset-x-0 bottom-0 flex justify-center">
+              <span className="text-[10px] text-white bg-cyan-600/80 rounded-t px-2 py-0.5">{captainTag}</span>
+            </div>
+          )}
+        </div>
+
+        {/* 伙伴座：紧挨着幼儿摄像头，两人永远并肩在一起。
+            和摄像头一样是正方形，避免角色被上下裁切。
+            座舱底色跟随角色主题色。 */}
         {companionOn && (
-          <div className="absolute inset-x-0 bottom-0 flex justify-center">
-            <span className="text-[10px] text-white bg-cyan-600/80 rounded-t px-2 py-0.5">{captainTag}</span>
+          <div
+            className="relative overflow-hidden rounded-2xl shadow-lg border-[3px] border-white/70"
+            style={{ width: 150, height: 150, background: seatBg(character) }}
+          >
+            {isColorAdventure
+              ? <LiveParrotSeat fallback="wave" character={character} />
+              : (
+                <motion.div
+                  className="absolute inset-0 flex items-end justify-center"
+                  animate={{ y: [-4, 4, -4] }}
+                  transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  <Mascot state="wave" size={0.6} character={character} />
+                </motion.div>
+              )}
+            <div className="absolute inset-x-0 bottom-0 flex justify-center">
+              <span className="text-[10px] text-white bg-black/45 rounded-t px-2 py-0.5">{parrotTag}</span>
+            </div>
           </div>
         )}
       </div>
-
-      {/* 伙伴座：紧挨着幼儿摄像头，两人永远并肩在一起。
-          颜色乐园里它实时跟随课程做动作；其他阶段保持固定打招呼。
-          和摄像头一样是正方形，避免角色被上下裁切。 */}
-      {companionOn && (
-        <div
-          className={`fixed z-40 rounded-2xl shadow-lg overflow-hidden border-[3px] border-white/70 left-[174px] bottom-4 ${seatsClass}`}
-          style={{ width: 150, height: 150, background: 'linear-gradient(160deg,#6A1B9A,#4A148C)' }}
-        >
-          {isColorAdventure
-            ? <LiveParrotSeat fallback="wave" character={character} />
-            : (
-              <motion.div
-                className="absolute inset-0 flex items-end justify-center"
-                animate={{ y: [-4, 4, -4] }}
-                transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <Mascot state="wave" size={0.6} character={character} />
-              </motion.div>
-            )}
-          <div className="absolute inset-x-0 bottom-0 flex justify-center">
-            <span className="text-[10px] text-white bg-black/45 rounded-t px-2 py-0.5">{parrotTag}</span>
-          </div>
-        </div>
-      )}
-
-      {/* 阶段内容 */}
-      <AnimatePresence mode="wait">
-        {step === 'greet' && (
-          <ParrotGreeting key="greet" mode="chat" character={character} onDone={() => goTo('pick')} />
-        )}
-        {step === 'pick' && <ParrotChoice key="pick" onChoose={(w) => {
-          setWorld(w);
-          // 颜色乐园直接进入 5 步法整课（无需飞行/缩小旅程）
-          if (w === 'color') { goTo('adventure'); } else { goTo('travel'); }
-        }} />}
-        {step === 'adventure' && world === 'color' && (
-          <ParrotColorAdventure key="color-adventure" onDone={() => goTo('farewell')} />
-        )}
-        {step === 'travel' && (world === 'dino'
-          ? <ParrotFlight key="flight" onDone={() => goTo('adventure')} />
-          : <ParrotAntTravel key="ant-travel" onDone={() => goTo('adventure')} />)}
-        {step === 'adventure' && world === 'dino' && (
-          <ParrotAdventureStage
-            key="adventure"
-            scene={scene}
-            setScene={setScene}
-            onDone={() => goTo('farewell')}
-          />
-        )}
-        {step === 'adventure' && world === 'ant' && (
-          <ParrotAntAdventure key="ant-adventure" onDone={() => goTo('farewell')} />
-        )}
-        {step === 'farewell' && (
-          <ParrotGreeting key="farewell" mode="farewell" world={world} character={character} onDone={() => goTo('greet')} />
-        )}
-      </AnimatePresence>
     </div>
   );
 }

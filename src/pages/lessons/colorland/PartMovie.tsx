@@ -139,7 +139,7 @@ export function PartMovie({ onDone }: Props) {
       </div>
 
       {/* 电影屏幕 */}
-      <div className="relative flex-1 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden min-h-[200px]" style={{ background: clip.bg }}>
+      <div className="relative flex-1 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden min-h-[120px]" style={{ background: clip.bg }}>
         {/* 胶片边孔 */}
         <div className="absolute inset-y-0 left-1 flex flex-col justify-around opacity-30">
           {[...Array(8)].map((_, i) => <div key={i} className="w-1.5 h-1.5 rounded-sm bg-black" />)}

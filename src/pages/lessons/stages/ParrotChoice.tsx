@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useParrotSpeech } from '../../../hooks/useParrotSpeech';
+import FitToScreen from './FitToScreen';
 
 export type World = 'dino' | 'ant' | 'color';
 
@@ -40,14 +41,15 @@ export function ParrotChoice({ onChoose }: Props) {
   return (
     <motion.div
       key="choice"
-      className="absolute inset-0 overflow-y-auto"
+      className="absolute inset-0 overflow-hidden"
       style={{ background: '#FFF8E1' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, x: -300 }}
       transition={{ duration: 0.4 }}
     >
-      <div className="relative min-h-full flex flex-col items-center justify-center px-5 py-6 portrait:justify-start portrait:pt-60">
+      <FitToScreen>
+      <div className="flex flex-col items-center justify-center px-5 py-6 w-full">
         <motion.div
           initial={{ y: 16, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -82,6 +84,7 @@ export function ParrotChoice({ onChoose }: Props) {
 
         <p className="mt-6 text-center text-sm text-amber-600/70 font-semibold">Parrot is with you! 🦜</p>
       </div>
+      </FitToScreen>
     </motion.div>
   );
 }

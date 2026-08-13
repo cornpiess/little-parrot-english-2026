@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import Mascot from '../../../components/Mascot';
 import ActionDemo from './ActionDemo';
+import FitToScreen from './FitToScreen';
 import { useParrotSpeech, playPop, playSuccess, type ParrotAnim } from '../../../hooks/useParrotSpeech';
 
 // ============================================================
@@ -170,13 +171,14 @@ function Farewell({ world, onDone, character = 'parrot' }: { world: 'dino' | 'an
   return (
     <motion.div
       key="farewell"
-      className="absolute inset-0 flex flex-col items-center justify-center overflow-y-auto px-4"
+      className="absolute inset-0 overflow-hidden"
       style={{ background: 'linear-gradient(160deg,#CE93D8,#F48FB1)' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <div className="min-h-full flex flex-col items-center justify-center py-6 w-full max-w-md portrait:justify-start portrait:pt-60">
+      <FitToScreen>
+      <div className="flex flex-col items-center justify-center py-6 w-full max-w-md px-4 mx-auto">
         {/* 小鹦鹉（情绪由它自己表现） */}
         <motion.div
           animate={{ y: [0, -12, 0] }}
@@ -232,6 +234,7 @@ function Farewell({ world, onDone, character = 'parrot' }: { world: 'dino' | 'an
           )}
         </div>
       </div>
+      </FitToScreen>
     </motion.div>
   );
 }
@@ -338,7 +341,7 @@ function ChatGreeting({ onDone, character = 'parrot' }: { onDone: () => void; ch
   return (
     <motion.div
       key="chat"
-      className="absolute inset-0 overflow-y-auto"
+      className="absolute inset-0 overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, x: -300 }}
@@ -368,7 +371,8 @@ function ChatGreeting({ onDone, character = 'parrot' }: { onDone: () => void; ch
         ))}
       </div>
 
-      <div className="relative min-h-full flex flex-col items-center justify-center px-4 py-6 portrait:justify-start portrait:pt-60">
+      <FitToScreen>
+      <div className="flex flex-col items-center justify-center px-4 py-6 w-full">
         <motion.div
           initial={{ y: 100, opacity: 0, scale: 0.8 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
@@ -431,6 +435,7 @@ function ChatGreeting({ onDone, character = 'parrot' }: { onDone: () => void; ch
           )}
         </div>
       </div>
+      </FitToScreen>
 
       {/* 右下角：动作演示独立入口 */}
       <motion.button

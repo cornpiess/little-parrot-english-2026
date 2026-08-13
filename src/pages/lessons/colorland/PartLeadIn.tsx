@@ -104,7 +104,7 @@ export function PartLeadIn({ onDone }: Props) {
       </div>
 
       {/* 舞台：小鸟飞入 / 亮色 / 飞走 */}
-      <div className="relative flex-1 flex items-center justify-center w-full min-h-[220px]">
+      <div className="relative flex-1 flex items-center justify-center w-full min-h-[130px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={bird.key + phase + birdIndex}

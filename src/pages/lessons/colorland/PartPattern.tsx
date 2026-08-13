@@ -118,7 +118,7 @@ export function PartPattern({ onDone }: Props) {
       </div>
 
       {/* 大图舞台 */}
-      <div className="relative flex-1 w-full max-w-sm rounded-3xl shadow-xl overflow-hidden min-h-[200px]" style={{ background: scene.bg }}>
+      <div className="relative flex-1 w-full max-w-sm rounded-3xl shadow-xl overflow-hidden min-h-[120px]" style={{ background: scene.bg }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={scene.key + phase}

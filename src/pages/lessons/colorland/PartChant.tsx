@@ -83,7 +83,7 @@ export function PartChant({ onDone }: Props) {
       </div>
 
       {/* 颜色卡（大）+ 颜色词知识点 */}
-      <div className={`flex-1 flex flex-col items-center justify-center min-h-[160px] ${wrongFlash ? 'animate-pulse' : ''}`}>
+      <div className={`flex-1 flex flex-col items-center justify-center min-h-[100px] ${wrongFlash ? 'animate-pulse' : ''}`}>
         <motion.div
           key={card.key}
           className="rounded-3xl shadow-2xl flex items-center justify-center"

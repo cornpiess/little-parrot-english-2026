@@ -129,7 +129,7 @@ export function PartStory({ onDone }: Props) {
       </div>
 
       {/* 故事舞台 */}
-      <div className="relative flex-1 w-full max-w-sm rounded-3xl shadow-xl overflow-hidden min-h-[220px]" style={{ background: 'linear-gradient(180deg,#FCE4EC,#FFF8FB)' }}>
+      <div className="relative flex-1 w-full max-w-sm rounded-3xl shadow-xl overflow-hidden min-h-[130px]" style={{ background: 'linear-gradient(180deg,#FCE4EC,#FFF8FB)' }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={kid.name}
