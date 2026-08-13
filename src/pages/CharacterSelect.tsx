@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, Check } from 'lucide-react';
-import FoxCharacter from '@/components/FoxCharacter';
-import ParrotCharacter from '@/components/ParrotCharacter';
+import Mascot, { type MascotId } from '@/components/Mascot';
 
 // AI Tutor images
 import imgTutor1 from '@/assets/18466f7d75c7f0003c756fab4f226f5acaf0b786.webp';
@@ -21,6 +20,8 @@ import imgPartner6 from '@/assets/adc9f9dc90a165002cdfaac86d27cb447763afc7.webp'
 const mainCharacters = [
   { id: 'parrot' as const, name: '小鹦鹉', desc: 'AI学习伙伴', color: '#1CB0F6', emoji: '🦜' },
   { id: 'fox' as const, name: '小狐狸', desc: 'AI学习伙伴', color: '#E87040', emoji: '🦊' },
+  { id: 'olaf' as const, name: '雪宝', desc: 'AI学习伙伴', color: '#38BDF8', emoji: '⛄' },
+  { id: 'dino' as const, name: '小恐龙', desc: 'AI学习伙伴', color: '#7CB342', emoji: '🦖' },
 ];
 
 const teachers = [
@@ -40,11 +41,12 @@ const partners = [
 
 export default function CharacterSelect() {
   const navigate = useNavigate();
-  const [selectedChar, setSelectedChar] = useState<'parrot' | 'fox'>(() => {
-    return (localStorage.getItem('selected_character') as 'parrot' | 'fox') || 'parrot';
+  const [selectedChar, setSelectedChar] = useState<MascotId>(() => {
+    const v = localStorage.getItem('selected_character');
+    return v === 'fox' || v === 'olaf' || v === 'dino' ? v : 'parrot';
   });
 
-  const handleSelectChar = (id: 'parrot' | 'fox') => {
+  const handleSelectChar = (id: MascotId) => {
     setSelectedChar(id);
     localStorage.setItem('selected_character', id);
   };
@@ -98,11 +100,7 @@ export default function CharacterSelect() {
                     </motion.div>
                   )}
                   <div className="pt-4 pb-2 flex justify-center">
-                    {c.id === 'parrot' ? (
-                      <ParrotCharacter state="idle" size={0.45} />
-                    ) : (
-                      <FoxCharacter state="idle" size={0.45} />
-                    )}
+                    <Mascot state="idle" size={0.45} character={c.id} />
                   </div>
                   <div className="px-3 pb-3 text-center">
                     <p className="text-sm font-bold text-foreground">{c.emoji} {c.name}</p>

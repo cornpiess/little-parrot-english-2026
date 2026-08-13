@@ -6,6 +6,7 @@ import { CHARACTER_STORIES, purchaseCharacter, subscribeCharacter } from '@/lib/
 import ParrotCharacter from '@/components/ParrotCharacter';
 import FoxCharacter from '@/components/FoxCharacter';
 import OlafCharacter from '@/components/OlafCharacter';
+import DinoCharacter from '@/components/DinoCharacter';
 
 import imgTeacher1 from '@/assets/1ebf0cda2cde974b5ed9ae6990f1305cc10602a8.webp';
 import imgTeacher2 from '@/assets/18466f7d75c7f0003c756fab4f226f5acaf0b786.webp';
@@ -27,7 +28,8 @@ const ALL_CHARS: CharData[] = [
   // Owned
   { id: 'parrot', name: '小鹦鹉', subtitle: '学习伙伴', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', desc: '活泼 · 爱唱歌 · 快乐学英语', component: <ParrotCharacter state="idle" size={1} />, owned: true },
   { id: 'fox', name: '小狐狸', subtitle: '好奇宝宝', color: '#E87040', accent: 'rgba(232,112,64,0.12)', desc: '聪明 · 好奇 · 爱探险', component: <FoxCharacter state="idle" size={1} />, owned: true },
-  { id: 'olaf', name: '雪宝', subtitle: '雪人朋友', color: '#38BDF8', accent: 'rgba(56,189,248,0.12)', desc: '温暖 · 友善 · 爱讲故事', component: <OlafCharacter size={1.2} />, owned: true },
+  { id: 'olaf', name: '雪宝', subtitle: '雪人朋友', color: '#38BDF8', accent: 'rgba(56,189,248,0.12)', desc: '温暖 · 友善 · 爱讲故事', component: <OlafCharacter state="idle" size={1.2} />, owned: true },
+  { id: 'dino', name: '小恐龙', subtitle: '勇敢伙伴', color: '#7CB342', accent: 'rgba(124,179,66,0.12)', desc: '勇敢 · 热心 · 爱帮忙', component: <DinoCharacter state="idle" size={1.2} />, owned: true },
   // Unowned — teachers
   { id: 'einstein', name: '爱因斯坦', subtitle: '科学家', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', desc: '恐龙时代 · 动植物百科 · 太空探索', image: imgTeacher1, owned: false },
   { id: 'beethoven', name: '贝多芬', subtitle: '音乐家', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', desc: '乐器启蒙 · 儿歌韵律', image: imgTeacher2, owned: false },
@@ -48,6 +50,7 @@ const GREETINGS: Record<string, string[]> = {
   beethoven: ['来，我们一起唱首歌吧！', '准备好了吗？音乐时间到！', '今天想学什么旋律呢？'],
   deer: ['宝贝今天心情怎么样呀？', '来，我们一起做个小游戏吧！', '准备好了吗？开始今天的学习！'],
   olaf: ['嗨～朋友！见到你好开心！', '啊！是你呀！我好想你！', '来啦！我有好多故事讲给你听！'],
+  dino: ['吼～！我是小恐龙！一起去冒险吧！', '嘿嘿！今天你想去哪里玩？', '来啦！我们一起大声读英语！'],
 };
 
 const getGreeting = () => {

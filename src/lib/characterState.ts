@@ -129,7 +129,7 @@ function isOwned(id: string): boolean {
 
 /** Check if any character is owned */
 export function hasAnyOwned(): boolean {
-  return [...TEACHER_IDS, 'parrot', 'fox', 'olaf', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco']
+  return [...TEACHER_IDS, 'parrot', 'fox', 'olaf', 'dino', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco']
     .some(id => isOwned(id));
 }
 
@@ -146,7 +146,7 @@ export function getRecommendedCharId(): string {
   const gender = data.gender;
   // Map target language to recommended character
   const recommendations: Record<string, string[]> = {
-    english: ['parrot', 'fox', 'olaf', 'einstein', 'deer'],
+    english: ['parrot', 'fox', 'olaf', 'dino', 'einstein', 'deer'],
     japanese: ['xizi'],
     portuguese: ['bull'],
     arabic: ['bred'],
@@ -168,7 +168,7 @@ export function hasOwnedTeacher(): boolean {
 
 /** Check if user owns any partner */
 export function hasOwnedPartner(): boolean {
-  return ['parrot', 'fox', 'olaf', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco']
+  return ['parrot', 'fox', 'olaf', 'dino', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco']
     .some(id => isOwned(id));
 }
 
@@ -184,7 +184,7 @@ export function getRecommendedPartnerId(): string | null {
   const targetLang = data.targetLanguage || 'english';
   const gender = data.gender;
   const byLang: Record<string, string[]> = {
-    english: gender === 'girl' ? ['parrot', 'olaf'] : ['fox', 'parrot'],
+    english: gender === 'girl' ? ['parrot', 'olaf'] : ['fox', 'dino'],
     japanese: ['xizi'],
     portuguese: ['bull'],
     arabic: ['bred'],
@@ -218,6 +218,7 @@ export const CHARACTER_STORIES: Record<string, string> = {
   parrot: '小鹦鹉来自热带雨林，它不仅会说话，还特别爱唱歌！跟它一起学英语，快乐又简单！',
   fox: '小狐狸住在一片神秘的森林里，它最喜欢探险和发现新事物。嘘！它好像发现了什么秘密...',
   olaf: '雪宝是一个来自冰雪世界的雪人，它最大的梦想就是拥有一个温暖的拥抱。来，给它一个拥抱吧！',
+  dino: '小恐龙来自恐龙星球，它勇敢又热心，最爱帮助小朋友找到回家的路。我们一起大声吼出英语吧！',
   allen: 'Allen来自美国加州，他热爱阳光和运动。跟他一起边玩边学，感受美式英语的魅力！',
   harry: 'Harry是一位来自英国的绅士，他最爱在下午茶时间读故事书。来，一起听他讲有趣的故事！',
   xizi: 'Xizi来自日本，她最喜欢画画和做手工。用英语画画，是不是很酷？',

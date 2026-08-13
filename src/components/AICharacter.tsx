@@ -1,35 +1,33 @@
-import ParrotCharacter from './ParrotCharacter';
-import FoxCharacter from './FoxCharacter';
+import { useMemo } from 'react';
+import Mascot, { getMascotId, type MascotId } from './Mascot';
+import type { MascotState } from './ParrotCharacter';
 
-type CharacterState = 'idle' | 'listening' | 'thinking' | 'speaking' | 'sleeping';
+type CharacterState = MascotState;
 
 interface AICharacterProps {
   state: CharacterState;
   size?: number;
   onWakeUp?: () => void;
-  character?: 'parrot' | 'fox';
+  character?: MascotId;
+  held?: string;
+  looking?: boolean;
 }
 
 /**
- * Wrapper that renders either ParrotCharacter or FoxCharacter
- * based on the `character` prop or localStorage('selected_character').
+ * Wrapper that renders any mascot (parrot/fox/olaf/dino) based on the
+ * `character` prop or localStorage('selected_character').
  */
-export default function AICharacter({ state, size, onWakeUp, character }: AICharacterProps) {
-  const selected = character || (typeof window !== 'undefined' ? localStorage.getItem('selected_character') as 'parrot' | 'fox' : null) || 'parrot';
-
-  if (selected === 'fox') {
-    return <FoxCharacter state={state} size={size} onWakeUp={onWakeUp} />;
-  }
-  return <ParrotCharacter state={state} size={size} onWakeUp={onWakeUp} />;
+export default function AICharacter({ state, size, onWakeUp, character, held, looking }: AICharacterProps) {
+  const id = useMemo<MascotId>(() => character ?? getMascotId(), [character]);
+  return <Mascot state={state} size={size} onWakeUp={onWakeUp} character={id} held={held} looking={looking} />;
 }
 
 export function getCharacterName(): string {
-  const selected = typeof window !== 'undefined' ? localStorage.getItem('selected_character') : null;
   const names: Record<string, string> = {
-    parrot: '小鹦鹉', fox: '小狐狸', olaf: '雪宝',
+    parrot: '小鹦鹉', fox: '小狐狸', olaf: '雪宝', dino: '小恐龙',
     einstein: '爱因斯坦', beethoven: '贝多芬', deer: '小鹿姐姐',
     allen: 'Allen', harry: 'Harry', xizi: 'Xizi',
     bull: 'Bull', bred: 'Bred', coco: 'Coco',
   };
-  return names[selected || ''] || '小鹦鹉';
+  return names[getMascotId()] || '小鹦鹉';
 }

@@ -5,6 +5,7 @@ import { ChevronLeft, Lock, BookOpen, Heart, Zap, X, Sun, Moon } from 'lucide-re
 import ParrotCharacter from '@/components/ParrotCharacter';
 import FoxCharacter from '@/components/FoxCharacter';
 import OlafCharacter from '@/components/OlafCharacter';
+import DinoCharacter from '@/components/DinoCharacter';
 
 interface Character {
   id: string;
@@ -41,7 +42,15 @@ const CHARACTERS: Character[] = [
     personality: '温暖、乐观、充满好奇心',
     color: '#38BDF8', unlocked: true,
     skills: ['情景对话', '情感表达', '文化探索'],
-    component: <OlafCharacter size={0.9} />,
+    component: <OlafCharacter state="idle" size={0.9} />,
+  },
+  {
+    id: 'dino', name: '小恐龙', subtitle: '勇敢的恐龙伙伴',
+    description: '来自恐龙星球的小恐龙，勇敢又热心。它会带着你跨越山谷、大声吼出每一个单词，把冒险变成学习英语的勇气！',
+    personality: '勇敢、热心、爱帮忙',
+    color: '#7CB342', unlocked: true,
+    skills: ['冒险闯关', '大声跟读', '勇气培养'],
+    component: <DinoCharacter state="idle" size={0.9} />,
   },
   {
     id: 'cat', name: '小猫咪', subtitle: '有艺术天赋的小可爱',

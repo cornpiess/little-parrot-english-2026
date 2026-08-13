@@ -5,6 +5,7 @@ import { BookOpen, Users, Sun, Moon, Wifi, X, HelpCircle, Sparkles, Lock, Check 
 import ParrotCharacter from '@/components/ParrotCharacter';
 import FoxCharacter from '@/components/FoxCharacter';
 import OlafCharacter from '@/components/OlafCharacter';
+import DinoCharacter from '@/components/DinoCharacter';
 import { getCharacterState, startTrial, purchaseCharacter, subscribeCharacter, activateCharacter, formatTrialTime, CHARACTER_STORIES, CharacterState, getBondLevel, addBondExp, getLearningProgress, markActiveDay, beginLearningSession, endLearningSession, getTrialDurationMs, isTrialExpired, getOriginalPrice, getPromoPrice, setAutoRenew as setAutoRenewState, markPhysicalCardSent, hasPhysicalCard, hasShippingAddress, hasAnyOwned, getRecommendedCharId, getOnboardingData, getRecommendationPhase, getRecommendedTeacherId, getRecommendedPartnerId, hasOwnedTeacher, hasOwnedPartner } from '@/lib/characterState';
 
 import imgTeacher1 from '@/assets/1ebf0cda2cde974b5ed9ae6990f1305cc10602a8.webp';
@@ -33,7 +34,8 @@ const TEACHERS: Character[] = [
 const PARTNERS: Character[] = [
   { id: 'parrot', name: '小鹦鹉', subtitle: '学习伙伴', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', component: <ParrotCharacter state="idle" size={0.85} />, desc: '活泼 · 爱唱歌 · 快乐学英语', language: 'english' },
   { id: 'fox', name: '小狐狸', subtitle: '好奇宝宝', color: '#E87040', accent: 'rgba(232,112,64,0.12)', component: <FoxCharacter state="idle" size={0.85} />, desc: '聪明 · 好奇 · 爱探险', language: 'english' },
-  { id: 'olaf', name: '雪宝', subtitle: '雪人朋友', color: '#38BDF8', accent: 'rgba(56,189,248,0.12)', component: <OlafCharacter size={1} />, desc: '温暖 · 友善 · 爱讲故事', language: 'english' },
+  { id: 'olaf', name: '雪宝', subtitle: '雪人朋友', color: '#38BDF8', accent: 'rgba(56,189,248,0.12)', component: <OlafCharacter state="idle" size={1} />, desc: '温暖 · 友善 · 爱讲故事', language: 'english' },
+  { id: 'dino', name: '小恐龙', subtitle: '勇敢伙伴', color: '#7CB342', accent: 'rgba(124,179,66,0.12)', component: <DinoCharacter state="idle" size={1} />, desc: '勇敢 · 热心 · 爱帮忙', language: 'english' },
   { id: 'allen', name: 'Allen', subtitle: '美国', color: '#1CB0F6', accent: 'rgba(28,176,246,0.12)', image: imgPartnerAllen, desc: '阳光 · 运动 · 音乐', language: 'english' },
   { id: 'harry', name: 'Harry', subtitle: '英国', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgPartnerHarry, desc: '绅士 · 阅读 · 下午茶', language: 'english' },
   { id: 'xizi', name: 'Xizi', subtitle: '日本', color: '#FF6B9D', accent: 'rgba(255,107,157,0.12)', image: imgPartnerXizi, desc: '可爱 · 画画 · 手工', language: 'japanese' },
@@ -49,6 +51,7 @@ const GREETINGS: Record<string, string[]> = {
   parrot: ['嗨！准备好一起学英语了吗？', '嘿呀！快来跟我一起玩吧！', '你来啦！今天一起探险吧！'],
   fox: ['嘿嘿～想不想跟我去冒险？', '嘘！我发现一个超酷的秘密！', '终于来啦！快来快来！'],
   olaf: ['嗨～朋友！见到你好开心！', '啊！是你呀！我好想你！', '来啦！我有好多故事讲给你听！'],
+  dino: ['吼～！我是小恐龙！一起去冒险吧！', '嘿嘿！今天你想去哪里玩？', '来啦！我们一起大声读英语！'],
   allen: ['Hey! Ready to learn English with me?', "What's up! Let's have some fun!", "Nice to see you! Let's play!"],
   harry: ['Hello there! Fancy meeting you!', "Welcome! Shall we read a book?", "Jolly good! Let's get started!"],
   xizi: ['こんにちは！一緒に玩耍吧！', '你好呀！今天一起画画吧！', '来啦！我准备了手工材料哦！'],
@@ -624,7 +627,8 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
     switch (c.id) {
       case 'parrot': return <ParrotCharacter state="greeting" size={1.1} />;
       case 'fox': return <FoxCharacter state="greeting" size={1.1} />;
-      case 'olaf': return <OlafCharacter size={1.2} />;
+      case 'olaf': return <OlafCharacter state="greeting" size={1.2} />;
+      case 'dino': return <DinoCharacter state="greeting" size={1.2} />;
       default: return c.component;
     }
   };
@@ -1437,7 +1441,7 @@ export default function HomePageV3() {
             { label: '一起学习', icon: <BookOpen className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate('/lessons'); } },
             { label: '十万个为什么', icon: <HelpCircle className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate(`/why?teacher=${flippedCard}`); } },
           ] : [
-            { label: '一起冒险', icon: <Sparkles className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate('/adventure'); } },
+            { label: '一起冒险', icon: <Sparkles className="w-4 h-4" />, onClick: () => { if (flippedCard) addBondExp(flippedCard, 10); setFlippedCard(null); setFlipOrigin(null); navigate(`/parrot-adventure?character=${flippedCard}`); } },
             { label: '一起玩耍', icon: <Users className="w-4 h-4" />, onClick: () => {
               const charId = flippedCard || 'parrot';
               if (flippedCard) addBondExp(flippedCard, 10);
@@ -1571,7 +1575,7 @@ export default function HomePageV3() {
       {/* ===== UNOWNED TAB: Language-categorized grid ===== */}
       {charTab === 'unowned' && (() => {
         const LANG_GROUPS: { key: string; label: string; flag: string; bg: string; ids: string[] }[] = [
-          { key: 'english', label: '英语', flag: '🇺🇸', bg: 'rgba(28,176,246,0.06)', ids: ['parrot', 'fox', 'olaf', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco'] },
+          { key: 'english', label: '英语', flag: '🇺🇸', bg: 'rgba(28,176,246,0.06)', ids: ['parrot', 'fox', 'olaf', 'dino', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco'] },
           { key: 'japanese', label: '日语', flag: '🇯🇵', bg: 'rgba(255,107,157,0.06)', ids: ['xizi'] },
           { key: 'portuguese', label: '葡萄牙语', flag: '🇧🇷', bg: 'rgba(255,149,0,0.06)', ids: ['bull'] },
           { key: 'arabic', label: '阿拉伯语', flag: '🇸🇦', bg: 'rgba(175,87,219,0.06)', ids: ['bred'] },
@@ -1801,7 +1805,7 @@ export default function HomePageV3() {
               </>
             ) : (
               <>
-                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(effectiveActiveChar.id, 10); navigate('/adventure'); }}
+                <motion.button whileTap={{ scale: 0.95 }} onClick={() => { addBondExp(effectiveActiveChar.id, 10); navigate(`/parrot-adventure?character=${effectiveActiveChar.id}`); }}
                   className="flex-1 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"
                   style={{
                     background: `linear-gradient(135deg, ${effectiveActiveChar.color}, ${effectiveActiveChar.color}CC)`,

@@ -5,6 +5,7 @@ import { Lock, ShoppingBag, ChevronRight, Sparkles, BookOpen, Users, Sun, Moon }
 import ParrotCharacter from '@/components/ParrotCharacter';
 import FoxCharacter from '@/components/FoxCharacter';
 import OlafCharacter from '@/components/OlafCharacter';
+import DinoCharacter from '@/components/DinoCharacter';
 
 interface Character {
   id: string;
@@ -49,6 +50,11 @@ const ALL_CHARACTERS: Character[] = [
     id: 'olaf', name: '雪宝', subtitle: '温暖的雪人朋友',
     color: '#38BDF8', accent: 'rgba(56,189,248,0.12)', unlocked: true, section: 'mine',
     component: <OlafCharacter size={1} />,
+  },
+  {
+    id: 'dino', name: '小恐龙', subtitle: '勇敢的恐龙伙伴',
+    color: '#7CB342', accent: 'rgba(124,179,66,0.12)', unlocked: true, section: 'mine',
+    component: <DinoCharacter size={1} />,
   },
   {
     id: 'cat', name: '小猫咪', subtitle: '有艺术天赋的小可爱',
@@ -235,7 +241,8 @@ export default function HomePageV2() {
     switch (char.id) {
       case 'parrot': return <ParrotCharacter state={state} size={0.85} />;
       case 'fox': return <FoxCharacter state={state} size={0.85} />;
-      case 'olaf': return <OlafCharacter size={1} />;
+      case 'olaf': return <OlafCharacter state={state} size={1} />;
+      case 'dino': return <DinoCharacter state={state} size={1} />;
       default: return char.component;
     }
   };
