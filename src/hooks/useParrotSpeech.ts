@@ -37,6 +37,12 @@ export function speakText(
   text: string,
   opts?: { rate?: number; pitch?: number; lang?: string; onStart?: () => void; onEnd?: () => void }
 ) {
+  // onend/onerror 可能都触发（cancel 时也会 error）→ 用一次性 guard 保证
+  // onEnd 每句话最多回调一次，避免 processQueue 对同一句话重复收尾。
+  let ended = false;
+  const fireEnd = () => {
+    if (ended) return; ended = true; opts?.onEnd?.();
+  };
   try {
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
@@ -45,11 +51,11 @@ export function speakText(
     u.pitch = opts?.pitch ?? 1.2;
     u.volume = 0.9;
     u.onstart = () => opts?.onStart?.();
-    u.onend = () => opts?.onEnd?.();
-    u.onerror = () => opts?.onEnd?.();
+    u.onend = fireEnd;
+    u.onerror = fireEnd;
     window.speechSynthesis.speak(u);
   } catch {
-    opts?.onEnd?.();
+    fireEnd();
   }
 }
 
@@ -79,10 +85,14 @@ export function useParrotSpeech() {
     stopSpeech();
     isSpeakingRef.current = true;
     setParrot(action ?? 'speaking');
+    // speakText 可能因 onend/onerror/catch 多路径回调 onEnd（浏览器 cancel 也会触发），
+    // 这里用一次性 guard，保证 onDone 每句话最多回调一次，避免 processQueue 重复收尾。
+    let done = false;
+    const once = () => { if (done) return; done = true; onDone?.(); };
     speakText(text, {
       lang,
       onStart: () => setParrot(action ?? 'speaking'),
-      onEnd: () => onDone?.(),
+      onEnd: once,
     });
   }, [setParrot]);
 

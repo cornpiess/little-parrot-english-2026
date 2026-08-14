@@ -66,24 +66,34 @@ export function PartPattern({ onDone }: Props) {
   const def: ColorDef = colorOf(scene.color);
 
   // 自动课堂：speak 完 → 留白跟读 → 下一拍
+  // 注意：onDone/sayLines/setParrot 用 ref 引用，避免父组件重渲染导致
+  // 本 effect 重复执行 → 每拍只会触发一次 sayLines，索引不会越界。
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
+  const sayLinesRef = useRef(sayLines);
+  sayLinesRef.current = sayLines;
+  const setParrotRef = useRef(setParrot);
+  setParrotRef.current = setParrot;
   useEffect(() => {
-    setParrot('idle');
+    const say = sayLinesRef.current;
+    const setAnim = setParrotRef.current;
+    setAnim('idle');
     const speakThen = (lines: string[], next: Phase, gap = 1200) => {
-      sayLines(lines, () => laterRef.current(() => setPhase(next), gap), 'en-US');
+      say(lines, () => laterRef.current(() => setPhase(next), gap), 'en-US');
     };
     if (phase === 'intro') {
-      setParrot('surprised');
+      setAnim('surprised');
       playPop();
       speakThen([`${scene.onomatopoeia} Wow! What is this?`, `It is ${scene.subject}. This is ${scene.subject}.`], 'wrong', 1400);
     } else if (phase === 'wrong') {
-      setParrot('shake');
+      setAnim('shake');
       speakThen([`Hmm... Is the ${scene.noun} ${colorOf(scene.wrongColor).word.toLowerCase()}?`, `No, it is not! The ${scene.noun} is ${scene.color}.`], 'action', 1400);
     } else if (phase === 'action') {
-      setParrot('excited');
+      setAnim('excited');
       speakThen([`What is the ${scene.color} ${scene.noun} doing? ${scene.verb.charAt(0).toUpperCase() + scene.verb.slice(1)}!`, `The ${scene.color} ${scene.noun} is ${scene.verb}!`], 'summary', 1500);
     } else if (phase === 'summary') {
-      setParrot('happy');
-      sayLines([
+      setAnim('happy');
+      say([
         `This is ${scene.subject}.`,
         `The ${scene.noun} is ${scene.color}.`,
         `The ${scene.color} ${scene.noun} is ${scene.verb}!`,
@@ -91,7 +101,7 @@ export function PartPattern({ onDone }: Props) {
         laterRef.current(() => setPhase('quiz'), 1600);
       }, 'en-US', 'happy');
     }
-  }, [phase, scene, sceneIndex, sayLines, setParrot, onDone]);
+  }, [phase, sceneIndex]);
 
   // KidTurn 问答：偶数张问「颜色是对的」= Yes；奇数张问「错误颜色」= No
   const quizYes = sceneIndex % 2 === 0;

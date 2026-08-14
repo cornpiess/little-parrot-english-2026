@@ -47,42 +47,54 @@ export function PartLeadIn({ onDone }: Props) {
 
   // 自动课堂：每拍 speak 完 → 留白(让幼儿跟读) → 进入下一拍
   // 0 基础台词：一个词一步，短、慢、重复。
+  // 注意：onDone/sayLines/setParrot 用 ref 引用，避免父组件重渲染导致
+  // 本 effect 重复执行 → 每拍只会触发一次 sayLines，索引不会越界。
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
+  const sayLinesRef = useRef(sayLines);
+  sayLinesRef.current = sayLines;
+  const setParrotRef = useRef(setParrot);
+  setParrotRef.current = setParrot;
   useEffect(() => {
+    const say = sayLinesRef.current;
+    const setAnim = setParrotRef.current;
     const speakThen = (lines: string[], next: Phase, gap = 1200) => {
-      sayLines(lines, () => laterRef.current(() => setPhase(next), gap), 'en-US');
+      say(lines, () => laterRef.current(() => setPhase(next), gap), 'en-US');
     };
     if (phase === 'intro') {
-      setParrot('surprised');
+      setAnim('surprised');
       playPop();
       speakThen(['Chirp chirp! Look, look! A bird!', 'A little bird!'], 'name', 1500);
     } else if (phase === 'name') {
-      setParrot('nod');
+      setAnim('nod');
       speakThen(['Yes, a bird.', 'Bird! Say it with me: bird!'], 'puzzle', 1300);
     } else if (phase === 'puzzle') {
-      setParrot('thinking');
+      setAnim('thinking');
       speakThen(['Hmm... what color?', 'Blue? Green? Hmm...'], 'reveal', 1500);
     } else if (phase === 'reveal') {
-      setParrot('excited');
+      setAnim('excited');
       playSuccess();
       speakThen([`${bird.word}!`, `It is ${bird.word.toLowerCase()}.`, `${bird.word} bird!`], 'quiz', 1400);
     } else if (phase === 'chant') {
-      setParrot('happy');
+      setAnim('happy');
       speakThen([`${bird.word}, ${bird.word}, ${bird.word} bird!`], 'bye', 2200);
     } else if (phase === 'bye') {
-      setParrot('wave');
+      setAnim('wave');
       playPop();
-      sayLines([`Bye bye, ${bird.word.toLowerCase()} bird!`, `The ${bird.word.toLowerCase()} bird flies away!`], () => {
+      say([`Bye bye, ${bird.word.toLowerCase()} bird!`, `The ${bird.word.toLowerCase()} bird flies away!`], () => {
         if (birdIndex < COLORS.length - 1) {
-          laterRef.current(() => { setBirdIndex((i) => i + 1); setParrot('idle'); setPhase('intro'); }, 800);
+          laterRef.current(() => {
+            setBirdIndex((i) => i + 1); setParrotRef.current('idle'); setPhase('intro');
+          }, 800);
         } else {
           laterRef.current(() => {
-            setParrot('dance');
-            sayLines(['Great job, little star!', 'Now let us sing! Blue, green, red!', 'La la la!'], () => onDone(), 'en-US', 'dance');
+            setParrotRef.current('dance');
+            sayLinesRef.current(['Great job, little star!', 'Now let us sing! Blue, green, red!', 'La la la!'], () => onDoneRef.current(), 'en-US', 'dance');
           }, 800);
         }
       }, 'en-US', 'wave');
     }
-  }, [phase, bird, birdIndex, sayLines, setParrot, onDone]);
+  }, [phase, birdIndex]);
 
   // KidTurn 问答：偶数只问「小鸟是这个颜色吗」= Yes；奇数只问「别的颜色」= No
   const quizYes = birdIndex % 2 === 0;
