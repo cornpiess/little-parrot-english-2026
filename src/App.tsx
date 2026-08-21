@@ -23,6 +23,7 @@ import AdventureLesson from "./pages/lessons/AdventureLesson";
 import ParrotDinoAdventure from "./pages/lessons/ParrotDinoAdventure";
 import WhyPage from "./pages/WhyPage";
 import ShippingAddress from "./pages/ShippingAddress";
+import OlafLiveLab from "./pages/OlafLiveLab";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +59,7 @@ const App = () => (
             <Route path="/parrot-adventure" element={<ParrotDinoAdventure />} />
             <Route path="/why" element={<WhyPage />} />
             <Route path="/shipping-address" element={<ShippingAddress />} />
+            <Route path="/olaf-live-lab" element={<OlafLiveLab />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
