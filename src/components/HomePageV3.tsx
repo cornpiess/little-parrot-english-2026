@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, animate } from 'motion/react';
 import { BookOpen, Users, Sun, Moon, Wifi, X, HelpCircle, Sparkles, Lock, Check } from 'lucide-react';
@@ -6,7 +6,9 @@ import ParrotCharacter from '@/components/ParrotCharacter';
 import FoxCharacter from '@/components/FoxCharacter';
 import OlafCharacter from '@/components/OlafCharacter';
 import DinoCharacter from '@/components/DinoCharacter';
+import XiaobanlongCharacter from '@/components/XiaobanlongCharacter';
 import { getCharacterState, startTrial, purchaseCharacter, subscribeCharacter, activateCharacter, formatTrialTime, CHARACTER_STORIES, CharacterState, getBondLevel, addBondExp, getLearningProgress, markActiveDay, beginLearningSession, endLearningSession, getTrialDurationMs, isTrialExpired, getOriginalPrice, getPromoPrice, setAutoRenew as setAutoRenewState, markPhysicalCardSent, hasPhysicalCard, hasShippingAddress, hasAnyOwned, getRecommendedCharId, getOnboardingData, getRecommendationPhase, getRecommendedTeacherId, getRecommendedPartnerId, hasOwnedTeacher, hasOwnedPartner } from '@/lib/characterState';
+import { HOME_SWIPE_ANIMATION, dampOverscroll, resolveSwipeIndex } from '@/lib/homeSwipeAnimation';
 
 import imgTeacher1 from '@/assets/1ebf0cda2cde974b5ed9ae6990f1305cc10602a8.webp';
 import imgTeacher2 from '@/assets/18466f7d75c7f0003c756fab4f226f5acaf0b786.webp';
@@ -42,6 +44,7 @@ const PARTNERS: Character[] = [
   { id: 'bull', name: 'Bull', subtitle: '巴西', color: '#FF9500', accent: 'rgba(255,149,0,0.12)', image: imgPartnerBull, desc: '热情 · 足球 · 开朗', language: 'portuguese' },
   { id: 'bred', name: 'Bred', subtitle: '中东', color: '#AF57DB', accent: 'rgba(175,87,219,0.12)', image: imgPartnerBred, desc: '神秘 · 冒险 · 友善', language: 'arabic' },
   { id: 'coco', name: 'Coco', subtitle: '小鹦鹉', color: '#58CC02', accent: 'rgba(88,204,2,0.12)', image: imgPartnerCoco, desc: '聪明 · 模仿 · 快乐', language: 'english' },
+  { id: 'xiaobanlong', name: '小伴龙', subtitle: '冒险伙伴', color: '#FFB72B', accent: 'rgba(255,183,43,0.14)', component: <XiaobanlongCharacter state="idle" size={0.92} />, desc: '勇敢 · 好奇 · 爱冒险', language: 'english' },
 ];
 
 const GREETINGS: Record<string, string[]> = {
@@ -58,6 +61,7 @@ const GREETINGS: Record<string, string[]> = {
   bull: ['Olá! Vamos jogar juntos?', '嗨！准备好踢球了吗？', '来吧！今天我们学葡萄牙语！'],
   bred: ['مرحبا! مرحبا بك!', '你好！想听一个神秘故事吗？', '来啦！我带你去探险！'],
   coco: ['嘎嘎～你好呀小朋友！', '嘿嘿！我学会新单词了！', '快来！我们一起唱歌吧！'],
+  xiaobanlong: ['嗨！我是小伴龙，准备好冒险了吗？', '嘿！今天我们去哪里探险？', '出发吧！一起玩耍、一起发现新世界！'],
 };
 
 const ENGINE_HIGHLIGHTS = [
@@ -93,20 +97,23 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
   const [hovered, setHovered] = useState(false);
   const [tapWobble, setTapWobble] = useState(false);
   const flipped = isFlipped ?? false;
+  const rafRef = useRef(0);
 
   const onMove = useCallback((cx: number, cy: number) => {
     if (!cardRef.current || !isFront || flipped) return;
-    const r = cardRef.current.getBoundingClientRect();
-    const px = (cx - r.left) / r.width;
-    const py = (cy - r.top) / r.height;
-    setTilt({ x: (py - 0.5) * -24, y: (px - 0.5) * 24 });
-    setMx(px * 100); setMy(py * 100);
-    // On mobile touch, also trigger wobble
-    if (!hovered) {
-      setTapWobble(true);
-      setHovered(true);
-    }
-  }, [isFront, flipped, hovered]);
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const el = cardRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const px = (cx - r.left) / r.width;
+      const py = (cy - r.top) / r.height;
+      setTilt({ x: (py - 0.5) * -24, y: (px - 0.5) * 24 });
+      setMx(px * 100); setMy(py * 100);
+    });
+  }, [isFront, flipped]);
+
+  useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
   const handleClick = useCallback(() => {
     if (isFront) {
@@ -136,7 +143,7 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
 
   return (
     <motion.div
-      className={`flex-shrink-0 relative rounded-[2rem] ${isFront ? 'cursor-pointer' : ''} ${(isActive || tapWobble) && isFront ? 'card-wobble card-glow' : ''}`}
+      className={`flex-shrink-0 relative rounded-[2rem] ${isFront ? 'cursor-pointer' : ''} ${tapWobble && isFront ? 'card-wobble card-glow' : ''}`}
       /* Landing animation for newly activated characters */
       initial={isNew ? { y: -300, opacity: 0, scale: 0.5, rotateZ: -10 } : false}
       animate={isNew ? { y: 0, opacity: 1, scale: 1, rotateZ: 0 } : undefined}
@@ -151,18 +158,16 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
         transformStyle: 'preserve-3d' as const,
         transition: hovered ? 'transform 0.12s ease-out, box-shadow 0.3s' : 'transform 0.5s cubic-bezier(.23,1,.32,1), box-shadow 0.3s',
       } as React.CSSProperties}
-      whileTap={isFront ? { scale: 0.97 } : undefined}
+      // The row owns touch feedback while swiping. A second transform here
+      // makes the card fight the track animation on mobile.
       onClick={handleClick}
       onPointerDown={(e) => {
-        // Trigger wobble on touch start (mobile)
-        if (isFront && !flipped) {
-          setTapWobble(true);
-          setTimeout(() => setTapWobble(false), 2000);
-        }
-        onMove(e.clientX, e.clientY);
+        if (e.pointerType === 'mouse') onMove(e.clientX, e.clientY);
       }}
-      onPointerMove={(e) => onMove(e.clientX, e.clientY)}
-      onPointerEnter={() => setHovered(true)}
+      onPointerMove={(e) => {
+        if (e.pointerType === 'mouse') onMove(e.clientX, e.clientY);
+      }}
+      onPointerEnter={(e) => { if (e.pointerType === 'mouse') setHovered(true); }}
       onPointerLeave={() => { setHovered(false); setTilt({ x: 0, y: 0 }); setMx(50); setMy(50); }}
     >
       <div ref={cardRef}
@@ -337,36 +342,34 @@ function V2Card({ char, isActive, size, onClick, theme, isFlipped, onFlip, isNew
 /* ═══════════════════════════════════════
    Swipeable row — manual touch (no drag conflict)
    ═══════════════════════════════════════ */
-const sharedX = { current: typeof window !== 'undefined' ? window.innerWidth / 2 - 195 / 2 : 0 };
-
-function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flippedCard, onFlipCard, onAdd, newlyActivated, trialStates, rowType }: {
+function FrontRow({ chars, selectedId, onSelect, theme, flippedCard, onFlipCard, onAdd, newlyActivated, trialStates, rowType }: {
   chars: Character[]; selectedId: string; onSelect: (id: string) => void; theme: 'dark' | 'light';
-  onVerticalSwipe?: (direction: 'up' | 'down') => void;
   flippedCard: string | null; onFlipCard: (id: string | null, rect?: DOMRect) => void;
   onAdd?: () => void;
   newlyActivated?: string | null;
   trialStates?: Record<string, CharacterState>;
   rowType?: 'teacher' | 'partner';
 }) {
-  const CARD_W = 195;
-  const GAP = 16;
+  const CARD_W = HOME_SWIPE_ANIMATION.cardWidth;
+  const GAP = HOME_SWIPE_ANIMATION.gap;
   const centerOffset = window.innerWidth / 2 - CARD_W / 2;
   const idx = chars.findIndex(c => c.id === selectedId);
   const totalCards = chars.length + 1; // +1 for add card
   const maxIdx = totalCards - 1;
   const minX = centerOffset - maxIdx * (CARD_W + GAP);
   const targetX = idx >= 0 ? centerOffset - idx * (CARD_W + GAP) : centerOffset;
-  const x = useMotionValue(sharedX.current);
+  // Each row owns its own motion value. Sharing this between teacher/partner rows
+  // was the source of a visible jump when changing the vertical focus.
+  const x = useMotionValue(targetX);
 
   useEffect(() => {
-    sharedX.current = targetX;
-    animate(x, targetX, { type: 'spring', stiffness: 350, damping: 30 });
-  }, [targetX]);
+    animate(x, targetX, HOME_SWIPE_ANIMATION.spring);
+  }, [targetX, x]);
 
-  const touchRef = useRef({ startX: 0, startY: 0, startVal: 0, decided: false, dir: '' as '' | 'h' | 'v' });
+  const touchRef = useRef({ startX: 0, startY: 0, startVal: 0, lastX: 0, lastT: 0, vx: 0, decided: false, dir: '' as '' | 'h' | 'v', moving: false });
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
-    touchRef.current = { startX: e.clientX, startY: e.clientY, startVal: x.get(), decided: false, dir: '' };
+    touchRef.current = { startX: e.clientX, startY: e.clientY, startVal: x.get(), lastX: e.clientX, lastT: performance.now(), vx: 0, decided: false, dir: '', moving: false };
   }, [x]);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
@@ -378,64 +381,67 @@ function FrontRow({ chars, selectedId, onSelect, theme, onVerticalSwipe, flipped
       if (dx > 8 || dy > 8) {
         t.dir = dx > dy ? 'h' : 'v';
         t.decided = true;
-        e.currentTarget.setPointerCapture(e.pointerId);
+        // 只在确认横向滑动后才捕获指针，竖向滑动交给外层统一处理
+        if (t.dir === 'h') e.currentTarget.setPointerCapture(e.pointerId);
       }
     }
     if (t.dir === 'h') {
+      const now = performance.now();
+      const dt = Math.max(1, now - t.lastT);
+      t.moving = true;
+      t.vx = (e.clientX - t.lastX) / dt; // px/ms
+      t.lastX = e.clientX;
+      t.lastT = now;
       const dx = e.clientX - t.startX;
-      const clamped = Math.max(minX - 40, Math.min(centerOffset + 40, t.startVal + dx));
-      x.set(clamped);
+      x.set(dampOverscroll(t.startVal + dx, minX, centerOffset));
     }
   }, [x, minX, centerOffset]);
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
     const t = touchRef.current;
-    e.currentTarget.releasePointerCapture(e.pointerId);
     if (t.dir === 'h') {
-      const cur = x.get();
-      if (cur > centerOffset + 20) { animate(x, centerOffset, { type: 'spring', stiffness: 350, damping: 30 }); onSelect(chars[0].id); return; }
-      if (cur < minX - 20) { animate(x, minX, { type: 'spring', stiffness: 350, damping: 30 }); return; }
-      let ci = Math.round((centerOffset - cur) / (CARD_W + GAP));
-      ci = Math.max(0, Math.min(maxIdx, ci));
+      e.currentTarget.releasePointerCapture(e.pointerId);
+      // Resolve from the gesture start, not from the current rounded position.
+      // This prevents slow/fast pointer sampling from changing the result.
+      const step = CARD_W + GAP;
+      const startSteps = (centerOffset - t.startVal) / step;
+      const displacement = e.clientX - t.startX;
+      const ci = resolveSwipeIndex({ startIndex: startSteps, displacement, velocity: t.vx || 0, maxIndex: maxIdx, step });
       if (ci >= chars.length) {
-        // Scrolled to add card — just center it visually, don't switch tab
+        // 到达末尾的添加卡片 — 平滑居中显示，不切换标签
         const addX = centerOffset - chars.length * (CARD_W + GAP);
-        animate(x, addX, { type: 'spring', stiffness: 350, damping: 30 });
+        animate(x, addX, HOME_SWIPE_ANIMATION.spring);
       } else {
         onSelect(chars[ci].id);
       }
-    } else if (t.dir === 'v') {
-      const dy = e.clientY - t.startY;
-      if (Math.abs(dy) > 15 && onVerticalSwipe) {
-        onVerticalSwipe(dy < 0 ? 'up' : 'down');
-      }
     }
     touchRef.current.dir = '';
-  }, [chars, maxIdx, centerOffset, minX, onSelect, x, CARD_W, GAP, onVerticalSwipe]);
+  }, [chars, maxIdx, centerOffset, onSelect, x, CARD_W, GAP]);
 
-  const addLabel = rowType === 'teacher' ? '添加AI老师角色' : '添加AI伙伴角色';
+  const addLabel = '添加角色';
   const addCard: Character = {
     id: '__add__', name: addLabel, subtitle: '',
     color: theme === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)',
     accent: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)',
     language: 'english',
     component: (
-      <div className="flex flex-col items-center justify-center gap-1" style={{ height: 140 }}>
+        <div className="flex flex-col items-center justify-center gap-1" style={{ height: 140 }}>
         <div className="w-12 h-12 rounded-full flex items-center justify-center"
           style={{ border: `2px dashed ${theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'}` }}>
           <span className="text-2xl" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)' }}>+</span>
         </div>
+        <span className="text-[10px] font-bold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)' }}>去角色库挑选</span>
       </div>
     ),
   };
 
   return (
-    <div className="relative w-full" style={{ touchAction: 'none' }}>
-      <motion.div className="flex items-center" style={{ x, gap: GAP }}
+    <div data-home-carousel="true" className="relative w-full py-10 -my-10" style={{ touchAction: 'none' }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}>
+      <motion.div className="flex items-center" style={{ x, gap: GAP, willChange: 'transform' }}>
         {chars.map(c => {
           const ts = trialStates?.[c.id];
           const isLocked = ts?.status === 'locked';
@@ -629,6 +635,7 @@ function SpinCard({ char, origin, theme, onDismiss, actions, trialState }: {
       case 'fox': return <FoxCharacter state="greeting" size={1.1} />;
       case 'olaf': return <OlafCharacter state="greeting" size={1.2} />;
       case 'dino': return <DinoCharacter state="greeting" size={1.2} />;
+      case 'xiaobanlong': return <XiaobanlongCharacter state="greeting" size={1.1} />;
       default: return c.component;
     }
   };
@@ -934,6 +941,8 @@ export default function HomePageV3() {
   const [autoRenew, setAutoRenew] = useState(true);
   const [paymentState, setPaymentState] = useState<'idle' | 'paying' | 'success'>('idle');
   const [charTab, setCharTab] = useState<'owned' | 'unowned'>(() => hasAnyOwned() ? 'owned' : 'unowned');
+  const bottomBarRef = useRef<HTMLDivElement | null>(null);
+  const [bottomBarHeight, setBottomBarHeight] = useState(0);
 
   const switchFocus = (target: 'teacher' | 'partner') => {
     if (target !== focus) navigator.vibrate?.(15);
@@ -1070,29 +1079,83 @@ export default function HomePageV3() {
     prevFocusRef.current = focus;
   }
 
-  // Vertical swipe — unified pointer handler on the strip
-  const vTouchRef = useRef({ startY: 0, decided: false });
+  // Vertical swipe — 统一在整屏根容器上处理，覆盖卡片区、边缘与底部亮点区
+  const vTouchRef = useRef({ startX: 0, startY: 0, decided: false, dir: '' as '' | 'h' | 'v', source: 'root' as 'root' | 'carousel' });
+  const vSwipeJustDone = useRef(false);
+  const activeCharsRef = useRef<Character[]>([]);
 
-  const onStripPointerDown = useCallback((e: React.PointerEvent) => {
-    vTouchRef.current = { startY: e.clientY, decided: false };
-    e.currentTarget.setPointerCapture(e.pointerId);
+  const onRootPointerDown = useCallback((e: React.PointerEvent) => {
+    const target = e.target as HTMLElement;
+    vTouchRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      decided: false,
+      dir: '',
+      source: target.closest('[data-home-carousel="true"]') ? 'carousel' : 'root',
+    };
   }, []);
 
-  const onStripPointerMove = useCallback((e: React.PointerEvent) => {
+  const onRootPointerMove = useCallback((e: React.PointerEvent) => {
     const t = vTouchRef.current;
-    if (!t.decided) {
-      if (Math.abs(e.clientY - t.startY) > 15) t.decided = true;
+    if (t.dir !== '') return;
+    if (!(e.buttons & 1)) return;
+    const dx = Math.abs(e.clientX - t.startX);
+    const dy = Math.abs(e.clientY - t.startY);
+    if (dy > HOME_SWIPE_ANIMATION.directionLockDistance && dy > dx) {
+      t.decided = true;
+      t.dir = 'v';
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } else if (dx > HOME_SWIPE_ANIMATION.directionLockDistance) {
+      // The carousel owns its own continuous drag. Everywhere else still gets
+      // the same one-step horizontal switch on pointer up.
+      t.dir = 'h';
     }
   }, []);
 
-  const onStripPointerUp = useCallback((e: React.PointerEvent) => {
-    const dy = e.clientY - vTouchRef.current.startY;
-    e.currentTarget.releasePointerCapture(e.pointerId);
-    if (Math.abs(dy) > 20) {
-      if (dy < 0 && focus === 'teacher') switchFocus('partner');
-      else if (dy > 0 && focus === 'partner') switchFocus('teacher');
+  const onRootPointerUp = useCallback((e: React.PointerEvent) => {
+    const t = vTouchRef.current;
+    if (t.dir === 'v') {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+      const dy = e.clientY - t.startY;
+      if (Math.abs(dy) > 12) {
+        // 竖向拖动后抑制随后的 click，防止误翻卡 / 误弹亮点详情
+        vSwipeJustDone.current = true;
+      }
+      if (Math.abs(dy) > 24) {
+        if (dy < 0 && focus === 'teacher') switchFocus('partner');
+        else if (dy > 0 && focus === 'partner') switchFocus('teacher');
+      }
+    } else if (t.dir === 'h' && t.source === 'root') {
+      const dx = e.clientX - t.startX;
+      if (Math.abs(dx) > window.innerWidth * HOME_SWIPE_ANIMATION.switchDistanceRatio) {
+        const activeChars = activeCharsRef.current;
+        const selectedId = focus === 'teacher' ? selTeacher : selPartner;
+        const selectedIndex = Math.max(0, activeChars.findIndex((char) => char.id === selectedId));
+        const nextIndex = resolveSwipeIndex({
+          startIndex: selectedIndex,
+          displacement: dx,
+          velocity: 0,
+          maxIndex: Math.max(0, activeChars.length - 1),
+          step: HOME_SWIPE_ANIMATION.cardWidth + HOME_SWIPE_ANIMATION.gap,
+        });
+        const next = activeChars[nextIndex];
+        if (next && next.id !== selectedId) {
+          if (focus === 'teacher') setSelTeacher(next.id);
+          else setSelPartner(next.id);
+        }
+      }
     }
-  }, [focus]);
+    vTouchRef.current = { startX: 0, startY: 0, decided: false, dir: '', source: 'root' };
+  }, [focus, selPartner, selTeacher]);
+
+  // 竖向滑动结束后吞掉紧接的 click
+  const onRootClickCapture = useCallback((e: React.SyntheticEvent) => {
+    if (vSwipeJustDone.current) {
+      vSwipeJustDone.current = false;
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, []);
 
   const isT = focus === 'teacher';
   const aT = TEACHERS.find(c => c.id === selTeacher)!;
@@ -1112,6 +1175,7 @@ export default function HomePageV3() {
   // For owned tab: use only owned characters in the existing carousel
   const displayTeachers = charTab === 'owned' ? ownedTeachers : TEACHERS;
   const displayPartners = charTab === 'owned' ? ownedPartners : PARTNERS;
+  activeCharsRef.current = focus === 'teacher' ? displayTeachers : displayPartners;
 
   // Active char respects ownership filter
   const effectiveAT = displayTeachers.find(c => c.id === selTeacher) ?? displayTeachers[0] ?? aT;
@@ -1122,6 +1186,23 @@ export default function HomePageV3() {
 
   const teacherBg = theme === 'dark' ? '#1a0f05' : '#fef6eb';
   const partnerBg = theme === 'dark' ? '#050d1a' : '#eaf2fe';
+  const needsShippingAddress = hasAnyOwned() && !hasShippingAddress()
+    && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id));
+
+  // Anchor the selling-point module to the actual top edge of the fixed action
+  // bar instead of guessing with a large static bottom padding.
+  useLayoutEffect(() => {
+    const bar = bottomBarRef.current;
+    if (!bar || !(hasAnyOwned() && charTab === 'owned' && !flippedCard)) {
+      setBottomBarHeight(0);
+      return;
+    }
+    const update = () => setBottomBarHeight(bar.getBoundingClientRect().height);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(bar);
+    return () => observer.disconnect();
+  }, [charTab, flippedCard, theme, isT]);
 
   return (
     <div className="h-screen flex flex-col relative overflow-hidden select-none"
@@ -1130,9 +1211,15 @@ export default function HomePageV3() {
           ? (theme === 'dark' ? '#0A0A0F' : '#F5F5F7')
           : (isT ? teacherBg : partnerBg),
         transition: 'background 0.8s ease',
-        paddingBottom: charTab === 'owned' && !flippedCard ? 'max(5.5rem, calc(env(safe-area-inset-bottom, 0px) + 5rem))' : 'env(safe-area-inset-bottom, 0px)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        touchAction: charTab === 'owned' && !flippedCard ? 'none' : undefined,
       }}
-      onWheel={charTab === 'owned' ? onWheel : undefined}>
+      onWheel={charTab === 'owned' ? onWheel : undefined}
+      onPointerDown={charTab === 'owned' && !flippedCard ? onRootPointerDown : undefined}
+      onPointerMove={charTab === 'owned' && !flippedCard ? onRootPointerMove : undefined}
+      onPointerUp={charTab === 'owned' && !flippedCard ? onRootPointerUp : undefined}
+      onPointerCancel={charTab === 'owned' && !flippedCard ? onRootPointerUp : undefined}
+      onClickCapture={charTab === 'owned' && !flippedCard ? onRootClickCapture : undefined}>
 
       <style>{`
         *::-webkit-scrollbar{display:none!important}
@@ -1203,8 +1290,16 @@ export default function HomePageV3() {
 
       {/* ===== HEADER ===== */}
       <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-        className="relative z-20 flex-shrink-0"
-        style={{ paddingTop: 'max(0.5rem, env(safe-area-inset-top, 0px))', paddingBottom: 2 }}>
+        className="relative z-50 flex-shrink-0"
+        style={{
+          position: 'sticky',
+          top: 0,
+          paddingTop: 'max(0.5rem, env(safe-area-inset-top, 0px))',
+          paddingBottom: 2,
+          background: theme === 'dark' ? 'rgba(10,10,15,0.72)' : 'rgba(255,255,255,0.72)',
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(18px)',
+        }}>
         {/* Row 1: Greeting + Right buttons */}
         <div className="flex items-center justify-between px-5">
           <h1 className={`text-[20px] font-extrabold leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
@@ -1235,9 +1330,8 @@ export default function HomePageV3() {
           </div>
         </div>
 
-        {/* Row 2: Tabs — only shown when user has owned characters */}
-        {hasAnyOwned() && (
-        <div className="flex px-4 mt-2">
+        {/* Row 2: the two stable library tabs. The owned tab can be empty. */}
+        <div className="flex items-center justify-between gap-2 px-4 mt-2">
           <div className="flex rounded-2xl overflow-hidden"
             style={{
               background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
@@ -1268,8 +1362,18 @@ export default function HomePageV3() {
               );
             })}
           </div>
+          {needsShippingAddress && charTab === 'unowned' && (
+            <motion.button whileTap={{ scale: 0.95 }} onClick={() => navigate('/shipping-address')}
+              className="flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[10px] font-bold"
+              style={{
+                color: '#B77900',
+                background: theme === 'dark' ? 'rgba(255,183,0,0.12)' : 'rgba(255,183,0,0.13)',
+                border: '1px solid rgba(255,183,0,0.28)',
+              }}>
+              <span>🎁</span><span>填写收货地址</span>
+            </motion.button>
+          )}
         </div>
-        )}
       </motion.div>
 
   {/* ===== PROGRESSIVE RECOMMENDATION SCREEN ===== */}
@@ -1454,16 +1558,12 @@ export default function HomePageV3() {
     })()}
   </AnimatePresence>
 
-  {/* ===== VERTICAL SWIPE (left + right edge strips, owned tab only) ===== */}
+  {/* ===== VERTICAL SWIPE (handled at root container; strips are visual hints only) ===== */}
   {charTab === 'owned' && !flippedCard && (
   <>
-  {/* Right edge strip */}
-  <div className="fixed right-0 z-40 pointer-events-auto"
-    style={{ width: 48, top: 'max(4rem, env(safe-area-inset-top, 3rem))', bottom: 'max(6rem, env(safe-area-inset-bottom, 5rem))', touchAction: 'none' }}
-    onPointerDown={onStripPointerDown}
-    onPointerMove={onStripPointerMove}
-    onPointerUp={onStripPointerUp}
-    onPointerCancel={onStripPointerUp}>
+  {/* Right edge strip — visual hint only */}
+  <div className="fixed right-0 z-40 pointer-events-none"
+    style={{ width: 48, top: 'max(4rem, env(safe-area-inset-top, 3rem))', bottom: 'max(6rem, env(safe-area-inset-bottom, 5rem))' }}>
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 pointer-events-none">
       <motion.div className="w-1 h-6 rounded-full"
         animate={{ background: isT ? aT.color : 'rgba(255,255,255,0.08)', opacity: isT ? 0.6 : 0.2 }}
@@ -1473,25 +1573,18 @@ export default function HomePageV3() {
         transition={{ duration: 0.3 }} />
     </div>
   </div>
-  {/* Left edge strip */}
-  <div className="fixed left-0 z-40 pointer-events-auto"
-    style={{ width: 48, top: 'max(4rem, env(safe-area-inset-top, 3rem))', bottom: 'max(6rem, env(safe-area-inset-bottom, 5rem))', touchAction: 'none' }}
-    onPointerDown={onStripPointerDown}
-    onPointerMove={onStripPointerMove}
-    onPointerUp={onStripPointerUp}
-    onPointerCancel={onStripPointerUp}>
-  </div>
   </>
   )}
 
       {/* ===== OWNED TAB: Carousel ===== */}
       {charTab === 'owned' && !flippedCard && (
-      <div className="flex-1 min-h-0 relative z-10 flex flex-col">
+      <div className="flex-1 min-h-0 relative z-10 flex flex-col"
+        style={{ paddingBottom: bottomBarHeight || 128 }}>
 
         {/* TOP zone — teachers behind (only when partner is in front) */}
         <motion.div className="flex-shrink-0 flex items-end justify-center overflow-hidden"
           animate={{
-            height: isT ? '0%' : '16%',
+            height: isT ? 0 : 128,
             opacity: isT ? 0 : 0.4,
             scale: isT ? 0.85 : 0.95,
             y: isT ? -20 : 0,
@@ -1547,11 +1640,7 @@ export default function HomePageV3() {
                   flippedCard={flippedCard} onFlipCard={(id, rect) => { setFlippedCard(id); setFlipOrigin(rect || null); }}
                   onAdd={() => setCharTab('unowned')}
                   newlyActivated={newlyActivated}
-                  trialStates={trialStates}
-                  onVerticalSwipe={(dir) => {
-                     if (dir === 'up' && focus === 'teacher') switchFocus('partner');
-                     else if (dir === 'down' && focus === 'partner') switchFocus('teacher');
-                   }} />
+                  trialStates={trialStates} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -1560,7 +1649,7 @@ export default function HomePageV3() {
         {/* BOTTOM zone — partners behind (only when teacher is in front) */}
         <motion.div className="flex-shrink-0 flex items-start justify-center overflow-hidden"
           animate={{
-            height: !isT ? '0%' : '16%',
+            height: !isT ? 0 : 128,
             opacity: !isT ? 0 : 0.4,
             scale: !isT ? 0.85 : 0.95,
             y: !isT ? 20 : 0,
@@ -1575,15 +1664,25 @@ export default function HomePageV3() {
       {/* ===== UNOWNED TAB: Language-categorized grid ===== */}
       {charTab === 'unowned' && (() => {
         const LANG_GROUPS: { key: string; label: string; flag: string; bg: string; ids: string[] }[] = [
-          { key: 'english', label: '英语', flag: '🇺🇸', bg: 'rgba(28,176,246,0.06)', ids: ['parrot', 'fox', 'olaf', 'dino', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco'] },
+          { key: 'english', label: '英语', flag: '🇺🇸', bg: 'rgba(28,176,246,0.06)', ids: ['parrot', 'fox', 'olaf', 'dino', 'allen', 'harry', 'einstein', 'beethoven', 'deer', 'coco', 'xiaobanlong'] },
           { key: 'japanese', label: '日语', flag: '🇯🇵', bg: 'rgba(255,107,157,0.06)', ids: ['xizi'] },
           { key: 'portuguese', label: '葡萄牙语', flag: '🇧🇷', bg: 'rgba(255,149,0,0.06)', ids: ['bull'] },
           { key: 'arabic', label: '阿拉伯语', flag: '🇸🇦', bg: 'rgba(175,87,219,0.06)', ids: ['bred'] },
         ];
         const allChars = [...TEACHERS, ...PARTNERS];
         return (
-          <div className="flex-1 min-h-0 relative z-10 overflow-y-auto px-4 pb-4"
+            <div className="flex-1 min-h-0 relative z-10 overflow-y-auto px-4 pb-4"
             style={{ scrollbarWidth: 'none' }}>
+            <div className="mb-3 px-1 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-extrabold" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.82)' : 'rgba(0,0,0,0.72)' }}>角色库</p>
+                <p className="text-[10px] mt-0.5" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.38)' }}>这里是全部可添加的 AI 老师和 AI 伙伴</p>
+              </div>
+              <span className="text-[10px] font-bold px-2 py-1 rounded-full"
+                style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)', color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}>
+                未拥有 · 可添加
+              </span>
+            </div>
             {/* Voice recommendation button — when user has both teacher and partner */}
             {hasOwnedTeacher() && hasOwnedPartner() && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
@@ -1678,85 +1777,9 @@ export default function HomePageV3() {
       })()}
 
 
-      {/* ===== SHIPPING ADDRESS TIP — above highlights ===== */}
-      {hasAnyOwned() && charTab === 'owned' && !hasShippingAddress() && [...TEACHERS, ...PARTNERS].some(c => hasPhysicalCard(c.id)) && (
-        <div className="flex-shrink-0 relative z-20 px-4 pb-1">
-          <motion.button whileTap={{ scale: 0.97 }}
-            onClick={() => navigate('/shipping-address')}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl overflow-hidden w-full"
-            style={{
-              background: 'rgba(255,183,0,0.1)',
-              border: '1.5px solid rgba(255,183,0,0.25)',
-            }}>
-            <span className="text-lg flex-shrink-0">🎁</span>
-            <div className="overflow-hidden flex-1 min-w-0">
-              <motion.div className="whitespace-nowrap"
-                animate={{ x: ['0%', '-50%'] }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}>
-                <span className="text-xs font-bold" style={{ color: '#FFB700' }}>
-                  恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;恭喜获得实体卡片！点击填写收货地址&nbsp;&nbsp;&nbsp;&nbsp;
-                </span>
-              </motion.div>
-            </div>
-          </motion.button>
-        </div>
-      )}
-
-      {/* ===== ENGINE HIGHLIGHTS — 4 selling points (owned tab only) ===== */}
-      {!flippedCard && charTab === 'owned' && (
-      <div className="flex-shrink-0 relative z-30 px-4 pb-8">
-        <div className="flex gap-2 justify-center max-w-sm mx-auto">
-          {ENGINE_HIGHLIGHTS.map((h, i) => {
-            const status = engineStatus[i];
-            const isLoading = status === 'loading';
-            const isDone = status === 'done';
-            return (
-            <motion.button key={i} whileTap={{ scale: 0.96 }} onClick={() => setActiveHighlight(i)}
-              className="flex-1 aspect-square rounded-2xl p-2 flex flex-col items-center justify-center gap-0.5 text-center cursor-pointer"
-              style={{
-                background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.6)',
-                border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-              }}>
-              <span className="text-base">{h.icon}</span>
-              <span className="text-[9px] leading-tight" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.4)' }}>{h.label}</span>
-              <span className="text-[11px] font-bold flex items-center gap-1" style={{ color: h.color }}>
-                {isLoading ? (
-                  <motion.span className="inline-flex items-center gap-1">
-                    <motion.span
-                      className="inline-block w-1.5 h-1.5 rounded-full"
-                      style={{ background: h.color }}
-                      animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 1, repeat: Infinity }}
-                    />
-                    <span style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>分析中</span>
-                  </motion.span>
-                ) : isDone ? (
-                  <motion.span className="inline-flex items-center gap-1"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
-                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke={h.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <motion.path d="M5 13l4 4L19 7"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 0.4, delay: 0.1 }} />
-                    </svg>
-                    {h.value}
-                  </motion.span>
-                ) : (
-                  <>{h.value}<span className="inline-block w-1.5 h-1.5 rounded-full engine-live" style={{ background: h.color }} /></>
-                )}
-              </span>
-            </motion.button>
-            );
-          })}
-        </div>
-      </div>
-      )}
-
       {/* ===== BOTTOM BAR — Fixed floating deep tab (owned tab only, hidden when card is flipped) ===== */}
-      {charTab === 'owned' && !flippedCard && (
-      <div className="fixed bottom-0 left-0 right-0 z-30"
+      {hasAnyOwned() && charTab === 'owned' && !flippedCard && (
+      <div ref={bottomBarRef} className="fixed bottom-0 left-0 right-0 z-40"
         style={{
           paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))', paddingTop: 10,
           background: theme === 'dark'
@@ -1769,6 +1792,47 @@ export default function HomePageV3() {
             : `inset 0 1px 0 ${effectiveActiveChar.color}20, inset 0 -1px 0 rgba(0,0,0,0.05), 0 -8px 32px ${effectiveActiveChar.color}10`,
           transition: 'background 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease',
         }}>
+        {/* Selling points belong to the bottom tab, so their height is part of
+            the same measured fixed surface and cannot be covered by it. */}
+        <div className="px-4 pt-2 pb-2 border-b"
+          style={{ borderColor: theme === 'dark' ? 'rgba(255,255,255,0.07)' : `${effectiveActiveChar.color}18` }}>
+          <div className="grid grid-cols-4 gap-1.5 max-w-sm mx-auto">
+            {ENGINE_HIGHLIGHTS.map((h, i) => {
+              const status = engineStatus[i];
+              const isLoading = status === 'loading';
+              const isDone = status === 'done';
+              return (
+                <motion.button key={i} whileTap={{ scale: 0.96 }} onClick={() => setActiveHighlight(i)}
+                  className="min-w-0 h-14 rounded-xl p-1 flex flex-col items-center justify-center gap-0.5 text-center cursor-pointer"
+                  style={{
+                    background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.6)',
+                    border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+                  }}>
+                  <span className="text-xs leading-none">{h.icon}</span>
+                  <span className="text-[8px] font-bold leading-tight truncate max-w-full" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.42)' : 'rgba(0,0,0,0.42)' }}>{h.label}</span>
+                  <span className="text-[9px] font-bold flex items-center gap-0.5" style={{ color: h.color }}>
+                    {isLoading ? (
+                      <motion.span className="inline-flex items-center gap-1">
+                        <motion.span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: h.color }}
+                          animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 1, repeat: Infinity }} />
+                        <span style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)' }}>分析中</span>
+                      </motion.span>
+                    ) : isDone ? (
+                      <motion.span className="inline-flex items-center gap-1" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+                        <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke={h.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M5 13l4 4L19 7" />
+                        </svg>
+                        {h.value}
+                      </motion.span>
+                    ) : (
+                      <>{h.value}<span className="inline-block w-1.5 h-1.5 rounded-full engine-live" style={{ background: h.color }} /></>
+                    )}
+                  </span>
+                </motion.button>
+              );
+            })}
+          </div>
+        </div>
         {/* Liquid glass highlight */}
         <div className="absolute inset-x-0 top-0 h-[1px] pointer-events-none"
           style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)' }} />

@@ -2,6 +2,7 @@ import ParrotCharacter from './ParrotCharacter';
 import FoxCharacter from './FoxCharacter';
 import OlafCharacter from './OlafCharacter';
 import DinoCharacter from './DinoCharacter';
+import XiaobanlongCharacter from './XiaobanlongCharacter';
 import type { MascotState } from './ParrotCharacter';
 
 // ============================================================
@@ -11,18 +12,19 @@ import type { MascotState } from './ParrotCharacter';
 // 渲染对应角色，四个角色共用同一套 ParrotState 动作。
 // ============================================================
 
-export type MascotId = 'parrot' | 'fox' | 'olaf' | 'dino';
+export type MascotId = 'parrot' | 'fox' | 'olaf' | 'dino' | 'xiaobanlong';
 
 const MASCOT_NAMES: Record<MascotId, string> = {
   parrot: '小鹦鹉',
   fox: '小狐狸',
   olaf: '雪宝',
   dino: '小恐龙',
+  xiaobanlong: '小伴龙',
 };
 
 export function getMascotId(): MascotId {
   const saved = typeof window !== 'undefined' ? localStorage.getItem('selected_character') : null;
-  if (saved === 'fox' || saved === 'olaf' || saved === 'dino') return saved;
+  if (saved === 'fox' || saved === 'olaf' || saved === 'dino' || saved === 'xiaobanlong') return saved;
   return 'parrot';
 }
 
@@ -44,5 +46,6 @@ export default function Mascot({ state, size = 1, character, onWakeUp, held, loo
   if (id === 'fox') return <FoxCharacter state={state} size={size} onWakeUp={onWakeUp} held={held} looking={looking} />;
   if (id === 'olaf') return <OlafCharacter state={state} size={size} held={held} looking={looking} />;
   if (id === 'dino') return <DinoCharacter state={state} size={size} onWakeUp={onWakeUp} held={held} looking={looking} />;
+  if (id === 'xiaobanlong') return <XiaobanlongCharacter state={state} size={size} looking={looking} />;
   return <ParrotCharacter state={state} size={size} onWakeUp={onWakeUp} held={held} looking={looking} />;
 }

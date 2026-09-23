@@ -1023,7 +1023,7 @@ export default function AITeacherMode({ onClose, childName: childNameProp }: AIT
   // 若先渲染再写 localStorage，首帧会显示上一次的角色）。
   const charParam = searchParams.get('character');
   const character: MascotId =
-    charParam === 'fox' || charParam === 'olaf' || charParam === 'dino' || charParam === 'parrot'
+    charParam === 'fox' || charParam === 'olaf' || charParam === 'dino' || charParam === 'xiaobanlong' || charParam === 'parrot'
       ? (charParam as MascotId)
       : getMascotId();
   if (typeof window !== 'undefined') {

@@ -1,3 +1,5 @@
+> **Source Available — All Rights Reserved.** Commercial use, deployment, redistribution, and AI/ML training are prohibited. See [LICENSE](LICENSE).
+
 # 🦜 Little Parrot English (小鹦鹉英语)
 
 一个面向儿童的 AI 英语学习应用，通过互动角色和游戏化教学让英语学习变得有趣。

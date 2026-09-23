@@ -1,0 +1,11 @@
+export { default as SceneSetHost, SCENE_SETS_REGISTRY } from './SceneSetHost';
+export { default as StarkNightLabSet } from './StarkNightLabSet';
+export { default as ArmorPlatformSet } from './ArmorPlatformSet';
+export { default as LaunchTunnelSet } from './LaunchTunnelSet';
+export { default as DeepSpaceFlightSet } from './DeepSpaceFlightSet';
+export { default as BlackCloudAtmosphereSet } from './BlackCloudAtmosphereSet';
+export { default as BlackGlassValleySet } from './BlackGlassValleySet';
+export { default as DarkValleySearchSet } from './DarkValleySearchSet';
+export { default as StarShelterSet } from './StarShelterSet';
+export { default as LighthouseVeinsSet } from './LighthouseVeinsSet';
+export { default as DawnSkyLighthouseSet } from './DawnSkyLighthouseSet';

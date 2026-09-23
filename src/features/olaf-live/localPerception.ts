@@ -22,6 +22,13 @@ export function faceToPerceptionEvent(target: FaceTarget): PerceptionEvent {
   return { type: 'face', x: clamp((target.x - 0.5) * 2), y: clamp((0.5 - target.y) * 2), confidence: target.confidence, timestamp: target.timestamp };
 }
 
+export function eyeMidpointFromLandmarks(landmarks: Array<{ x: number; y: number }> | undefined) {
+  const leftEye = landmarks?.[33];
+  const rightEye = landmarks?.[263];
+  if (leftEye && rightEye) return { x: (leftEye.x + rightEye.x) / 2, y: (leftEye.y + rightEye.y) / 2 };
+  return landmarks?.[1] ?? null;
+}
+
 export interface LocalPerceptionOptions {
   modelAssetPath?: string;
   handModelAssetPath?: string;
@@ -90,9 +97,9 @@ export class LocalPerception {
     if (this.landmarker && now - this.lastFaceAt > 66 && this.video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
       this.lastFaceAt = now;
       const result = this.landmarker.detectForVideo(this.video, now);
-      const nose = result.faceLandmarks?.[0]?.[1];
-      if (nose) {
-        this.options.onEvent(faceToPerceptionEvent({ x: nose.x, y: nose.y, confidence: 0.9, timestamp: Date.now() }));
+      const eyeTarget = eyeMidpointFromLandmarks(result.faceLandmarks?.[0]);
+      if (eyeTarget) {
+        this.options.onEvent(faceToPerceptionEvent({ x: eyeTarget.x, y: eyeTarget.y, confidence: 0.9, timestamp: Date.now() }));
         const smile = result.faceBlendshapes?.[0]?.categories?.find((category) => category.categoryName === 'mouthSmileLeft');
         if (smile?.score > 0.72) this.options.onEvent({ type: 'face', gesture: 'smile', confidence: smile.score, timestamp: Date.now() });
       }

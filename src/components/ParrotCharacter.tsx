@@ -995,7 +995,6 @@ export default function ParrotCharacter({ state, size = 1, onWakeUp, held, looki
         className="relative w-48 h-52"
         animate={bodyAnimation}
         key={`body-${animationMode}-${transitionKey}-${currentState}`}
-        initial={false}
       >
         {/* Crest/Hair */}
         <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-full flex justify-center gap-1 z-0">
@@ -1145,8 +1144,7 @@ export default function ParrotCharacter({ state, size = 1, onWakeUp, held, looki
             className="absolute top-36 -left-6 z-20 origin-top-right"
             animate={leftWingAnimation}
             key={`left-wing-${animationMode}-${transitionKey}-${currentState}`}
-            initial={false}
-        >
+          >
              <svg width="50" height="70" viewBox="0 0 50 70">
                 <path d="M45 5 C 10 5, 0 30, 5 60 C 20 65, 45 60, 45 5 Z" fill="#3B82F6" stroke="#2563EB" strokeWidth="2" />
              </svg>
@@ -1157,8 +1155,7 @@ export default function ParrotCharacter({ state, size = 1, onWakeUp, held, looki
             className="absolute top-36 -right-6 z-20 origin-top-left"
             animate={rightWingAnimation}
             key={`right-wing-${animationMode}-${transitionKey}-${currentState}`}
-            initial={false}
-        >
+          >
             <svg width="50" height="70" viewBox="0 0 50 70" style={{ transform: 'scaleX(-1)' }}>
                 <path d="M45 5 C 10 5, 0 30, 5 60 C 20 65, 45 60, 45 5 Z" fill="#3B82F6" stroke="#2563EB" strokeWidth="2" />
              </svg>

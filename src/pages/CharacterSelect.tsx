@@ -22,6 +22,7 @@ const mainCharacters = [
   { id: 'fox' as const, name: '小狐狸', desc: 'AI学习伙伴', color: '#E87040', emoji: '🦊' },
   { id: 'olaf' as const, name: '雪宝', desc: 'AI学习伙伴', color: '#38BDF8', emoji: '⛄' },
   { id: 'dino' as const, name: '小恐龙', desc: 'AI学习伙伴', color: '#7CB342', emoji: '🦖' },
+  { id: 'xiaobanlong' as const, name: '小伴龙', desc: 'AI冒险伙伴', color: '#FFB72B', emoji: '🐲' },
 ];
 
 const teachers = [
@@ -43,7 +44,7 @@ export default function CharacterSelect() {
   const navigate = useNavigate();
   const [selectedChar, setSelectedChar] = useState<MascotId>(() => {
     const v = localStorage.getItem('selected_character');
-    return v === 'fox' || v === 'olaf' || v === 'dino' ? v : 'parrot';
+    return v === 'fox' || v === 'olaf' || v === 'dino' || v === 'xiaobanlong' ? v : 'parrot';
   });
 
   const handleSelectChar = (id: MascotId) => {

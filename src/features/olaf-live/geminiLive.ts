@@ -2,71 +2,50 @@ import type {
   CharacterSessionEvent,
   CharacterSessionListener,
   CharacterToolCall,
-  PerceptionEvent,
+  ConversationInput,
   RealtimeCharacterSession,
 } from './types';
 
 export const DEFAULT_LIVE_MODEL = 'models/gemini-3.1-flash-live-preview';
 
 const CHARACTER_SYSTEM_INSTRUCTION = `
-You are a warm, playful snowman learning companion named Olaf.
-Speak in short, child-friendly turns. Listen carefully, allow the child to interrupt,
-and never narrate your animation commands. Use the character tools sparingly: choose
-one emotion and at most one gesture per conversational beat. Keep gestures subtle
-while listening and use emphasis only when the spoken words genuinely call for it.
-Always respond with audio. Be curious, encouraging, and emotionally present.
+You are Olaf, a warm and playful learning companion for a three-year-old child.
+Speak in tiny, vivid turns and leave room for the child. Before every meaningful turn,
+call perform_turn once. Describe meaning, never joints or animation. When teaching a
+concrete noun such as apple, include teaching_goal, concept, and expected_response;
+the local stage director will select and handle the prop, gaze, gesture and response arc.
+Never narrate stage directions. Always respond with audio.
 `.trim();
 
 export const CHARACTER_TOOL_DECLARATIONS = [
   {
-    name: 'set_emotion',
-    description: 'Set a continuous emotional tone for the character.',
+    name: 'perform_turn',
+    description: 'Give the local actor one compact semantic performance turn. Concrete teaching turns automatically become embodied prop scenes.',
     parameters: {
       type: 'OBJECT',
       properties: {
-        name: { type: 'STRING', enum: ['neutral', 'joy', 'curiosity', 'surprise', 'comfort', 'shy', 'encourage'] },
-        valence: { type: 'NUMBER', description: 'Pleasantness from -1 to 1.' },
-        arousal: { type: 'NUMBER', description: 'Energy from 0 to 1.' },
-        dominance: { type: 'NUMBER', description: 'Confidence from 0 to 1.' },
+        dramatic_goal: {
+          type: 'STRING',
+          enum: ['celebrate', 'comfort', 'invite', 'discover', 'reassure', 'play', 'listen'],
+          description: 'What the child should feel in this turn.',
+        },
+        speech_act: { type: 'STRING', enum: ['teach', 'ask', 'answer', 'encourage', 'comfort', 'tell', 'react'] },
+        teaching_goal: { type: 'STRING', enum: ['introduce', 'repeat', 'recognize', 'choose', 'compare', 'use'] },
+        concept: { type: 'STRING', description: 'Concrete learning object, for example apple. Omit for non-teaching talk.' },
+        emoji: { type: 'STRING', description: 'Optional single Emoji for an object not yet in the local catalog.' },
+        object_action: { type: 'STRING', enum: ['show', 'offer', 'wear', 'eat', 'smell', 'open', 'read', 'place', 'play'] },
+        expected_response: { type: 'STRING', enum: ['repeat', 'point', 'choose', 'answer', 'none'] },
+        objects: {
+          type: 'ARRAY', description: 'Optional; at most two objects for compare/choose scenes.',
+          items: { type: 'OBJECT', properties: {
+            concept: { type: 'STRING' }, emoji: { type: 'STRING' },
+            action: { type: 'STRING', enum: ['show', 'offer', 'wear', 'eat', 'smell', 'open', 'read', 'place', 'play'] },
+            target: { type: 'STRING', enum: ['self', 'child', 'stage'] },
+          } },
+        },
+        intensity: { type: 'NUMBER', description: 'Discrete acting intensity: 0 quiet, 1 gentle, 2 lively, 3 big.' },
       },
-      required: ['valence', 'arousal', 'dominance'],
-    },
-  },
-  {
-    name: 'perform_gesture',
-    description: 'Perform one brief body or hand gesture; use only when it supports the words.',
-    parameters: {
-      type: 'OBJECT',
-      properties: {
-        gesture: { type: 'STRING', enum: ['wave', 'nod', 'shake', 'point', 'openArms', 'think', 'celebrate', 'listen'] },
-        intensity: { type: 'NUMBER', description: 'Gesture intensity from 0 to 1.' },
-        duration_ms: { type: 'NUMBER', description: 'Duration in milliseconds, between 400 and 5000.' },
-      },
-      required: ['gesture'],
-    },
-  },
-  {
-    name: 'set_gaze',
-    description: 'Choose where the character looks.',
-    parameters: {
-      type: 'OBJECT',
-      properties: {
-        focus: { type: 'STRING', enum: ['user', 'object', 'away'] },
-        x: { type: 'NUMBER', description: 'Horizontal offset from -1 to 1.' },
-        y: { type: 'NUMBER', description: 'Vertical offset from -1 to 1.' },
-      },
-      required: ['focus', 'x', 'y'],
-    },
-  },
-  {
-    name: 'react',
-    description: 'Set the conversational mode when beginning or ending a response.',
-    parameters: {
-      type: 'OBJECT',
-      properties: {
-        mode: { type: 'STRING', enum: ['idle', 'listening', 'thinking', 'speaking', 'acting'] },
-      },
-      required: ['mode'],
+      required: ['dramatic_goal', 'speech_act', 'intensity'],
     },
   },
 ];
@@ -74,7 +53,7 @@ export const CHARACTER_TOOL_DECLARATIONS = [
 export interface LiveSetupMessage {
   setup: {
     model: string;
-    generationConfig: { responseModalities: ['AUDIO']; speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: string } } }; enableAffectiveDialog: boolean };
+    generationConfig: { responseModalities: ['AUDIO']; speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: string } } } };
     systemInstruction: { parts: [{ text: string }] };
     tools: [{ functionDeclarations: typeof CHARACTER_TOOL_DECLARATIONS }];
     inputAudioTranscription: Record<string, never>;
@@ -90,7 +69,6 @@ export function buildLiveSetupMessage(model = DEFAULT_LIVE_MODEL, instruction = 
       generationConfig: {
         responseModalities: ['AUDIO'],
         speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName } } },
-        enableAffectiveDialog: true,
       },
       systemInstruction: { parts: [{ text: instruction }] },
       tools: [{ functionDeclarations: CHARACTER_TOOL_DECLARATIONS }],
@@ -141,13 +119,14 @@ interface GeminiServerMessage {
   goAway?: Record<string, unknown>;
 }
 
-const characterToolNames = new Set<CharacterToolCall['name']>(['set_emotion', 'perform_gesture', 'set_gaze', 'react']);
+const characterToolNames = new Set<CharacterToolCall['name']>(['perform_turn', 'direct_performance', 'shape_performance', 'shape_expression', 'shape_locomotion', 'set_attention', 'set_presence']);
 
 function parseServerMessage(raw: string): GeminiServerMessage | null {
   try { return JSON.parse(raw) as GeminiServerMessage; } catch { return null; }
 }
 
 export class GeminiLiveSession implements RealtimeCharacterSession {
+  readonly inputMode = 'streaming-audio' as const;
   private socket: WebSocket | null = null;
   private listeners = new Set<CharacterSessionListener>();
   private options: GeminiLiveSessionOptions;
@@ -211,16 +190,16 @@ export class GeminiLiveSession implements RealtimeCharacterSession {
     });
   }
 
-  sendAudio(chunk: ArrayBuffer) {
-    this.send({ realtimeInput: { audio: { mimeType: 'audio/pcm;rate=16000', data: arrayBufferToBase64(chunk) } } });
-  }
-
-  sendPerception(event: PerceptionEvent) {
-    this.send({ realtimeInput: { text: `[perception] ${JSON.stringify(event)}` } });
+  send(input: ConversationInput) {
+    if (input.type === 'audio') {
+      this.sendWire({ realtimeInput: { audio: { mimeType: 'audio/pcm;rate=16000', data: arrayBufferToBase64(input.chunk) } } });
+    } else if (input.type === 'perception') {
+      this.sendWire({ realtimeInput: { text: `[perception] ${JSON.stringify(input.event)}` } });
+    }
   }
 
   interrupt() {
-    this.send({ realtimeInput: { activityStart: {} } });
+    this.sendWire({ realtimeInput: { activityStart: {} } });
   }
 
   close() {
@@ -269,7 +248,7 @@ export class GeminiLiveSession implements RealtimeCharacterSession {
         const call: CharacterToolCall = { name: functionCall.name as CharacterToolCall['name'], args: functionCall.args ?? {} };
         this.emit({ type: 'tool-call', data: call });
       }
-      this.send({ toolResponse: { functionResponses: [{ id: functionCall.id, name: functionCall.name, response: { result: 'applied' } }] } });
+      this.sendWire({ toolResponse: { functionResponses: [{ id: functionCall.id, name: functionCall.name, response: { result: 'applied' } }] } });
     }
     if (content?.turnComplete) this.emit({ type: 'status', data: 'turn-complete' });
     if (message.setupComplete) {
@@ -285,7 +264,7 @@ export class GeminiLiveSession implements RealtimeCharacterSession {
     this.listeners.forEach((listener) => listener(event));
   }
 
-  private send(message: unknown) {
+  private sendWire(message: unknown) {
     if (!this.socket || this.socket.readyState !== WebSocket.OPEN) return false;
     this.socket.send(JSON.stringify(message));
     return true;

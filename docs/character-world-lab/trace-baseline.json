@@ -1,0 +1,1497 @@
+{
+  "version": 1,
+  "generatedBy": "world-rig-baseline-1（复用 olaf performanceModel/actionDirector/characterSpeech）",
+  "summary": {
+    "ticks": 97,
+    "durationMs": 9600,
+    "entries": 33,
+    "inputs": 8,
+    "interrupts": 1,
+    "sceneChanges": 1
+  },
+  "entries": [
+    {
+      "seq": 0,
+      "tMs": 0,
+      "kind": "input",
+      "actor": "world",
+      "label": "experiment-start（固定脚本，无故事）",
+      "data": {
+        "totalMs": 9600,
+        "tickMs": 100
+      }
+    },
+    {
+      "seq": 1,
+      "tMs": 600,
+      "kind": "input",
+      "actor": "world",
+      "label": "phase: A 说话 / B 倾听（占位语音）"
+    },
+    {
+      "seq": 2,
+      "tMs": 600,
+      "kind": "intent",
+      "actor": "char-a",
+      "label": "A: presence=speaking",
+      "data": {
+        "type": "presence",
+        "atMs": 600,
+        "presence": "speaking"
+      }
+    },
+    {
+      "seq": 3,
+      "tMs": 600,
+      "kind": "intent",
+      "actor": "char-a",
+      "label": "A: voice(占位 tone:invite)",
+      "data": {
+        "type": "voice",
+        "atMs": 600,
+        "features": {
+          "speaking": true,
+          "energy": 0.6,
+          "brightness": 0.66,
+          "emphasis": 0.5
+        }
+      }
+    },
+    {
+      "seq": 4,
+      "tMs": 600,
+      "kind": "intent",
+      "actor": "char-b",
+      "label": "B: presence=listening",
+      "data": {
+        "type": "presence",
+        "atMs": 600,
+        "presence": "listening"
+      }
+    },
+    {
+      "seq": 5,
+      "tMs": 600,
+      "kind": "intent",
+      "actor": "char-b",
+      "label": "B: attention→user",
+      "data": {
+        "type": "attention",
+        "atMs": 600,
+        "target": {
+          "focus": "user",
+          "x": 0,
+          "y": 0,
+          "depth": 0.72
+        }
+      }
+    },
+    {
+      "seq": 6,
+      "tMs": 2200,
+      "kind": "input",
+      "actor": "world",
+      "label": "phase: A 看向目标物体"
+    },
+    {
+      "seq": 7,
+      "tMs": 2200,
+      "kind": "intent",
+      "actor": "char-a",
+      "label": "A: attention→object-1",
+      "data": {
+        "type": "attention",
+        "atMs": 2200,
+        "target": {
+          "focus": "object",
+          "x": -0.054166666666666696,
+          "y": 0.32592592592592595,
+          "depth": 0.55
+        }
+      }
+    },
+    {
+      "seq": 8,
+      "tMs": 2800,
+      "kind": "input",
+      "actor": "world",
+      "label": "phase: A 移动到物体"
+    },
+    {
+      "seq": 9,
+      "tMs": 2800,
+      "kind": "state",
+      "actor": "world",
+      "label": "A: locomotionTarget→object-1",
+      "data": {
+        "target": {
+          "x": 454,
+          "y": 358
+        }
+      }
+    },
+    {
+      "seq": 10,
+      "tMs": 2800,
+      "kind": "intent",
+      "actor": "char-a",
+      "label": "A: locomotion(朝 object-1)",
+      "data": {
+        "type": "locomotion",
+        "atMs": 2800,
+        "target": {
+          "x": 0.32,
+          "depth": 0.55,
+          "heading": 0
+        },
+        "travel": 0.62,
+        "jump": 0.05,
+        "holdMs": 2000
+      }
+    },
+    {
+      "seq": 11,
+      "tMs": 3400,
+      "kind": "state",
+      "actor": "char-a",
+      "label": "char-a: 到达移动目标",
+      "data": {
+        "at": {
+          "x": 454,
+          "y": 358
+        }
+      }
+    },
+    {
+      "seq": 12,
+      "tMs": 4800,
+      "kind": "input",
+      "actor": "world",
+      "label": "phase: A 接触并拿起物体"
+    },
+    {
+      "seq": 13,
+      "tMs": 4800,
+      "kind": "intent",
+      "actor": "char-a",
+      "label": "A: direction=discover(伸手)",
+      "data": {
+        "type": "direction",
+        "atMs": 4800,
+        "objective": "discover",
+        "intensity": 0.6,
+        "holdMs": 800
+      }
+    },
+    {
+      "seq": 14,
+      "tMs": 5600,
+      "kind": "state",
+      "actor": "char-a",
+      "label": "object-1: surface(table)→hand(char-a)；pendingPlace=true"
+    },
+    {
+      "seq": 15,
+      "tMs": 5800,
+      "kind": "interrupt",
+      "actor": "child",
+      "label": "孩子点击 object-2（打断）",
+      "data": {
+        "childTap": {
+          "type": "hand",
+          "confidence": 0.9,
+          "x": 0.55,
+          "y": 0.3,
+          "gesture": "wave",
+          "timestamp": 5800
+        },
+        "deferred": "A 的放置动作被推迟"
+      }
+    },
+    {
+      "seq": 16,
+      "tMs": 5800,
+      "kind": "intent",
+      "actor": "char-a",
+      "label": "A: perception(hand/wave)→身体回应（复用 actionDirector）",
+      "data": {
+        "type": "intent",
+        "atMs": 5800,
+        "affect": {
+          "valence": 0.72,
+          "arousal": 0.64,
+          "dominance": 0.48
+        },
+        "movement": {
+          "energy": 0.9,
+          "openness": 0.84,
+          "verticality": 0.72,
+          "forward": 0.12,
+          "asymmetry": 0.68,
+          "beat": 0.82
+        },
+        "phrasing": {
+          "anticipation": 0.16,
+          "action": 0.84,
+          "reaction": 0.58,
+          "settle": 0.08,
+          "hold": 0.34
+        },
+        "holdMs": 900
+      }
+    },
+    {
+      "seq": 17,
+      "tMs": 5800,
+      "kind": "intent",
+      "actor": "char-a",
+      "label": "A: attention→object-2(孩子所指)",
+      "data": {
+        "type": "attention",
+        "atMs": 5800,
+        "target": {
+          "focus": "object",
+          "x": 0.054166666666666696,
+          "y": 0.32592592592592595,
+          "depth": 0.5
+        }
+      }
+    },
+    {
+      "seq": 18,
+      "tMs": 5800,
+      "kind": "intent",
+      "actor": "char-b",
+      "label": "B: presence=speaking(回应孩子)",
+      "data": {
+        "type": "presence",
+        "atMs": 5800,
+        "presence": "speaking"
+      }
+    },
+    {
+      "seq": 19,
+      "tMs": 5800,
+      "kind": "intent",
+      "actor": "char-b",
+      "label": "B: voice(占位 tone:ack)",
+      "data": {
+        "type": "voice",
+        "atMs": 5800,
+        "features": {
+          "speaking": true,
+          "energy": 0.5,
+          "brightness": 0.6,
+          "emphasis": 0.42
+        }
+      }
+    },
+    {
+      "seq": 20,
+      "tMs": 5800,
+      "kind": "state",
+      "actor": "world",
+      "label": "打断后状态：object-1 仍在 A 手中；A 无移动目标；pendingPlace 保持 true",
+      "data": {
+        "object1": {
+          "kind": "hand",
+          "holder": "char-a"
+        },
+        "locomotionTarget": null,
+        "pendingPlace": true
+      }
+    },
+    {
+      "seq": 21,
+      "tMs": 6800,
+      "kind": "input",
+      "actor": "world",
+      "label": "phase: 场景变化 scene-1→scene-2"
+    },
+    {
+      "seq": 22,
+      "tMs": 6800,
+      "kind": "state",
+      "actor": "world",
+      "label": "scene=scene-2-sky-deck；双角色重定位到新锚点；object-2→mat，object-1 随 A",
+      "data": {
+        "scene": "scene-2-sky-deck",
+        "object1": {
+          "kind": "hand",
+          "holder": "char-a"
+        }
+      }
+    },
+    {
+      "seq": 23,
+      "tMs": 7800,
+      "kind": "input",
+      "actor": "world",
+      "label": "phase: A 移动到架子放置物体（恢复被打断的意图）"
+    },
+    {
+      "seq": 24,
+      "tMs": 7800,
+      "kind": "state",
+      "actor": "char-a",
+      "label": "A: locomotionTarget→shelf(scene-2)",
+      "data": {
+        "target": {
+          "x": 560,
+          "y": 280
+        }
+      }
+    },
+    {
+      "seq": 25,
+      "tMs": 7800,
+      "kind": "intent",
+      "actor": "char-a",
+      "label": "A: locomotion(朝 shelf)",
+      "data": {
+        "type": "locomotion",
+        "atMs": 7800,
+        "target": {
+          "x": 0.5,
+          "depth": 0.35,
+          "heading": 0
+        },
+        "travel": 0.5,
+        "jump": 0.02,
+        "holdMs": 1200
+      }
+    },
+    {
+      "seq": 26,
+      "tMs": 8600,
+      "kind": "state",
+      "actor": "char-a",
+      "label": "char-a: 到达移动目标",
+      "data": {
+        "at": {
+          "x": 560,
+          "y": 280
+        }
+      }
+    },
+    {
+      "seq": 27,
+      "tMs": 8700,
+      "kind": "intent",
+      "actor": "char-a",
+      "label": "A: direction=reassure(放下)",
+      "data": {
+        "type": "direction",
+        "atMs": 8700,
+        "objective": "reassure",
+        "intensity": 0.45,
+        "holdMs": 900
+      }
+    },
+    {
+      "seq": 28,
+      "tMs": 8700,
+      "kind": "state",
+      "actor": "char-a",
+      "label": "object-1: hand→surface(shelf)；pendingPlace=false",
+      "data": {
+        "scene": "scene-2-sky-deck"
+      }
+    },
+    {
+      "seq": 29,
+      "tMs": 9400,
+      "kind": "intent",
+      "actor": "char-a",
+      "label": "A: presence=idle(回到待机)",
+      "data": {
+        "type": "presence",
+        "atMs": 9400,
+        "presence": "idle"
+      }
+    },
+    {
+      "seq": 30,
+      "tMs": 9400,
+      "kind": "intent",
+      "actor": "char-b",
+      "label": "B: presence=idle(回到待机)",
+      "data": {
+        "type": "presence",
+        "atMs": 9400,
+        "presence": "idle"
+      }
+    },
+    {
+      "seq": 31,
+      "tMs": 9400,
+      "kind": "state",
+      "actor": "world",
+      "label": "双角色回到待机",
+      "data": {
+        "object1": {
+          "kind": "surface",
+          "anchor": "shelf"
+        }
+      }
+    },
+    {
+      "seq": 32,
+      "tMs": 9600,
+      "kind": "input",
+      "actor": "world",
+      "label": "experiment-end",
+      "data": {
+        "speechDeliveryUsed": {
+          "style": "cheerful",
+          "styleDegree": 1.12,
+          "rate": 5,
+          "pitch": 11,
+          "volume": 96
+        },
+        "placeholderLine": "…（tone:invite，占位，非台词）"
+      }
+    }
+  ],
+  "positionTrackSampled": [
+    {
+      "tMs": 0,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 300,
+        "y": 300
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 300,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 300,
+        "y": 300
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 600,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 300,
+        "y": 300
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 900,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 300,
+        "y": 300
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 1200,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 300,
+        "y": 300
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 1500,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 300,
+        "y": 300
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 1800,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 300,
+        "y": 300
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 2100,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 300,
+        "y": 300
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 2400,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 300,
+        "y": 300
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 2700,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 300,
+        "y": 300
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 3000,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 369,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 3300,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 438,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 3600,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 3900,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 4200,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 4500,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 4800,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 5100,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 5400,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 5700,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": "object-1"
+    },
+    {
+      "tMs": 6000,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": "object-1"
+    },
+    {
+      "tMs": 6300,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": "object-1"
+    },
+    {
+      "tMs": 6600,
+      "scene": "scene-1-morning-mat",
+      "charA": {
+        "x": 454,
+        "y": 358
+      },
+      "charB": {
+        "x": 640,
+        "y": 310
+      },
+      "holdObjectId": "object-1"
+    },
+    {
+      "tMs": 6900,
+      "scene": "scene-2-sky-deck",
+      "charA": {
+        "x": 360,
+        "y": 320
+      },
+      "charB": {
+        "x": 640,
+        "y": 360
+      },
+      "holdObjectId": "object-1"
+    },
+    {
+      "tMs": 7200,
+      "scene": "scene-2-sky-deck",
+      "charA": {
+        "x": 360,
+        "y": 320
+      },
+      "charB": {
+        "x": 640,
+        "y": 360
+      },
+      "holdObjectId": "object-1"
+    },
+    {
+      "tMs": 7500,
+      "scene": "scene-2-sky-deck",
+      "charA": {
+        "x": 360,
+        "y": 320
+      },
+      "charB": {
+        "x": 640,
+        "y": 360
+      },
+      "holdObjectId": "object-1"
+    },
+    {
+      "tMs": 7800,
+      "scene": "scene-2-sky-deck",
+      "charA": {
+        "x": 383,
+        "y": 297
+      },
+      "charB": {
+        "x": 640,
+        "y": 360
+      },
+      "holdObjectId": "object-1"
+    },
+    {
+      "tMs": 8100,
+      "scene": "scene-2-sky-deck",
+      "charA": {
+        "x": 452,
+        "y": 280
+      },
+      "charB": {
+        "x": 640,
+        "y": 360
+      },
+      "holdObjectId": "object-1"
+    },
+    {
+      "tMs": 8400,
+      "scene": "scene-2-sky-deck",
+      "charA": {
+        "x": 521,
+        "y": 280
+      },
+      "charB": {
+        "x": 640,
+        "y": 360
+      },
+      "holdObjectId": "object-1"
+    },
+    {
+      "tMs": 8700,
+      "scene": "scene-2-sky-deck",
+      "charA": {
+        "x": 560,
+        "y": 280
+      },
+      "charB": {
+        "x": 640,
+        "y": 360
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 9000,
+      "scene": "scene-2-sky-deck",
+      "charA": {
+        "x": 560,
+        "y": 280
+      },
+      "charB": {
+        "x": 640,
+        "y": 360
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 9300,
+      "scene": "scene-2-sky-deck",
+      "charA": {
+        "x": 560,
+        "y": 280
+      },
+      "charB": {
+        "x": 640,
+        "y": 360
+      },
+      "holdObjectId": null
+    },
+    {
+      "tMs": 9600,
+      "scene": "scene-2-sky-deck",
+      "charA": {
+        "x": 560,
+        "y": 280
+      },
+      "charB": {
+        "x": 640,
+        "y": 360
+      },
+      "holdObjectId": null
+    }
+  ],
+  "keyframes": [
+    {
+      "name": "k1-idle",
+      "tMs": 500,
+      "caption": "基线：双角色待机",
+      "positionSample": {
+        "char-a": {
+          "x": 300,
+          "y": 300
+        },
+        "char-b": {
+          "x": 640,
+          "y": 310
+        }
+      },
+      "world": {
+        "scene": "scene-1-morning-mat",
+        "characters": {
+          "char-a": {
+            "position": {
+              "x": 300,
+              "y": 300
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          },
+          "char-b": {
+            "position": {
+              "x": 640,
+              "y": 310
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          }
+        },
+        "objects": {
+          "object-1": {
+            "id": "object-1",
+            "shape": "circle",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位球"
+          },
+          "object-2": {
+            "id": "object-2",
+            "shape": "square",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位块"
+          }
+        }
+      },
+      "presence": {
+        "char-a": "idle",
+        "char-b": "idle"
+      },
+      "gaze": {
+        "char-a": {
+          "lookX": 0.004930025144196612,
+          "lookY": 0.0029481300194864222,
+          "focusDepth": 0.7
+        },
+        "char-b": {
+          "lookX": 0.004930025144196612,
+          "lookY": 0.0029481300194864222,
+          "focusDepth": 0.7
+        }
+      },
+      "jaw": {
+        "char-a": 0,
+        "char-b": 0
+      }
+    },
+    {
+      "name": "k2-speak-listen",
+      "tMs": 1700,
+      "caption": "A 说话（占位台词 …）/ B 倾听",
+      "positionSample": {
+        "char-a": {
+          "x": 300,
+          "y": 300
+        },
+        "char-b": {
+          "x": 640,
+          "y": 310
+        }
+      },
+      "world": {
+        "scene": "scene-1-morning-mat",
+        "characters": {
+          "char-a": {
+            "position": {
+              "x": 300,
+              "y": 300
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          },
+          "char-b": {
+            "position": {
+              "x": 640,
+              "y": 310
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          }
+        },
+        "objects": {
+          "object-1": {
+            "id": "object-1",
+            "shape": "circle",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位球"
+          },
+          "object-2": {
+            "id": "object-2",
+            "shape": "square",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位块"
+          }
+        }
+      },
+      "presence": {
+        "char-a": "speaking",
+        "char-b": "listening"
+      },
+      "gaze": {
+        "char-a": {
+          "lookX": 0.01749625762347092,
+          "lookY": 0.010952435805262364,
+          "focusDepth": 0.7
+        },
+        "char-b": {
+          "lookX": 0.01749625762347092,
+          "lookY": 0.010952435805262364,
+          "focusDepth": 0.7199999999999772
+        }
+      },
+      "jaw": {
+        "char-a": 0.4328742101586122,
+        "char-b": 0
+      }
+    },
+    {
+      "name": "k3-look",
+      "tMs": 2600,
+      "caption": "A 看向占位球",
+      "positionSample": {
+        "char-a": {
+          "x": 300,
+          "y": 300
+        },
+        "char-b": {
+          "x": 640,
+          "y": 310
+        }
+      },
+      "world": {
+        "scene": "scene-1-morning-mat",
+        "characters": {
+          "char-a": {
+            "position": {
+              "x": 300,
+              "y": 300
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          },
+          "char-b": {
+            "position": {
+              "x": 640,
+              "y": 310
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          }
+        },
+        "objects": {
+          "object-1": {
+            "id": "object-1",
+            "shape": "circle",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位球"
+          },
+          "object-2": {
+            "id": "object-2",
+            "shape": "square",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位块"
+          }
+        }
+      },
+      "presence": {
+        "char-a": "speaking",
+        "char-b": "listening"
+      },
+      "gaze": {
+        "char-a": {
+          "lookX": -0.032355897888279375,
+          "lookY": 0.34070684863109657,
+          "focusDepth": 0.5500068099894644
+        },
+        "char-b": {
+          "lookX": 0.021808309615525184,
+          "lookY": 0.014795719719315438,
+          "focusDepth": 0.72
+        }
+      },
+      "jaw": {
+        "char-a": 0.4573743395887137,
+        "char-b": 0
+      }
+    },
+    {
+      "name": "k4-move",
+      "tMs": 4300,
+      "caption": "A 移动中（模型提供步态/姿态）",
+      "positionSample": {
+        "char-a": {
+          "x": 454,
+          "y": 358
+        },
+        "char-b": {
+          "x": 640,
+          "y": 310
+        }
+      },
+      "world": {
+        "scene": "scene-1-morning-mat",
+        "characters": {
+          "char-a": {
+            "position": {
+              "x": 454,
+              "y": 358
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          },
+          "char-b": {
+            "position": {
+              "x": 640,
+              "y": 310
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          }
+        },
+        "objects": {
+          "object-1": {
+            "id": "object-1",
+            "shape": "circle",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位球"
+          },
+          "object-2": {
+            "id": "object-2",
+            "shape": "square",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位块"
+          }
+        }
+      },
+      "presence": {
+        "char-a": "speaking",
+        "char-b": "listening"
+      },
+      "gaze": {
+        "char-a": {
+          "lookX": -0.03967890276142893,
+          "lookY": 0.3405630305497958,
+          "focusDepth": 0.55
+        },
+        "char-b": {
+          "lookX": 0.23253130691663684,
+          "lookY": 0.0966398946283657,
+          "focusDepth": 0.72
+        }
+      },
+      "jaw": {
+        "char-a": 0.42163951138407646,
+        "char-b": 0
+      }
+    },
+    {
+      "name": "k5-take",
+      "tMs": 5700,
+      "caption": "A 拿起占位球（关系=hand）",
+      "positionSample": {
+        "char-a": {
+          "x": 454,
+          "y": 358
+        },
+        "char-b": {
+          "x": 640,
+          "y": 310
+        }
+      },
+      "world": {
+        "scene": "scene-1-morning-mat",
+        "characters": {
+          "char-a": {
+            "position": {
+              "x": 454,
+              "y": 358
+            },
+            "locomotionTarget": null,
+            "pendingPlace": true
+          },
+          "char-b": {
+            "position": {
+              "x": 640,
+              "y": 310
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          }
+        },
+        "objects": {
+          "object-1": {
+            "id": "object-1",
+            "shape": "circle",
+            "relation": {
+              "kind": "hand",
+              "holder": "char-a"
+            },
+            "label": "占位球"
+          },
+          "object-2": {
+            "id": "object-2",
+            "shape": "square",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位块"
+          }
+        }
+      },
+      "presence": {
+        "char-a": "speaking",
+        "char-b": "listening"
+      },
+      "gaze": {
+        "char-a": {
+          "lookX": -0.28289044687491094,
+          "lookY": 0.10326319026348199,
+          "focusDepth": 0.7500275683520741
+        },
+        "char-b": {
+          "lookX": -0.0019821052543449137,
+          "lookY": 0.007554619939127527,
+          "focusDepth": 0.72
+        }
+      },
+      "jaw": {
+        "char-a": 0.4265246735751814,
+        "char-b": 0
+      }
+    },
+    {
+      "name": "k6-interrupt",
+      "tMs": 6600,
+      "caption": "打断：A 转向孩子所指，B 回应",
+      "positionSample": {
+        "char-a": {
+          "x": 454,
+          "y": 358
+        },
+        "char-b": {
+          "x": 640,
+          "y": 310
+        }
+      },
+      "world": {
+        "scene": "scene-1-morning-mat",
+        "characters": {
+          "char-a": {
+            "position": {
+              "x": 454,
+              "y": 358
+            },
+            "locomotionTarget": null,
+            "pendingPlace": true
+          },
+          "char-b": {
+            "position": {
+              "x": 640,
+              "y": 310
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          }
+        },
+        "objects": {
+          "object-1": {
+            "id": "object-1",
+            "shape": "circle",
+            "relation": {
+              "kind": "hand",
+              "holder": "char-a"
+            },
+            "label": "占位球"
+          },
+          "object-2": {
+            "id": "object-2",
+            "shape": "square",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位块"
+          }
+        }
+      },
+      "presence": {
+        "char-a": "speaking",
+        "char-b": "speaking"
+      },
+      "gaze": {
+        "char-a": {
+          "lookX": -0.37707206666826665,
+          "lookY": 0.12384326727474908,
+          "focusDepth": 0.8324804248695294
+        },
+        "char-b": {
+          "lookX": -0.012609458991183459,
+          "lookY": 0.001043306012203068,
+          "focusDepth": 0.72
+        }
+      },
+      "jaw": {
+        "char-a": 0.39747554573891536,
+        "char-b": 0.3229605337706101
+      }
+    },
+    {
+      "name": "k7-scene2",
+      "tMs": 7600,
+      "caption": "场景 2：天空甲板（几何占位）",
+      "positionSample": {
+        "char-a": {
+          "x": 360,
+          "y": 320
+        },
+        "char-b": {
+          "x": 640,
+          "y": 360
+        }
+      },
+      "world": {
+        "scene": "scene-2-sky-deck",
+        "characters": {
+          "char-a": {
+            "position": {
+              "x": 360,
+              "y": 320
+            },
+            "locomotionTarget": null,
+            "pendingPlace": true
+          },
+          "char-b": {
+            "position": {
+              "x": 640,
+              "y": 360
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          }
+        },
+        "objects": {
+          "object-1": {
+            "id": "object-1",
+            "shape": "circle",
+            "relation": {
+              "kind": "hand",
+              "holder": "char-a"
+            },
+            "label": "占位球"
+          },
+          "object-2": {
+            "id": "object-2",
+            "shape": "square",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位块"
+          }
+        }
+      },
+      "presence": {
+        "char-a": "speaking",
+        "char-b": "speaking"
+      },
+      "gaze": {
+        "char-a": {
+          "lookX": -0.3848711345240597,
+          "lookY": 0.11644237716214857,
+          "focusDepth": 0.837931504981672
+        },
+        "char-b": {
+          "lookX": 0.2065389246686542,
+          "lookY": -0.03798736884295384,
+          "focusDepth": 0.72
+        }
+      },
+      "jaw": {
+        "char-a": 0.45974181890531207,
+        "char-b": 0.3662647607150198
+      }
+    },
+    {
+      "name": "k8-idle-end",
+      "tMs": 9600,
+      "caption": "结束：物体在架子上，双角色待机",
+      "positionSample": {
+        "char-a": {
+          "x": 560,
+          "y": 280
+        },
+        "char-b": {
+          "x": 640,
+          "y": 360
+        }
+      },
+      "world": {
+        "scene": "scene-2-sky-deck",
+        "characters": {
+          "char-a": {
+            "position": {
+              "x": 560,
+              "y": 280
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          },
+          "char-b": {
+            "position": {
+              "x": 640,
+              "y": 360
+            },
+            "locomotionTarget": null,
+            "pendingPlace": false
+          }
+        },
+        "objects": {
+          "object-1": {
+            "id": "object-1",
+            "shape": "circle",
+            "relation": {
+              "kind": "surface",
+              "anchor": "shelf"
+            },
+            "label": "占位球"
+          },
+          "object-2": {
+            "id": "object-2",
+            "shape": "square",
+            "relation": {
+              "kind": "surface",
+              "anchor": "table"
+            },
+            "label": "占位块"
+          }
+        }
+      },
+      "presence": {
+        "char-a": "speaking",
+        "char-b": "speaking"
+      },
+      "gaze": {
+        "char-a": {
+          "lookX": -0.031744264129797,
+          "lookY": -0.0848516392232098,
+          "focusDepth": 0.7488614842576998
+        },
+        "char-b": {
+          "lookX": -0.015732003958363897,
+          "lookY": -0.015632664646787038,
+          "focusDepth": 0.72
+        }
+      },
+      "jaw": {
+        "char-a": 0.43671257242758343,
+        "char-b": 0.3502554056170708
+      }
+    }
+  ]
+}

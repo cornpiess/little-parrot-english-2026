@@ -8,8 +8,9 @@ describe('Gemini Live protocol adapter', () => {
     expect(message.setup.model).toBe('models/gemini-test');
     expect(message.setup.generationConfig.responseModalities).toEqual(['AUDIO']);
     expect(message.setup.generationConfig.speechConfig.voiceConfig.prebuiltVoiceConfig.voiceName).toBe('Kore');
-    expect(message.setup.tools[0].functionDeclarations.map((tool: { name: string }) => tool.name)).toContain('perform_gesture');
-    expect(message.setup.generationConfig.enableAffectiveDialog).toBe(true);
+    const toolNames = message.setup.tools[0].functionDeclarations.map((tool: { name: string }) => tool.name);
+    expect(toolNames).toEqual(['perform_turn']);
+    expect(message.setup.generationConfig).not.toHaveProperty('enableAffectiveDialog');
   });
 
   it('decodes PCM payloads without changing their bytes', () => {
@@ -37,7 +38,7 @@ describe('Gemini Live protocol adapter', () => {
     const session = new GeminiLiveSession({ apiKey: 'test-key', webSocketFactory: () => socket });
 
     await session.connect();
-    session.sendAudio(new Uint8Array([0, 1, 2, 3]).buffer);
+    session.send({ type: 'audio', chunk: new Uint8Array([0, 1, 2, 3]).buffer });
 
     const audioMessage = JSON.parse(sent[1]);
     expect(audioMessage.realtimeInput.audio.mimeType).toBe('audio/pcm;rate=16000');

@@ -129,7 +129,7 @@ function isOwned(id: string): boolean {
 
 /** Check if any character is owned */
 export function hasAnyOwned(): boolean {
-  return [...TEACHER_IDS, 'parrot', 'fox', 'olaf', 'dino', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco']
+  return [...TEACHER_IDS, 'parrot', 'fox', 'olaf', 'dino', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco', 'xiaobanlong']
     .some(id => isOwned(id));
 }
 
@@ -146,7 +146,7 @@ export function getRecommendedCharId(): string {
   const gender = data.gender;
   // Map target language to recommended character
   const recommendations: Record<string, string[]> = {
-    english: ['parrot', 'fox', 'olaf', 'dino', 'einstein', 'deer'],
+    english: ['parrot', 'fox', 'olaf', 'dino', 'xiaobanlong', 'einstein', 'deer'],
     japanese: ['xizi'],
     portuguese: ['bull'],
     arabic: ['bred'],
@@ -168,7 +168,7 @@ export function hasOwnedTeacher(): boolean {
 
 /** Check if user owns any partner */
 export function hasOwnedPartner(): boolean {
-  return ['parrot', 'fox', 'olaf', 'dino', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco']
+  return ['parrot', 'fox', 'olaf', 'dino', 'allen', 'harry', 'xizi', 'bull', 'bred', 'coco', 'xiaobanlong']
     .some(id => isOwned(id));
 }
 
@@ -184,7 +184,7 @@ export function getRecommendedPartnerId(): string | null {
   const targetLang = data.targetLanguage || 'english';
   const gender = data.gender;
   const byLang: Record<string, string[]> = {
-    english: gender === 'girl' ? ['parrot', 'olaf'] : ['fox', 'dino'],
+    english: gender === 'girl' ? ['parrot', 'olaf', 'xiaobanlong'] : ['fox', 'dino', 'xiaobanlong'],
     japanese: ['xizi'],
     portuguese: ['bull'],
     arabic: ['bred'],
@@ -225,6 +225,7 @@ export const CHARACTER_STORIES: Record<string, string> = {
   bull: 'Bull来自巴西，他是个热情的足球少年！跟他一起踢球学英语！',
   bred: 'Bred来自中东，他是个神秘的小探险家。他想带你去发现沙漠里的宝藏！',
   coco: 'Coco是一只聪明的小鹦鹉，它最擅长模仿各种声音。跟它一起学发音，你也会变成语言小天才！',
+  xiaobanlong: '小伴龙是勇敢又好奇的冒险伙伴，喜欢和小朋友一起探索新世界。和它一起冒险、一起玩耍，把英语带进每一次发现！',
 };
 
 /* ═══════════════════════════════════════

@@ -1,0 +1,413 @@
+2026-08-14T06:44:14.945Z goto done
+2026-08-14T06:44:17.024Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T06:44:19.612Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T06:44:22.192Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T06:44:25.325Z GO clicked
+2026-08-14T06:44:27.116Z COLOR clicked
+2026-08-14T06:44:27.967Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T06:44:27.968Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T06:44:35.296Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T06:44:43.426Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T06:44:51.552Z poll 30  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T06:44:59.692Z poll 40  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T06:45:07.827Z poll 50  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T06:45:15.976Z poll 60  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T06:45:24.111Z poll 70  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T06:45:32.230Z poll 80  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T06:45:40.345Z poll 90  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T06:45:48.472Z poll 100  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T06:45:56.598Z poll 110  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T06:46:04.716Z poll 120  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T06:49:36.134Z goto done
+2026-08-14T06:49:38.219Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T06:49:40.805Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T06:49:43.387Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T06:49:46.516Z GO clicked
+2026-08-14T06:49:48.300Z COLOR clicked
+2026-08-14T06:49:49.201Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T06:49:49.202Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T06:49:56.544Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T06:50:04.689Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T06:50:12.789Z poll 30 u are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:50:20.899Z poll 40 u are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:50:29.031Z poll 50 u are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:50:37.172Z poll 60 u are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:50:45.294Z poll 70 u are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:50:53.416Z poll 80 u are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:51:01.573Z poll 90 u are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:51:09.724Z poll 100 u are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:51:17.842Z poll 110 u are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:51:25.950Z poll 120 u are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:52:48.109Z goto done
+2026-08-14T06:52:50.176Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T06:52:52.753Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T06:52:55.336Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T06:52:58.430Z GO clicked
+2026-08-14T06:53:00.171Z COLOR clicked
+2026-08-14T06:53:01.032Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T06:53:01.033Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T06:53:08.331Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T06:53:16.483Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T06:53:24.902Z poll 30  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:53:33.025Z poll 40  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:53:41.186Z poll 50  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:53:49.283Z poll 60  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:53:57.394Z poll 70  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:54:05.493Z poll 80  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:54:13.594Z poll 90  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:54:21.722Z poll 100  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:54:29.838Z poll 110  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:54:37.955Z poll 120  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:56:23.082Z goto done
+2026-08-14T06:56:25.195Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T06:56:27.784Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T06:56:30.374Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T06:56:33.474Z GO clicked
+2026-08-14T06:56:35.280Z COLOR clicked
+2026-08-14T06:56:36.159Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T06:56:36.161Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T06:56:43.499Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T06:56:51.629Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T06:56:59.743Z poll 30  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:57:07.869Z poll 40  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:57:15.979Z poll 50  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:57:24.099Z poll 60  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:57:32.217Z poll 70  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:57:40.329Z poll 80  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:57:48.436Z poll 90  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:57:56.553Z poll 100  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:58:04.662Z poll 110  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:58:12.762Z poll 120  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T06:59:19.008Z goto done
+2026-08-14T06:59:21.106Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T06:59:23.702Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T06:59:26.287Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T06:59:29.416Z GO clicked
+2026-08-14T06:59:31.210Z COLOR clicked
+2026-08-14T06:59:32.140Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T06:59:32.141Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T06:59:39.457Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T06:59:47.612Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T06:59:55.722Z poll 30  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:00:03.825Z poll 40  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:00:11.960Z poll 50  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:00:20.095Z poll 60  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:00:28.219Z poll 70  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:00:36.334Z poll 80  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:00:44.458Z poll 90  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:00:52.574Z poll 100  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:01:00.695Z poll 110  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:01:08.806Z poll 120  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:02:48.902Z goto done
+2026-08-14T07:02:51.019Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:02:53.619Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:02:56.196Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:02:59.340Z GO clicked
+2026-08-14T07:03:01.111Z COLOR clicked
+2026-08-14T07:03:02.042Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:03:02.043Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:03:09.363Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T07:03:17.515Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T07:03:25.638Z poll 30  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:03:33.732Z poll 40  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:03:41.842Z poll 50  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:03:49.950Z poll 60  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:03:58.061Z poll 70  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:04:06.170Z poll 80  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:04:14.300Z poll 90  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:04:22.423Z poll 100  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:04:30.518Z poll 110  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:04:38.651Z poll 120  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:07:28.892Z goto done
+2026-08-14T07:07:30.958Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:07:33.561Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:07:36.144Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:07:39.263Z GO clicked
+2026-08-14T07:07:41.077Z COLOR clicked
+2026-08-14T07:07:42.030Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:07:42.031Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:07:49.360Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T07:07:57.498Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T07:08:05.660Z poll 30  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:08:13.766Z poll 40  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:08:21.883Z poll 50  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:08:30.010Z poll 60  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:08:38.133Z poll 70  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:08:46.265Z poll 80  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:08:54.388Z poll 90  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:09:02.490Z poll 100  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:09:10.589Z poll 110  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:09:18.726Z poll 120  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:11:22.673Z goto done
+2026-08-14T07:11:24.741Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:11:27.353Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:11:29.924Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:11:33.035Z GO clicked
+2026-08-14T07:11:34.825Z COLOR clicked
+2026-08-14T07:11:35.714Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:11:35.716Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:11:43.041Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T07:11:51.211Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T07:11:59.334Z poll 30  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:12:07.434Z poll 40  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:12:15.553Z poll 50  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:12:23.643Z poll 60  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:12:31.731Z poll 70  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:12:39.807Z poll 80  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:12:47.908Z poll 90  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:12:56.026Z poll 100  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:13:04.115Z poll 110  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:13:12.222Z poll 120  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:14:34.333Z goto done
+2026-08-14T07:14:36.406Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:14:39.011Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:14:41.587Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:14:44.707Z GO clicked
+2026-08-14T07:14:46.494Z COLOR clicked
+2026-08-14T07:14:47.363Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:14:47.364Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:14:54.689Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T07:15:02.835Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T07:15:10.959Z poll 30  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:15:19.084Z poll 40  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:15:27.213Z poll 50  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:15:35.314Z poll 60  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:15:43.437Z poll 70  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:15:51.576Z poll 80  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:15:59.688Z poll 90  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:16:07.785Z poll 100  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:16:15.887Z poll 110  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:16:24.042Z poll 120  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:17:41.459Z goto done
+2026-08-14T07:18:21.792Z GO click fail
+2026-08-14T07:18:30.611Z COLOR click fail
+2026-08-14T07:18:31.129Z body: 
+2026-08-14T07:18:31.130Z errors now: ["CONSOLE: Failed to load resource: the server responded with a status of 500 (Internal Server Error)","CONSOLE: [vite] Internal Server Error\nTransform failed with 1 error:\nC:/Users/zh95/Desktop/mimocode/little-parrot-english-main/src/hooks/useParrotSpeech.ts:113:24: ERROR: Invalid assignment target\n    at failureErrorWithLog (C:\\Users\\zh95\\Desktop\\mimocode\\little-parrot-english-main\\node_modules\\esbuild\\lib\\main.js:1472:15)\n    at C:\\Users\\zh95\\Desktop\\mimocode\\little-parrot-english-main\\node_modules\\esbuild\\lib\\main.js:755:50\n    at responseCallbacks.<computed> (C:\\Users\\zh95\\Desktop\\mimocode\\little-parrot-english-main\\node_modules\\esbuild\\lib\\main.js:622:9)\n    at handleIncomingPacket (C:\\Users\\zh95\\Desktop\\mimocode\\little-parrot-english-main\\node_modules\\esbuild\\lib\\main.js:677:12)\n    at Socket.readFromStdout (C:\\Users\\zh95\\Desktop\\mimocode\\little-parrot-english-main\\node_modules\\esbuild\\lib\\main.js:600:7)\n    at Socket.emit (node:events:508:28)\n    at addChunk (node:internal/streams/readable:563:12)\n    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)\n    at Readable.push (node:internal/streams/readable:394:5)\n    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)"]
+2026-08-14T07:18:38.432Z poll 10 
+2026-08-14T07:18:46.552Z poll 20 
+2026-08-14T07:18:54.677Z poll 30 
+2026-08-14T07:19:02.802Z poll 40 
+2026-08-14T07:19:10.945Z poll 50 
+2026-08-14T07:19:19.070Z poll 60 
+2026-08-14T07:19:27.205Z poll 70 
+2026-08-14T07:19:35.323Z poll 80 
+2026-08-14T07:19:43.439Z poll 90 
+2026-08-14T07:19:51.571Z poll 100 
+2026-08-14T07:19:59.673Z poll 110 
+2026-08-14T07:20:07.781Z poll 120 
+2026-08-14T07:20:30.487Z goto done
+2026-08-14T07:20:32.549Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:20:35.146Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:20:37.735Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:20:40.843Z GO clicked
+2026-08-14T07:20:42.628Z COLOR clicked
+2026-08-14T07:20:43.507Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:20:43.508Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:20:50.832Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T07:20:58.948Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T07:21:07.089Z poll 30  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:21:15.182Z poll 40  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:21:23.294Z poll 50  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:21:31.400Z poll 60  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:21:39.495Z poll 70  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:21:47.583Z poll 80  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:21:55.668Z poll 90  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:22:03.754Z poll 100  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:22:11.837Z poll 110  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:22:19.909Z poll 120  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:23:37.701Z goto done
+2026-08-14T07:23:39.777Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:23:42.376Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:23:44.941Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:23:48.046Z GO clicked
+2026-08-14T07:23:49.797Z COLOR clicked
+2026-08-14T07:23:50.633Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:23:50.634Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:23:57.951Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T07:24:06.125Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T07:24:14.263Z poll 30  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:24:22.379Z poll 40  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:24:30.504Z poll 50  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:24:38.620Z poll 60  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:24:46.741Z poll 70  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:24:54.865Z poll 80  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:25:03.003Z poll 90  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:25:11.106Z poll 100  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:25:19.232Z poll 110  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:25:27.348Z poll 120  the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird!
+2026-08-14T07:26:58.138Z goto done
+2026-08-14T07:27:00.198Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:27:02.796Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:27:05.371Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:27:08.495Z GO clicked
+2026-08-14T07:27:10.266Z COLOR clicked
+2026-08-14T07:27:11.146Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:27:11.147Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:27:18.458Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T07:27:26.588Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T07:27:34.726Z poll 30  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:27:42.858Z poll 40  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:27:51.003Z poll 50  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:27:59.127Z poll 60  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:28:07.249Z poll 70  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:28:15.375Z poll 80  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:28:23.504Z poll 90  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:28:31.613Z poll 100  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:28:39.728Z poll 110  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:28:47.838Z poll 120  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:30:31.449Z goto done
+2026-08-14T07:30:33.559Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:30:36.170Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:30:38.758Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:30:41.875Z GO clicked
+2026-08-14T07:30:43.677Z COLOR clicked
+2026-08-14T07:30:44.610Z body: ←
+⏱️
+00:12
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:30:44.611Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:30:51.925Z poll 10  Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird!
+2026-08-14T07:31:00.172Z poll 20 d! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird!
+2026-08-14T07:31:08.293Z poll 30  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:31:16.420Z poll 40  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:31:24.563Z poll 50  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:31:32.682Z poll 60  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:31:40.776Z poll 70  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:31:48.922Z poll 80  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:31:57.040Z poll 90  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:32:05.150Z poll 100  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:32:13.286Z poll 110  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:32:21.402Z poll 120  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:35:56.764Z goto done
+2026-08-14T07:35:58.865Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:36:01.447Z clicked: Sunny (q=Is it sunny today, or is it rainy? | Pee)
+2026-08-14T07:36:03.000Z clicked: Sunny (q=Sunny! The sun makes me so happy! | Sun!)
+2026-08-14T07:36:04.039Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:36:06.622Z clicked: Apple (q=I am holding something. What is it? | I )
+2026-08-14T07:36:09.203Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:36:12.304Z GO clicked
+2026-08-14T07:36:14.067Z COLOR clicked
+2026-08-14T07:36:14.585Z body: ←
+⏱️
+00:17
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:36:14.586Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:36:21.886Z poll 10 Kingdom? You choose! | Chirp chirp! Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm...
+2026-08-14T07:36:30.010Z poll 20 Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart!
+2026-08-14T07:36:38.104Z poll 30  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:36:46.212Z poll 40 ok, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Green! | It is green. | Green bird!
+2026-08-14T07:36:54.347Z poll 50 Hmm... what color? | Blue? Green? Hmm... | Green! | It is green. | Green bird! | Is the bird red? | Hooray! Yes! | You are so smart! | Green, Green, Green bird!
+2026-08-14T07:37:02.489Z poll 60 , green bird! | The green bird flies away! | Chirp chirp! Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color?
+2026-08-14T07:37:10.611Z poll 70 ird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Red! | It is red. | Red bird! | Is the bird red?
+2026-08-14T07:37:18.776Z poll 80 y! Yes! | You are so smart! | Red, Red, Red bird! | Bye bye, red bird! | The red bird flies away! | Great job, little star! | Now let us sing! Blue, green, red!
+2026-08-14T07:37:26.922Z poll 90 | It is a bird. This is a bird. | Hmm... Is the bird green? | No, it is not! The bird is blue. | What is the blue bird doing? Flying! | The blue bird is flying!
+2026-08-14T07:37:35.074Z poll 100 oing? Flying! | The blue bird is flying! | This is a bird. | The bird is blue. | The blue bird is flying! | Is the bird blue? | Hooray! Yes! | You are so smart!
+2026-08-14T07:37:52.880Z goto done
+2026-08-14T07:37:54.959Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:37:57.551Z clicked: Sunny (q=Is it sunny today, or is it rainy? | Pee)
+2026-08-14T07:37:59.111Z clicked: Sunny (q=Sunny! The sun makes me so happy! | Sun!)
+2026-08-14T07:38:00.146Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:38:02.725Z clicked: Apple (q=I am holding something. What is it? | I )
+2026-08-14T07:38:05.305Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:38:08.408Z GO clicked
+2026-08-14T07:38:10.144Z COLOR clicked
+2026-08-14T07:38:10.658Z body: ←
+⏱️
+00:17
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:38:10.659Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:38:17.999Z poll 10 Kingdom? You choose! | Chirp chirp! Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm...
+2026-08-14T07:38:26.119Z poll 20 Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart!
+2026-08-14T07:38:34.222Z poll 30  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:39:53.157Z goto done
+2026-08-14T07:39:55.219Z clicked: A kid (q=Hello there, friend! I am Little Parrot.)
+2026-08-14T07:39:57.800Z clicked: Sunny (q=Is it sunny today, or is it rainy? | Pee)
+2026-08-14T07:39:59.374Z clicked: Sunny (q=Sunny! The sun makes me so happy! | Sun!)
+2026-08-14T07:40:00.412Z clicked: 3 (q=How old are you? One? Two? Three? | Coun)
+2026-08-14T07:40:03.003Z clicked: Apple (q=I am holding something. What is it? | I )
+2026-08-14T07:40:05.597Z clicked: Ice cream (q=What do you like to eat? Ice cream or gr)
+2026-08-14T07:40:08.714Z GO clicked
+2026-08-14T07:40:10.487Z COLOR clicked
+2026-08-14T07:40:11.347Z body: ←
+⏱️
+00:17
+camera off
+You · Explorer 🧑‍🚀
+小鹦鹉 · Teacher 🦜
+2026-08-14T07:40:11.348Z errors now: ["CONSOLE: 摄像头初始化失败 Error: no cam\n    at w.navigator.mediaDevices.getUserMedia (<anonymous>:13:66)\n    at http://localhost:5199/src/hooks/useGestureControl.ts:76:53\n    at http://localhost:5199/src/hooks/useGestureControl.ts:148:7\n    at commitHookEffectListMount (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:16915:34)\n    at commitPassiveMountOnFiber (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18156:19)\n    at commitPassiveMountEffects_complete (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18129:17)\n    at commitPassiveMountEffects_begin (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18119:15)\n    at commitPassiveMountEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:18109:11)\n    at flushPassiveEffectsImpl (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19490:11)\n    at flushPassiveEffects (http://localhost:5199/node_modules/.vite/deps/chunk-UZOKQUDP.js?v=9f2569a6:19447:22)"]
+2026-08-14T07:40:18.680Z poll 10 Kingdom? You choose! | Chirp chirp! Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm...
+2026-08-14T07:40:26.829Z poll 20 Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Blue! | It is blue. | Blue bird! | Is the bird blue? | Hooray! Yes! | You are so smart!
+2026-08-14T07:40:34.968Z poll 30  Hooray! Yes! | You are so smart! | Blue, Blue, Blue bird! | Bye bye, blue bird! | The blue bird flies away! | Chirp chirp! Look, look! A bird! | A little bird!
+2026-08-14T07:40:43.105Z poll 40 ok, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Green! | It is green. | Green bird!
+2026-08-14T07:40:51.236Z poll 50 Hmm... what color? | Blue? Green? Hmm... | Green! | It is green. | Green bird! | Is the bird red? | Hooray! Yes! | You are so smart! | Green, Green, Green bird!
+2026-08-14T07:40:59.371Z poll 60 , green bird! | The green bird flies away! | Chirp chirp! Look, look! A bird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color?
+2026-08-14T07:41:07.492Z poll 70 ird! | A little bird! | Yes, a bird. | Bird! Say it with me: bird! | Hmm... what color? | Blue? Green? Hmm... | Red! | It is red. | Red bird! | Is the bird red?
+2026-08-14T07:41:15.620Z poll 80 y! Yes! | You are so smart! | Red, Red, Red bird! | Bye bye, red bird! | The red bird flies away! | Great job, little star! | Now let us sing! Blue, green, red!
+2026-08-14T07:41:23.741Z poll 90 | It is a bird. This is a bird. | Hmm... Is the bird green? | No, it is not! The bird is blue. | What is the blue bird doing? Flying! | The blue bird is flying!
+2026-08-14T07:41:31.867Z poll 100 oing? Flying! | The blue bird is flying! | This is a bird. | The bird is blue. | The blue bird is flying! | Is the bird blue? | Hooray! Yes! | You are so smart!

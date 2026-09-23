@@ -55,4 +55,13 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+        characters: path.resolve(__dirname, 'characters.html'),
+        olafJellyfishStory: path.resolve(__dirname, 'olaf-jellyfish-story.html'),
+      },
+    },
+  },
 }));

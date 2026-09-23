@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>钢铁侠 Mark 46 经典修长双腿与高精上身完美融合版</title>
+    <style>
+        :root {
+            --bg-color: #06080d;
+            --card-bg: #0d1322;
+            --card-border: #1e293b;
+            --accent-gold: #fbbf24;
+            --accent-red: #ef4444;
+            --accent-cyan: #38bdf8;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 30px 20px;
+            line-height: 1.6;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 34px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f87171 0%, #fbbf24 45%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-sub);
+            font-size: 15px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .comparison-stage {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+            gap: 30px;
+            max-width: 1450px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8);
+        }
+
+        .card.featured {
+            border-color: rgba(251, 191, 36, 0.7);
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(251, 191, 36, 0.3);
+        }
+
+        .card-header {
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .badge-ref { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid #475569; }
+        .badge-svg { background: linear-gradient(135deg, #f59e0b, #dc2626); color: #fff; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
+
+        .content-container {
+            height: 660px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.8) 0%, rgba(6, 8, 13, 1) 100%);
+            padding: 20px;
+            position: relative;
+        }
+
+        .content-container img {
+            max-height: 100%;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.9));
+        }
+
+        .content-container svg {
+            max-height: 100%;
+            width: auto;
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.9));
+        }
+
+        .card-body {
+            padding: 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .desc {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bone-toggle {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #7dd3fc;
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+        }
+
+        .bone-toggle:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        .show-bones g[id] {
+            outline: 1px dashed rgba(251, 191, 36, 0.7);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>钢铁侠 Mark 46 经典修长双腿与高精上身融合版</h1>
+        <p>已完美恢复您认可的经典修长流线型腿部：修长挺拔、利落倒 V 金板、简洁机械膝盖与多段战靴，与壮硕肌肉上身完美平衡</p>
+    </div>
+
+    <div class="comparison-stage">
+
+        <!-- ============================================================
+             卡片 1：您上传的钢铁侠原图 (Original Reference Image)
+             ============================================================ -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">📷 您上传的 Mark 46 原图参考</div>
+                <span class="badge badge-ref">Hot Toys 1:6 Collectible</span>
+            </div>
+            <div class="content-container">
+                <img src="file:///C:/Users/zh95/.gemini/antigravity/brain/a0565f36-b482-47b4-9d02-65516fd5dbb6/.user_uploaded/media_1787810954579.png" alt="钢铁侠 Mark 46 原图" />
+            </div>
+            <div class="card-body">
+                <div class="desc">
+                    <strong>原型参考：</strong>修长笔挺的经典腿部线条，与宽肩厚胸结合，呈现出超级英雄标志性的 7.5 头身威武体态。
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             卡片 2：经典修长腿部 Mark 46 SVG
+             ============================================================ -->
+        <div class="card featured">
+            <div class="card-header">
+                <div class="card-title">✨ Mark 46 终极定稿版 SVG</div>
+                <span class="badge badge-svg">Definitive Edition</span>
+            </div>
+            <div class="content-container" id="container-mk46-definitive">
+                <button class="bone-toggle" onclick="toggleBones('container-mk46-definitive')">骨骼图层显隐</button>
+                <svg viewBox="0 0 300 620" width="300" height="620">
+                    <defs>
+                        <!-- 真实金属高光质感渐变 -->
+                        <linearGradient id="mk46u-red-bright" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff4d4d" />
+                            <stop offset="30%" stop-color="#dc2626" />
+                            <stop offset="70%" stop-color="#991b1b" />
+                            <stop offset="100%" stop-color="#4a0808" />
+                        </linearGradient>
+
+                        <linearGradient id="mk46u-red-dark" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#7f1d1d" />
+                            <stop offset="100%" stop-color="#2d0505" />
+                        </linearGradient>
+
+                        <linearGradient id="mk46u-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fef08a" />
+                            <stop offset="30%" stop-color="#fde047" />
+                            <stop offset="70%" stop-color="#d97706" />
+                            <stop offset="100%" stop-color="#78350f" />
+                        </linearGradient>
+
+                        <linearGradient id="mk46u-silver" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#334155" />
+                            <stop offset="50%" stop-color="#e2e8f0" />
+                            <stop offset="100%" stop-color="#1e293b" />
+                        </linearGradient>
+
+                        <radialGradient id="mk46u-arc-glow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="30%" stop-color="#bae6fd" />
+                            <stop offset="70%" stop-color="#38bdf8" />
+                            <stop offset="100%" stop-color="#0284c7" />
+                        </radialGradient>
+
+                        <filter id="glow-filter-u" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur stdDeviation="3.5" result="blur" />
+                            <feMerge>
+                                <feMergeNode in="blur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+
+                        <filter id="shadow-filter-u" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000000" flood-opacity="0.65"/>
+                        </filter>
+                    </defs>
+
+                    <!-- 全局骨骼树 (中心 x=150) -->
+                    <g id="ironman-mk46-ultimate" transform="translate(0, 10)">
+                        <!-- 地面自然阴影 -->
+                        <ellipse cx="150" cy="578" rx="80" ry="9" fill="rgba(0,0,0,0.7)" filter="blur(3.5px)"/>
+
+                        <!-- ============================================================
+                             【左腿】：100% 恢复您认可的经典修长利落版（倒V金板+简洁膝盖+修长红甲）
+                             ============================================================ -->
+                        <g id="leg-left" filter="url(#shadow-filter-u)">
+                            <g id="thigh-left">
+                                <path d="M 126 238 L 102 342 L 128 350 L 148 244 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.5"/>
+                                <path d="M 112 246 L 104 326 L 115 338 L 126 326 L 134 250 Z" fill="url(#mk46u-gold)" stroke="#78350f" stroke-width="1.3"/>
+                            </g>
+
+                            <g id="calf-left">
+                                <!-- 膝关节 -->
+                                <path d="M 104 342 L 100 358 L 126 362 L 128 348 Z" fill="url(#mk46u-silver)" stroke="#1e293b"/>
+                                <polygon points="104,342 115,338 126,342 115,362" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.3"/>
+
+                                <!-- 小腿 -->
+                                <path d="M 100 358 L 88 495 L 122 500 L 126 362 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.5"/>
+
+                                <!-- 战靴 -->
+                                <g id="boot-left">
+                                    <path d="M 88 495 L 78 542 L 88 556 L 122 556 L 122 500 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.5"/>
+                                    <path d="M 78 542 L 72 558 L 122 558 L 122 556 Z" fill="url(#mk46u-gold)" stroke="#78350f"/>
+                                    <line x1="74" y1="558" x2="120" y2="558" stroke="#38bdf8" stroke-width="1.5" filter="url(#glow-filter-u)"/>
+                                </g>
+                            </g>
+                        </g>
+
+                        <!-- ============================================================
+                             【右腿】：经典修长对称版
+                             ============================================================ -->
+                        <g id="leg-right" filter="url(#shadow-filter-u)">
+                            <g id="thigh-right">
+                                <path d="M 174 238 L 198 342 L 172 350 L 152 244 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.5"/>
+                                <path d="M 188 246 L 196 326 L 185 338 L 174 326 L 166 250 Z" fill="url(#mk46u-gold)" stroke="#78350f" stroke-width="1.3"/>
+                            </g>
+
+                            <g id="calf-right">
+                                <path d="M 196 342 L 200 358 L 174 362 L 172 348 Z" fill="url(#mk46u-silver)" stroke="#1e293b"/>
+                                <polygon points="196,342 185,338 174,342 185,362" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.3"/>
+
+                                <path d="M 200 358 L 212 495 L 178 500 L 174 362 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.5"/>
+
+                                <g id="boot-right">
+                                    <path d="M 212 495 L 222 542 L 212 556 L 178 556 L 178 500 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.5"/>
+                                    <path d="M 222 542 L 228 558 L 178 558 L 178 556 Z" fill="url(#mk46u-gold)" stroke="#78350f"/>
+                                    <line x1="226" y1="558" x2="180" y2="558" stroke="#38bdf8" stroke-width="1.5" filter="url(#glow-filter-u)"/>
+                                </g>
+                            </g>
+                        </g>
+
+                        <!-- 胯部三角骨骼 -->
+                        <g id="pelvis">
+                            <path d="M 120 224 L 180 224 L 168 248 L 150 256 L 132 248 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.5"/>
+                            <path d="M 132 224 L 168 224 L 160 240 L 150 244 L 140 240 Z" fill="url(#mk46u-gold)" stroke="#78350f"/>
+                        </g>
+
+                        <!-- 躯干 (胸肌 + 3层 V 形腹肌折板 + 银色散热缝 + 高精科技反应堆) -->
+                        <g id="torso" filter="url(#shadow-filter-u)">
+                            <path d="M 88 112 L 212 112 L 190 228 L 110 228 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="2"/>
+
+                            <path d="M 114 162 L 186 162 L 176 182 L 150 194 L 124 182 Z" fill="url(#mk46u-red-bright)" stroke="#7f1d1d" stroke-width="1.4"/>
+                            <path d="M 116 182 L 184 182 L 173 200 L 150 210 L 127 200 Z" fill="url(#mk46u-red-bright)" stroke="#7f1d1d" stroke-width="1.4"/>
+                            <path d="M 120 200 L 180 200 L 170 216 L 150 224 L 130 216 Z" fill="url(#mk46u-red-bright)" stroke="#7f1d1d" stroke-width="1.4"/>
+                            <path d="M 142 162 L 158 162 L 150 224 Z" fill="url(#mk46u-gold)" opacity="0.25"/>
+
+                            <path d="M 90 112 L 150 156 L 210 112 L 190 148 L 150 168 L 110 148 Z" fill="url(#mk46u-red-dark)" stroke="#4a0808" stroke-width="1.6"/>
+
+                            <!-- 4 条银色通风散热开缝 -->
+                            <g stroke="#e2e8f0" stroke-width="2.2" stroke-linecap="round">
+                                <line x1="112" y1="133" x2="124" y2="141" />
+                                <line x1="109" y1="141" x2="121" y2="149" />
+                                <line x1="188" y1="133" x2="176" y2="141" />
+                                <line x1="191" y1="141" x2="179" y2="149" />
+                            </g>
+
+                            <!-- 胸口方舟反应堆 (同心刻度圈 + 高能星芒) -->
+                            <g transform="translate(150, 132)">
+                                <circle cx="0" cy="0" r="16" fill="#0f172a" stroke="url(#mk46u-gold)" stroke-width="1.8" />
+                                <circle cx="0" cy="0" r="12.5" fill="none" stroke="#0284c7" stroke-width="1.2" stroke-dasharray="3.5 2" />
+                                <line x1="-11" y1="0" x2="11" y2="0" stroke="#38bdf8" stroke-width="0.7" opacity="0.8" />
+                                <line x1="0" y1="-11" x2="0" y2="11" stroke="#38bdf8" stroke-width="0.7" opacity="0.8" />
+                                <circle cx="0" cy="0" r="8.5" fill="url(#mk46u-arc-glow)" filter="url(#glow-filter-u)" />
+                                <polygon points="0,-4.5 4,2.5 -4,2.5" fill="#ffffff" opacity="0.95" />
+                                <circle cx="0" cy="0" r="2.2" fill="#ffffff" />
+                            </g>
+                        </g>
+
+                        <!-- 左臂 (肌肉重臂 + 排击炮充能节点) -->
+                        <g id="arm-left" filter="url(#shadow-filter-u)">
+                            <path d="M 104 106 L 82 108 L 72 116 L 94 118 Z" fill="url(#mk46u-red-dark)" stroke="#4a0808" stroke-width="1.2"/>
+                            <path d="M 96 110 C 60 106 50 134 74 150 C 90 150 96 132 96 110 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.8"/>
+                            <circle cx="72" cy="120" r="2.5" fill="url(#mk46u-silver)" stroke="#1e293b" stroke-width="0.8"/>
+
+                            <g id="upper-arm-left">
+                                <path d="M 76 136 C 48 160 46 185 52 204 L 74 208 C 84 185 88 155 88 140 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.6"/>
+                                <path d="M 74 138 C 56 160 54 184 58 202 L 74 206 L 84 142 Z" fill="url(#mk46u-gold)" stroke="#78350f" stroke-width="1.5"/>
+                                <line x1="66" y1="144" x2="52" y2="198" stroke="#78350f" stroke-width="1.2"/>
+                            </g>
+
+                            <g id="forearm-left">
+                                <circle cx="62" cy="204" r="7.5" fill="url(#mk46u-silver)" stroke="#1e293b" stroke-width="1.2"/>
+                                <circle cx="62" cy="204" r="3.5" fill="#334155"/>
+
+                                <path d="M 56 204 C 36 235 34 265 38 280 L 66 284 C 74 255 76 225 74 208 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.8"/>
+                                <path d="M 38 255 L 26 284 L 40 282 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.4"/>
+                                <path d="M 50 216 L 44 265 L 56 268 L 62 218 Z" fill="url(#mk46u-gold)" opacity="0.85"/>
+
+                                <g id="fist-left">
+                                    <rect x="32" y="282" width="26" height="28" rx="5" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.8"/>
+                                    <rect x="36" y="284" width="18" height="13" rx="2.5" fill="url(#mk46u-gold)" stroke="#78350f"/>
+                                    <line x1="34" y1="298" x2="54" y2="298" stroke="#4a0808" stroke-width="1.5"/>
+                                    <line x1="34" y1="304" x2="54" y2="304" stroke="#4a0808" stroke-width="1.5"/>
+                                    <circle cx="45" cy="290" r="2.5" fill="#38bdf8" filter="url(#glow-filter-u)"/>
+                                    <circle cx="45" cy="290" r="1.2" fill="#ffffff"/>
+                                </g>
+                            </g>
+                        </g>
+
+                        <!-- 右臂 -->
+                        <g id="arm-right" filter="url(#shadow-filter-u)">
+                            <path d="M 196 106 L 218 108 L 228 116 L 206 118 Z" fill="url(#mk46u-red-dark)" stroke="#4a0808" stroke-width="1.2"/>
+                            <path d="M 204 110 C 240 106 250 134 226 150 C 210 150 204 132 204 110 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.8"/>
+                            <circle cx="228" cy="120" r="2.5" fill="url(#mk46u-silver)" stroke="#1e293b" stroke-width="0.8"/>
+
+                            <g id="upper-arm-right">
+                                <path d="M 224 136 C 252 160 254 185 248 204 L 226 208 C 216 185 212 155 212 140 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.6"/>
+                                <path d="M 226 138 C 244 160 246 184 242 202 L 226 206 L 216 142 Z" fill="url(#mk46u-gold)" stroke="#78350f" stroke-width="1.5"/>
+                                <line x1="234" y1="144" x2="248" y2="198" stroke="#78350f" stroke-width="1.2"/>
+                            </g>
+
+                            <g id="forearm-right">
+                                <circle cx="238" cy="204" r="7.5" fill="url(#mk46u-silver)" stroke="#1e293b" stroke-width="1.2"/>
+                                <circle cx="238" cy="204" r="3.5" fill="#334155"/>
+
+                                <path d="M 244 204 C 264 235 266 265 262 280 L 234 284 C 226 255 224 225 226 208 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.8"/>
+                                <path d="M 262 255 L 274 284 L 260 282 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.4"/>
+                                <path d="M 250 216 L 256 265 L 244 268 L 238 218 Z" fill="url(#mk46u-gold)" opacity="0.85"/>
+
+                                <g id="fist-right">
+                                    <rect x="242" y="282" width="26" height="28" rx="5" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.8"/>
+                                    <rect x="246" y="284" width="18" height="13" rx="2.5" fill="url(#mk46u-gold)" stroke="#78350f"/>
+                                    <line x1="246" y1="298" x2="266" y2="298" stroke="#4a0808" stroke-width="1.5"/>
+                                    <line x1="246" y1="304" x2="266" y2="304" stroke="#4a0808" stroke-width="1.5"/>
+                                    <circle cx="255" cy="290" r="2.5" fill="#38bdf8" filter="url(#glow-filter-u)"/>
+                                    <circle cx="255" cy="290" r="1.2" fill="#ffffff"/>
+                                </g>
+                            </g>
+                        </g>
+
+                        <!-- 脖子与锁骨领圈 -->
+                        <path d="M 136 100 L 164 100 L 160 114 L 140 114 Z" fill="url(#mk46u-silver)" stroke="#1e293b"/>
+
+                        <!-- 头盔 (黄金比例头雕 + 额头红插片 + Q版三层目镜) -->
+                        <g id="head" filter="url(#shadow-filter-u)">
+                            <path d="M 120 56 C 120 28 180 28 180 56 L 182 92 L 168 106 L 132 106 L 118 92 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="2"/>
+
+                            <ellipse cx="120" cy="72" rx="4" ry="10" fill="url(#mk46u-gold)" stroke="#78350f" stroke-width="1.2"/>
+                            <circle cx="120" cy="72" r="2" fill="#4a0808"/>
+                            <ellipse cx="180" cy="72" rx="4" ry="10" fill="url(#mk46u-gold)" stroke="#78350f" stroke-width="1.2"/>
+                            <circle cx="180" cy="72" r="2" fill="#4a0808"/>
+
+                            <path d="M 128 48 C 136 44, 164 44, 172 48 C 178 54, 178 70, 174 78 L 164 97 L 150 102 L 136 97 L 126 78 C 122 70, 122 54, 128 48 Z" fill="url(#mk46u-gold)" stroke="#78350f" stroke-width="1.8"/>
+
+                            <path d="M 144 36 L 156 36 L 154 52 L 146 52 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1.1"/>
+                            
+                            <path d="M 130 50 L 143 56 M 157 56 L 170 50" fill="none" stroke="#78350f" stroke-width="1.4" stroke-linecap="round"/>
+                            <line x1="150" y1="58" x2="150" y2="65" stroke="#78350f" stroke-width="1.2" opacity="0.8"/>
+
+                            <path d="M 138 98 L 162 98 L 158 105 Q 150 107 142 105 Z" fill="url(#mk46u-red-bright)" stroke="#4a0808" stroke-width="1"/>
+
+                            <!-- Q 版 3 层高能发光目镜 -->
+                            <g id="hud-eyes-glow">
+                                <polygon points="130,66 146,68 143,73 132,72" fill="#ffffff" stroke="#38bdf8" stroke-width="1.4" filter="url(#glow-filter-u)" />
+                                <polygon points="131,67 145,69 142,72 133,71" fill="#e0f2fe" />
+                                <polygon points="133,68 143,69 141,71 134,70" fill="#ffffff" />
+
+                                <polygon points="170,66 154,68 157,73 168,72" fill="#ffffff" stroke="#38bdf8" stroke-width="1.4" filter="url(#glow-filter-u)" />
+                                <polygon points="169,67 155,69 158,72 167,71" fill="#e0f2fe" />
+                                <polygon points="167,68 157,69 159,71 166,70" fill="#ffffff" />
+                            </g>
+
+                            <line x1="140" y1="90" x2="160" y2="90" stroke="#451a03" stroke-width="2" stroke-linecap="round"/>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div class="card-body">
+                <div class="desc">
+                    <strong>最终完美版本：</strong>已 100% 恢复您最满意的<strong>修长利落经典双腿</strong>！搭配壮硕肌肉二头肌、Q版三层高能发光目镜、胸口刻度反应堆与黄金比例头雕，全身体态挺拔匀称，帅气逼人！
+                </div>
+                <div class="tech-tags">
+                    <span class="tag">Restored Sleek Classic Legs</span>
+                    <span class="tag">Muscular Arm Contour (+35%)</span>
+                    <span class="tag">3-Layer HUD Glowing Eyes</span>
+                    <span class="tag">Concentric Tech Dial Reactor</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleBones(containerId) {
+            const container = document.getElementById(containerId);
+            container.classList.toggle('show-bones');
+        }
+    </script>
+</body>
+</html>

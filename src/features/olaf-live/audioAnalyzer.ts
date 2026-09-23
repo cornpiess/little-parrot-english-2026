@@ -1,4 +1,4 @@
-import type { PerformanceSignal } from './types';
+import type { PerformanceInput } from './rig';
 
 export interface AudioAnalysis {
   speaking: boolean;
@@ -32,8 +32,17 @@ export function analyzePcm16(buffer: ArrayBuffer, sampleRate: number): AudioAnal
   };
 }
 
-export function analysisToSignal(analysis: AudioAnalysis): PerformanceSignal {
-  return { type: 'speech', ...analysis };
+export function analysisToInput(analysis: AudioAnalysis, atMs = performance.now()): PerformanceInput {
+  return {
+    type: 'voice',
+    atMs,
+    features: {
+      speaking: analysis.speaking,
+      energy: analysis.energy,
+      brightness: analysis.spectralCentroid,
+      emphasis: analysis.emphasis,
+    },
+  };
 }
 
 type CaptureListener = (chunk: ArrayBuffer, analysis: AudioAnalysis) => void;

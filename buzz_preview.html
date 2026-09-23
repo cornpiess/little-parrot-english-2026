@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>巴斯光年 Space Ranger 经典强壮体态与高精面部终极版</title>
+    <style>
+        :root {
+            --bg-color: #06080d;
+            --card-bg: #0d1322;
+            --card-border: #1e293b;
+            --accent-green: #84cc16;
+            --accent-purple: #a855f7;
+            --accent-cyan: #38bdf8;
+            --accent-red: #ef4444;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 24px 16px;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #a3e635 0%, #38bdf8 45%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-sub);
+            font-size: 14.5px;
+            max-width: 880px;
+            margin: 0 auto;
+        }
+
+        /* 动作控制栏 */
+        .action-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .voice-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-ctrl {
+            cursor: pointer;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(132, 204, 22, 0.4);
+            color: #f1f5f9;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 7px 16px;
+            border-radius: 999px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(6px);
+        }
+
+        .btn-ctrl:hover {
+            background: rgba(132, 204, 22, 0.2);
+            border-color: #bef264;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .btn-ctrl.active {
+            background: linear-gradient(135deg, #65a30d, #84cc16);
+            color: #06080d;
+            border-color: #bef264;
+            box-shadow: 0 0 16px rgba(132, 204, 22, 0.5);
+        }
+
+        .btn-ctrl.btn-laser {
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+        }
+        .btn-ctrl.btn-laser:hover,
+        .btn-ctrl.btn-laser.active {
+            background: linear-gradient(135deg, #b91c1c, #ef4444);
+            color: #fff;
+            border-color: #f87171;
+            box-shadow: 0 0 18px rgba(239, 68, 68, 0.6);
+        }
+
+        .btn-ctrl.btn-purple {
+            border-color: rgba(192, 132, 252, 0.5);
+            color: #e9d5ff;
+        }
+        .btn-ctrl.btn-purple:hover,
+        .btn-ctrl.btn-purple.active {
+            background: linear-gradient(135deg, #7e22ce, #a855f7);
+            color: #fff;
+            border-color: #d8b4fe;
+            box-shadow: 0 0 16px rgba(168, 85, 247, 0.5);
+        }
+
+        .btn-voice {
+            cursor: pointer;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #bae6fd;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-voice:hover {
+            background: rgba(56, 189, 248, 0.25);
+            border-color: #38bdf8;
+            color: #ffffff;
+            transform: scale(1.03);
+        }
+
+        .comparison-stage {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+            gap: 28px;
+            max-width: 1450px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8);
+        }
+
+        .card.featured {
+            border-color: rgba(132, 204, 22, 0.7);
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(132, 204, 22, 0.3);
+        }
+
+        .card-header {
+            padding: 16px 22px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .badge-ref { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid #475569; }
+        .badge-svg { background: linear-gradient(135deg, #84cc16, #059669); color: #06080d; font-weight: 900; box-shadow: 0 0 10px rgba(132, 204, 22, 0.4); }
+
+        .content-container {
+            height: 660px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.8) 0%, rgba(6, 8, 13, 1) 100%);
+            padding: 20px;
+            position: relative;
+        }
+
+        .content-container img {
+            max-height: 100%;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.9));
+        }
+
+        .content-container svg {
+            max-height: 100%;
+            width: auto;
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.9));
+            overflow: visible;
+        }
+
+        .card-body {
+            padding: 20px 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .desc {
+            font-size: 13.5px;
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+
+        .desc strong {
+            color: #f8fafc;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bone-toggle {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid rgba(132, 204, 22, 0.4);
+            color: #bef264;
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+        }
+
+        .bone-toggle:hover {
+            background: rgba(132, 204, 22, 0.2);
+        }
+
+        .show-bones g[id] {
+            outline: 1px dashed rgba(132, 204, 22, 0.7);
+        }
+
+        /* ================= 动画系统 ================= */
+        .eye-ball {
+            transform-box: fill-box;
+            transform-origin: center center;
+        }
+
+        .anim-blink-active .eye-ball {
+            animation: eye-natural-blink 3.8s ease-in-out infinite;
+        }
+
+        @keyframes eye-natural-blink {
+            0%, 88%, 94%, 100% { transform: scaleY(1); }
+            91% { transform: scaleY(0.06); }
+        }
+
+        .anim-brow-l { animation: brow-smirk-left 3.2s ease-in-out infinite; transform-origin: 135px 58px; }
+        .anim-brow-r { animation: brow-smirk-right 3.2s ease-in-out infinite; transform-origin: 165px 58px; }
+
+        @keyframes brow-smirk-left {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-2.5px) rotate(-3deg); }
+        }
+        @keyframes brow-smirk-right {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(1.2px) rotate(2deg); }
+        }
+
+        @keyframes natural-speech-talk {
+            0%, 100% { transform: scaleY(0.85) translateY(0px); }
+            25% { transform: scaleY(1.3) translateY(1px); }
+            50% { transform: scaleY(0.92) translateY(0.2px); }
+            75% { transform: scaleY(1.35) translateY(1.2px); }
+        }
+
+        .speaking-mode #mouth-talk-open {
+            display: inline !important;
+            animation: natural-speech-talk 0.65s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            transform-origin: 150px 84px;
+        }
+        .speaking-mode #mouth-smirk-closed {
+            display: none !important;
+        }
+
+        /* 招手动画 (以肘部 266px, 142px 为轴心优雅摆动，零分离) */
+        @keyframes wave-smooth-motion {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(18deg); }
+        }
+        .anim-wave-arm {
+            animation: wave-smooth-motion 1.25s ease-in-out infinite;
+            transform-origin: 266px 142px;
+        }
+
+        @keyframes hover-flight {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .anim-flight-hover {
+            animation: hover-flight 3.2s ease-in-out infinite;
+        }
+
+        @keyframes flame-flare {
+            0%, 100% { opacity: 0.75; transform: scaleY(0.9); }
+            50% { opacity: 1; transform: scaleY(1.3); filter: drop-shadow(0 0 10px #38bdf8); }
+        }
+        .anim-flame {
+            animation: flame-flare 0.9s ease-in-out infinite alternate;
+            transform-origin: 150px 248px;
+        }
+
+        @keyframes laser-pulsing {
+            0%, 100% { opacity: 0.85; filter: drop-shadow(0 0 6px #ef4444); }
+            50% { opacity: 1; filter: drop-shadow(0 0 16px #f87171) drop-shadow(0 0 25px #ef4444); }
+        }
+        .anim-laser-beam {
+            animation: laser-pulsing 0.6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>巴斯光年 Space Ranger 经典强壮体态与高精面部终极版</h1>
+        <p>精准纠偏修复：<strong>双手外展真·叉腰英雄姿态(Akimbo)、自然垂手微张站姿(Standing)、完整连贯五指招手长臂(Wave)与统一粗细</strong></p>
+        
+        <!-- 动作与面部功能控制台 -->
+        <div class="action-toolbar">
+            <button class="btn-ctrl active" id="btn-pose-akimbo" onclick="setPose('akimbo')">🦸 经典双手叉腰 (Akimbo)</button>
+            <button class="btn-ctrl" id="btn-pose-standing" onclick="setPose('standing')">🧍 自然垂手站立 (Standing)</button>
+            <button class="btn-ctrl" id="btn-pose-wave" onclick="setPose('wave')">👋 热情招手 (Wave)</button>
+            <button class="btn-ctrl btn-laser" id="btn-pose-laser" onclick="setPose('laser')">🔴 红色激光 (Laser)</button>
+            <button class="btn-ctrl" id="btn-wings" onclick="toggleFlightMode()">🚀 飞行双翼 (<span id="flight-status">地面收纳</span>)</button>
+            <button class="btn-ctrl btn-purple" id="btn-talk" onclick="toggleTalking()">🗣️ 讲话模式</button>
+            <button class="btn-ctrl active" id="btn-blink" onclick="toggleBlink()">👀 眨眼动效</button>
+        </div>
+
+        <!-- 经典台词中文真人语音播报 -->
+        <div class="voice-bar">
+            <span style="font-size:12px; color:var(--text-sub); margin-right:4px;">🔊 播放中文原声台词：</span>
+            <button class="btn-voice" onclick="speakLine('飞向太空，宇宙无限！')">🎙️ “飞向太空，宇宙无限！”</button>
+            <button class="btn-voice" onclick="speakLine('我是巴斯光年，我是正义的太空骑警！')">🎙️ “我是正义的太空骑警！”</button>
+            <button class="btn-voice" onclick="speakLine('星际总部请回答，发现未知的智慧生命！')">🎙️ “星际总部请回答！”</button>
+        </div>
+    </div>
+
+    <div class="comparison-stage">
+
+        <!-- ============================================================
+             卡片 1：您上传的巴斯光年原图 (Original Reference Image)
+             ============================================================ -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">📷 您上传的巴斯光年原图参考</div>
+                <span class="badge badge-ref">Space Ranger Collectible</span>
+            </div>
+            <div class="content-container">
+                <img src="buzz_full_ref.png" alt="巴斯光年原图参考" />
+            </div>
+            <div class="card-body">
+                <div class="desc">
+                    <strong>原型特征：</strong>双肘向外大胆张开、手掌扣在腰际的威武叉腰（Akimbo）；自然站立时双手自然微张垂下；面部五官比例舒展清晰。
+                </div>
+                <div class="tech-tags">
+                    <span class="tag">Flared Heroic Akimbo</span>
+                    <span class="tag">Natural Standing Flare</span>
+                    <span class="tag">Seamless 5-Finger Wave</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             卡片 2：巴斯光年 完美骨骼定稿版 SVG
+             ============================================================ -->
+        <div class="card featured">
+            <div class="card-header">
+                <div class="card-title">✨ 巴斯光年 完美骨骼定稿版 SVG</div>
+                <span class="badge badge-svg">Definitive Edition</span>
+            </div>
+            <div class="content-container" id="container-buzz-definitive">
+                <button class="bone-toggle" onclick="toggleBones('container-buzz-definitive')">骨骼图层显隐</button>
+                
+                <svg viewBox="0 0 300 580" width="300" height="580" id="svg-buzz-root">
+                    <defs>
+                        <!-- 宇航白渐变 -->
+                        <linearGradient id="bzu-white-bright" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="30%" stop-color="#f1f5f9" />
+                            <stop offset="70%" stop-color="#cbd5e1" />
+                            <stop offset="100%" stop-color="#94a3b8" />
+                        </linearGradient>
+
+                        <linearGradient id="bzu-white-dark" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#cbd5e1" />
+                            <stop offset="100%" stop-color="#64748b" />
+                        </linearGradient>
+
+                        <!-- 太空骑警荧光绿质感渐变 -->
+                        <linearGradient id="bzu-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#bef264" />
+                            <stop offset="30%" stop-color="#84cc16" />
+                            <stop offset="70%" stop-color="#65a30d" />
+                            <stop offset="100%" stop-color="#3f6212" />
+                        </linearGradient>
+
+                        <!-- 深空紫质感渐变 -->
+                        <linearGradient id="bzu-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#d8b4fe" />
+                            <stop offset="30%" stop-color="#a855f7" />
+                            <stop offset="70%" stop-color="#7e22ce" />
+                            <stop offset="100%" stop-color="#3b0764" />
+                        </linearGradient>
+
+                        <!-- 橡胶折叠黑腰与关节 -->
+                        <linearGradient id="bzu-black" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#0f172a" />
+                            <stop offset="50%" stop-color="#334155" />
+                            <stop offset="100%" stop-color="#020617" />
+                        </linearGradient>
+
+                        <!-- 脸部肤色渐变 -->
+                        <linearGradient id="bzu-skin" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#fff1e6" />
+                            <stop offset="40%" stop-color="#fed7aa" />
+                            <stop offset="100%" stop-color="#fdba74" />
+                        </linearGradient>
+
+                        <!-- 水晶圆形玻璃罩球体渐变 -->
+                        <linearGradient id="bzu-glass" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6" />
+                            <stop offset="25%" stop-color="#e0f2fe" stop-opacity="0.18" />
+                            <stop offset="75%" stop-color="#38bdf8" stop-opacity="0.08" />
+                            <stop offset="100%" stop-color="#0284c7" stop-opacity="0.3" />
+                        </linearGradient>
+
+                        <!-- 等离子喷气尾焰渐变 -->
+                        <linearGradient id="bzu-flame" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="25%" stop-color="#38bdf8" />
+                            <stop offset="70%" stop-color="#0284c7" />
+                            <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0" />
+                        </linearGradient>
+
+                        <!-- 控制按键渐变 -->
+                        <linearGradient id="bzu-btn-blue" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#7dd3fc" />
+                            <stop offset="100%" stop-color="#0284c7" />
+                        </linearGradient>
+
+                        <linearGradient id="bzu-btn-green" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#86efac" />
+                            <stop offset="100%" stop-color="#16a34a" />
+                        </linearGradient>
+
+                        <linearGradient id="bzu-btn-red" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#fca5a5" />
+                            <stop offset="40%" stop-color="#ef4444" />
+                            <stop offset="100%" stop-color="#991b1b" />
+                        </linearGradient>
+
+                        <filter id="glow-filter-u" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur stdDeviation="3.5" result="blur" />
+                            <feMerge>
+                                <feMergeNode in="blur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+
+                        <filter id="shadow-filter-u" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000000" flood-opacity="0.65"/>
+                        </filter>
+                    </defs>
+
+                    <!-- 全局骨骼树 (Strong 原版稳健比例) -->
+                    <g id="buzz-lightyear-ultimate" transform="translate(0, 10)">
+                        <!-- 地面自然阴影 -->
+                        <ellipse cx="150" cy="542" rx="90" ry="11" fill="rgba(0,0,0,0.7)" filter="blur(4px)" id="ground-shadow"/>
+
+                        <!-- ============================================================
+                             【背部喷气背包与双翼系统】(Wings & Jetpack)
+                             ============================================================ -->
+                        <g id="wings-pack" filter="url(#shadow-filter-u)">
+                            <!-- 展开的大双翼 (飞行模式显示) -->
+                            <g id="wings-deployed" style="display:none;">
+                                <polygon points="86,160 10,118 6,152 82,200" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="1.8"/>
+                                <polygon points="10,118 86,160 82,172 8,134" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.2"/>
+                                <polygon points="20,124 34,132 28,150 14,142" fill="#ef4444" />
+                                <polygon points="38,134 52,142 46,160 32,152" fill="#ffffff" />
+                                <polygon points="56,144 70,152 64,170 50,162" fill="#ef4444" />
+                                <circle cx="8" cy="128" r="4.5" fill="#ef4444" filter="url(#glow-filter-u)"/>
+
+                                <polygon points="214,160 290,118 294,152 218,200" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="1.8"/>
+                                <polygon points="290,118 214,160 218,172 292,134" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.2"/>
+                                <polygon points="280,124 266,132 272,150 286,142" fill="#ef4444" />
+                                <polygon points="262,134 248,142 254,160 268,152" fill="#ffffff" />
+                                <polygon points="244,144 230,152 236,170 250,162" fill="#ef4444" />
+                                <circle cx="292" cy="128" r="4.5" fill="#22c55e" filter="url(#glow-filter-u)"/>
+
+                                <!-- 飞行喷气尾焰 -->
+                                <g id="thruster-flames" class="anim-flame">
+                                    <polygon points="102,248 112,305 122,248" fill="url(#bzu-flame)" filter="url(#glow-filter-u)"/>
+                                    <polygon points="178,248 188,305 198,248" fill="url(#bzu-flame)" filter="url(#glow-filter-u)"/>
+                                </g>
+                            </g>
+
+                            <!-- 地面收纳状态的双翼插槽 -->
+                            <g id="wings-folded">
+                                <rect x="80" y="142" width="16" height="70" rx="3" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="1.4"/>
+                                <rect x="204" y="142" width="16" height="70" rx="3" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="1.4"/>
+                                <line x1="88" y1="144" x2="88" y2="208" stroke="#3f6212" stroke-width="2.2"/>
+                                <line x1="212" y1="144" x2="212" y2="208" stroke="#3f6212" stroke-width="2.2"/>
+                            </g>
+
+                            <!-- 背包主体 -->
+                            <path d="M 90 138 L 210 138 L 202 248 L 98 248 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="2"/>
+                            <path d="M 98 140 L 202 140 L 196 166 L 104 166 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.4"/>
+                            <rect x="98" y="240" width="24" height="11" rx="3" fill="url(#bzu-black)" stroke="#0f172a"/>
+                            <rect x="178" y="240" width="24" height="11" rx="3" fill="url(#bzu-black)" stroke="#0f172a"/>
+                        </g>
+
+                        <!-- ============================================================
+                             【左腿】：Strong 原版稳健粗壮腿部 (Leg Left)
+                             ============================================================ -->
+                        <g id="leg-left" filter="url(#shadow-filter-u)">
+                            <g id="thigh-left">
+                                <path d="M 124 256 L 96 360 L 126 368 L 148 262 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <path d="M 110 264 L 100 345 L 114 356 L 124 345 L 132 268 Z" fill="url(#bzu-white-dark)" opacity="0.4"/>
+                            </g>
+
+                            <g id="calf-left">
+                                <circle cx="110" cy="368" r="12" fill="url(#bzu-green)" stroke="#0f172a" stroke-width="1.8"/>
+                                <circle cx="110" cy="368" r="5.5" fill="url(#bzu-black)"/>
+
+                                <path d="M 94 376 L 78 475 L 120 480 L 126 380 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <path d="M 80 460 L 121 465 L 120 478 L 78 473 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.4"/>
+
+                                <g id="boot-left">
+                                    <path d="M 78 475 L 64 515 L 78 532 L 122 532 L 120 480 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                    <path d="M 64 515 L 56 534 L 94 534 L 90 514 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.4"/>
+                                    <path d="M 56 534 L 54 540 L 124 540 L 124 532 Z" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="1.4"/>
+                                    <line x1="58" y1="537" x2="120" y2="537" stroke="#38bdf8" stroke-width="1.6" filter="url(#glow-filter-u)"/>
+                                </g>
+                            </g>
+                        </g>
+
+                        <!-- ============================================================
+                             【右腿】：Strong 原版稳健粗壮腿部 (Leg Right)
+                             ============================================================ -->
+                        <g id="leg-right" filter="url(#shadow-filter-u)">
+                            <g id="thigh-right">
+                                <path d="M 176 256 L 204 360 L 174 368 L 152 262 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <path d="M 190 264 L 200 345 L 186 356 L 176 345 L 168 268 Z" fill="url(#bzu-white-dark)" opacity="0.4"/>
+                            </g>
+
+                            <g id="calf-right">
+                                <circle cx="190" cy="368" r="12" fill="url(#bzu-green)" stroke="#0f172a" stroke-width="1.8"/>
+                                <circle cx="190" cy="368" r="5.5" fill="url(#bzu-black)"/>
+
+                                <path d="M 206 376 L 222 475 L 180 480 L 174 380 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <path d="M 220 460 L 179 465 L 180 478 L 222 473 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.4"/>
+
+                                <g id="boot-right">
+                                    <path d="M 222 475 L 236 515 L 222 532 L 178 532 L 180 480 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                    <path d="M 236 515 L 244 534 L 206 534 L 210 514 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.4"/>
+                                    <path d="M 244 534 L 246 540 L 176 540 L 176 532 Z" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="1.4"/>
+                                    <line x1="242" y1="537" x2="180" y2="537" stroke="#38bdf8" stroke-width="1.6" filter="url(#glow-filter-u)"/>
+                                </g>
+                            </g>
+                        </g>
+
+                        <!-- 胯部白甲与绿色腰带扣 -->
+                        <g id="pelvis">
+                            <path d="M 114 240 L 186 240 L 172 268 L 150 278 L 128 268 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                            <polygon points="138,242 162,242 166,260 150,268 134,260" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.4"/>
+                        </g>
+
+                        <!-- 手风琴折叠黑色柔性腰腹 (Flex-Waist) -->
+                        <g id="waist-accordion" filter="url(#shadow-filter-u)">
+                            <path d="M 112 188 L 188 188 L 184 202 L 116 202 Z" fill="url(#bzu-black)" stroke="#0f172a" stroke-width="1.6"/>
+                            <path d="M 114 202 L 186 202 L 182 216 L 118 216 Z" fill="url(#bzu-black)" stroke="#0f172a" stroke-width="1.6"/>
+                            <path d="M 116 216 L 184 216 L 180 230 L 120 230 Z" fill="url(#bzu-black)" stroke="#0f172a" stroke-width="1.6"/>
+                            <path d="M 116 230 L 184 230 L 180 242 L 120 242 Z" fill="url(#bzu-black)" stroke="#0f172a" stroke-width="1.6"/>
+                            <line x1="122" y1="195" x2="178" y2="195" stroke="#475569" stroke-width="1.2"/>
+                            <line x1="120" y1="209" x2="180" y2="209" stroke="#475569" stroke-width="1.2"/>
+                            <line x1="122" y1="223" x2="178" y2="223" stroke="#475569" stroke-width="1.2"/>
+                            <line x1="122" y1="236" x2="178" y2="236" stroke="#475569" stroke-width="1.2"/>
+                        </g>
+
+                        <!-- ============================================================
+                             【壮硕上身胸甲与控制系统】(Wide & Strong Chest Armor)
+                             ============================================================ -->
+                        <g id="torso" filter="url(#shadow-filter-u)">
+                            <path d="M 76 128 L 224 128 L 198 196 L 102 196 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="2.2"/>
+
+                            <path d="M 84 132 L 114 194 L 100 194 L 78 138 Z" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="1.4"/>
+                            <path d="M 216 132 L 186 194 L 200 194 L 222 138 Z" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="1.4"/>
+
+                            <!-- 宽阔荧光绿肩胸上护甲 (Lime Green Yoke) -->
+                            <path d="M 72 125 C 72 110, 228 110, 228 125 L 220 166 L 180 174 L 150 178 L 120 174 L 80 166 Z" fill="url(#bzu-green)" stroke="#0f172a" stroke-width="2.2"/>
+                            <path d="M 80 128 C 106 118, 194 118, 220 128 L 214 154 C 180 162, 120 162, 86 154 Z" fill="#bef264" opacity="0.35"/>
+
+                            <!-- 中央星际联盟飞翼徽章 -->
+                            <g id="space-ranger-badge" transform="translate(150, 148)">
+                                <polygon points="0,-12 15,10 -15,10" fill="#0284c7" stroke="#0f172a" stroke-width="1.4"/>
+                                <path d="M 0,-10 L 3.5,0 L 13,0 L 5,6 L 7,12 L 0,7 L -7,12 L -5,6 L -13,0 L -3.5,0 Z" fill="#fde047"/>
+                                <polygon points="0,-8 2.5,-2 0,2.5 -2.5,-2" fill="#ef4444"/>
+                                <rect x="-24" y="11" width="48" height="7.5" rx="1.5" fill="#fde047" stroke="#0f172a" stroke-width="0.9"/>
+                                <text x="0" y="16.5" font-size="5" font-weight="900" font-family="Arial, sans-serif" fill="#0f172a" text-anchor="middle">LIGHTYEAR</text>
+                            </g>
+
+                            <!-- 右胸三色椭圆控制面板 -->
+                            <g id="control-buttons" transform="translate(192, 146)">
+                                <ellipse cx="0" cy="-10" rx="4.5" ry="7" transform="rotate(-15)" fill="url(#bzu-btn-blue)" stroke="#0f172a" stroke-width="1.3"/>
+                                <ellipse cx="-1.2" cy="-12" rx="1.5" ry="2.5" fill="#ffffff" opacity="0.8"/>
+
+                                <ellipse cx="0" cy="3" rx="4.5" ry="7" transform="rotate(-15)" fill="url(#bzu-btn-green)" stroke="#0f172a" stroke-width="1.3"/>
+                                <ellipse cx="-1.2" cy="1" rx="1.5" ry="2.5" fill="#ffffff" opacity="0.8"/>
+
+                                <ellipse cx="0" cy="16" rx="4.5" ry="7" transform="rotate(-15)" fill="url(#bzu-btn-red)" stroke="#0f172a" stroke-width="1.3"/>
+                                <ellipse cx="-1.2" cy="14" rx="1.5" ry="2.5" fill="#ffffff" opacity="0.8"/>
+                            </g>
+
+                            <!-- 左胸大型红色机翼弹射释放圆按钮 -->
+                            <g id="btn-wings-release" transform="translate(106, 152)" style="cursor:pointer;" onclick="toggleFlightMode()">
+                                <circle cx="0" cy="0" r="10" fill="url(#bzu-btn-red)" stroke="#0f172a" stroke-width="1.6"/>
+                                <circle cx="-3" cy="-3" r="3" fill="#ffffff" opacity="0.8"/>
+                                <circle cx="0" cy="0" r="8" fill="none" stroke="#fca5a5" stroke-width="0.9" stroke-dasharray="2 1"/>
+                            </g>
+                        </g>
+
+                        <!-- ============================================================
+                             【左臂姿态系统】：双手叉腰(Akimbo) / 自然微张站立(Standing)
+                             ============================================================ -->
+                        <g id="arm-left-system" filter="url(#shadow-filter-u)">
+                            <!-- 左肩圆环 (Shoulder Joint at 74, 132) -->
+                            <circle cx="74" cy="132" r="15" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="2"/>
+                            <circle cx="74" cy="132" r="7" fill="url(#bzu-purple)"/>
+
+                            <!-- 左臂 A：真·双手叉腰姿态 (双肘外展形成英雄三角，手掌扣在腰际) -->
+                            <g id="arm-left-akimbo">
+                                <!-- 外重大臂 (Shoulder 74,132 -> Elbow 32,185: 宽度严格24px) -->
+                                <path d="M 64 134 L 20 178 L 34 192 L 84 144 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <circle cx="32" cy="185" r="8.5" fill="url(#bzu-black)" stroke="#0f172a" stroke-width="1.3"/>
+
+                                <!-- 内折前臂 (Elbow 32,185 -> Waist 96,218: 宽度严格24px) -->
+                                <path d="M 32 180 L 92 212 L 86 228 L 26 192 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <path d="M 82 208 L 94 214 L 88 226 L 76 220 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.3"/>
+
+                                <!-- 左手按在腰部白甲上 (4指扣于腰前，拇指扣后) -->
+                                <g id="hand-left-on-hip" transform="translate(94, 216)">
+                                    <path d="M 0 0 L 16 6 L 12 18 L -4 12 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.5"/>
+                                    <rect x="8" y="3" width="7" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <rect x="6" y="8" width="7" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <rect x="4" y="13" width="7" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <ellipse cx="-2" cy="3" rx="3.5" ry="2.5" fill="url(#bzu-purple)"/>
+                                </g>
+                            </g>
+
+                            <!-- 左臂 B：自然垂手站立姿态 (微向外张开，自然顺垂) -->
+                            <g id="arm-left-standing" style="display:none;">
+                                <!-- 大臂微向外张 15° (Shoulder 74,132 -> Elbow 52,204: 宽度严格24px) -->
+                                <path d="M 64 136 L 40 198 L 64 206 L 84 142 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <circle cx="52" cy="204" r="8.5" fill="url(#bzu-black)" stroke="#0f172a" stroke-width="1.4"/>
+
+                                <!-- 前臂自然微外展顺垂 (Elbow 52,204 -> Wrist 40,282: 宽度严格24px) -->
+                                <path d="M 40 204 L 28 280 L 52 284 L 64 208 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <path d="M 29 270 L 53 274 L 51 284 L 27 280 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.3"/>
+
+                                <!-- 5指自然舒展下垂手套 -->
+                                <g id="hand-left-down">
+                                    <path d="M 26 282 L 52 286 L 48 302 L 24 298 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.6"/>
+                                    <rect x="18" y="295" width="6" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <rect x="21" y="303" width="6" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <rect x="27" y="308" width="6" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <rect x="34" y="311" width="5" height="3.5" rx="1" fill="url(#bzu-purple)"/>
+                                    <ellipse cx="44" cy="290" rx="2.5" ry="4" fill="url(#bzu-purple)"/>
+                                </g>
+                            </g>
+                        </g>
+
+                        <!-- ============================================================
+                             【右臂多姿态系统】：双手叉腰(Akimbo) / 自然站立 / 招手 / 激光
+                             ============================================================ -->
+                        <g id="arm-right-system" filter="url(#shadow-filter-u)">
+                            <!-- 右肩圆环 (Shoulder Joint at 226, 132) -->
+                            <circle cx="226" cy="132" r="15" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="2"/>
+                            <circle cx="226" cy="132" r="7" fill="url(#bzu-purple)"/>
+
+                            <!-- 姿态 1 (默认)：真·双手叉腰姿态 (右肘向外大度外展，手掌稳扣右腰) -->
+                            <g id="pose-akimbo-right">
+                                <!-- 外重大臂 (Shoulder 226,132 -> Elbow 268,185: 宽度严格24px) -->
+                                <path d="M 216 144 L 266 192 L 280 178 L 236 134 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <circle cx="268" cy="185" r="8.5" fill="url(#bzu-black)" stroke="#0f172a" stroke-width="1.3"/>
+
+                                <!-- 内折前臂 (Elbow 268,185 -> Waist 204,218: 宽度严格24px) -->
+                                <path d="M 274 192 L 214 228 L 208 212 L 268 180 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <path d="M 224 220 L 212 226 L 206 214 L 218 208 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.3"/>
+
+                                <!-- 激光按钮小贴标 -->
+                                <circle cx="254" cy="192" r="4.5" fill="url(#bzu-btn-red)" stroke="#0f172a" stroke-width="1"/>
+
+                                <!-- 右手按在右腰白甲上 (4指扣于腰前，拇指扣后) -->
+                                <g id="hand-right-on-hip" transform="translate(206, 216)">
+                                    <path d="M 0 0 L -16 6 L -12 18 L 4 12 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.5"/>
+                                    <rect x="-15" y="3" width="7" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <rect x="-13" y="8" width="7" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <rect x="-11" y="13" width="7" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <ellipse cx="2" cy="3" rx="3.5" ry="2.5" fill="url(#bzu-purple)"/>
+                                </g>
+                            </g>
+
+                            <!-- 姿态 2：自然垂手站立姿态 (微向外张开，自然顺垂) -->
+                            <g id="pose-standing-right" style="display:none;">
+                                <!-- 大臂微向外张 15° (Shoulder 226,132 -> Elbow 248,204: 宽度严格24px) -->
+                                <path d="M 216 142 L 236 206 L 260 198 L 236 136 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <circle cx="248" cy="204" r="8.5" fill="url(#bzu-black)" stroke="#0f172a" stroke-width="1.4"/>
+
+                                <!-- 前臂自然微外展顺垂 (Elbow 248,204 -> Wrist 260,282: 宽度严格24px) -->
+                                <path d="M 236 208 L 248 284 L 272 280 L 260 204 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <path d="M 249 274 L 273 270 L 271 280 L 247 284 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.3"/>
+
+                                <!-- 5指自然舒展下垂手套 -->
+                                <g id="hand-right-down">
+                                    <path d="M 248 286 L 274 282 L 276 298 L 252 302 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.6"/>
+                                    <rect x="276" y="295" width="6" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <rect x="273" y="303" width="6" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <rect x="267" y="308" width="6" height="4" rx="1" fill="url(#bzu-purple)"/>
+                                    <rect x="261" y="311" width="5" height="3.5" rx="1" fill="url(#bzu-purple)"/>
+                                    <ellipse cx="256" cy="290" rx="2.5" ry="4" fill="url(#bzu-purple)"/>
+                                </g>
+                            </g>
+
+                            <!-- 姿态 3：热情招手姿态 (完全连贯无分离，五指充分舒展招手) -->
+                            <g id="pose-wave-right" style="display:none;">
+                                <!-- 大臂外展抬起 (Shoulder 226,132 -> Elbow 266,142: 宽度严格24px) -->
+                                <path d="M 224 124 L 266 132 L 260 154 L 222 144 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <circle cx="266" cy="142" r="8.5" fill="url(#bzu-black)" stroke="#0f172a"/>
+
+                                <!-- 前臂与舒展五指手套 (以肘部 266, 142 为轴心优雅摆动，绝对零间隙分离) -->
+                                <g class="anim-wave-arm">
+                                    <!-- 前臂挺拔直立 (Elbow 266,142 -> Wrist 276,68: 宽度严格24px) -->
+                                    <path d="M 256 142 L 264 68 L 288 72 L 276 146 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                    <!-- 绿色腕圈 -->
+                                    <path d="M 264 78 L 286 82 L 284 92 L 262 88 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.4"/>
+
+                                    <!-- 舒展五指全尺寸手掌 (5 Fingers Open Wide) -->
+                                    <g id="hand-waving-open">
+                                        <path d="M 264 68 L 288 72 L 284 48 L 262 44 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+
+                                        <!-- 大拇指 (外展张开) -->
+                                        <g id="wave-thumb">
+                                            <path d="M 262 54 L 246 46 L 248 38 L 264 44 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.5"/>
+                                            <ellipse cx="252" cy="44" rx="4" ry="2.5" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="0.8"/>
+                                        </g>
+
+                                        <!-- 食指 (挺拔修长) -->
+                                        <g id="wave-index">
+                                            <path d="M 264 44 L 258 14 L 267 12 L 272 46 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.5"/>
+                                            <rect x="259" y="18" width="7" height="9" rx="2" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="0.8"/>
+                                        </g>
+
+                                        <!-- 中指 (最高最挺拔) -->
+                                        <g id="wave-middle">
+                                            <path d="M 272 46 L 273 5 L 282 4 L 281 47 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.5"/>
+                                            <rect x="273.5" y="11" width="7" height="10" rx="2" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="0.8"/>
+                                        </g>
+
+                                        <!-- 无名指 -->
+                                        <g id="wave-ring">
+                                            <path d="M 281 47 L 286 13 L 294 14 L 288 49 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.5"/>
+                                            <rect x="286.5" y="19" width="7" height="9" rx="2" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="0.8"/>
+                                        </g>
+
+                                        <!-- 小指 (向外微张，灵动自然) -->
+                                        <g id="wave-pinky">
+                                            <path d="M 288 49 L 298 23 L 305 25 L 292 52 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.4"/>
+                                            <rect x="296" y="29" width="6.5" height="8" rx="1.8" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="0.8"/>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+
+                            <!-- 姿态 4：高能红色脉冲激光瞄准 (Laser Aiming) -->
+                            <g id="pose-laser-right" style="display:none;">
+                                <!-- 大臂平举 (Shoulder 226,132 -> Elbow 272,138: 宽度严格24px) -->
+                                <path d="M 224 124 L 272 128 L 270 150 L 222 142 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <circle cx="272" cy="138" r="8.5" fill="url(#bzu-black)" stroke="#0f172a"/>
+
+                                <!-- 前臂平举延伸 (Elbow 272,138 -> Wrist 324,138: 宽度严格24px) -->
+                                <path d="M 272 128 L 324 128 L 324 150 L 272 150 Z" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.8"/>
+                                <path d="M 314 128 L 324 128 L 324 150 L 314 150 Z" fill="url(#bzu-green)" stroke="#3f6212" stroke-width="1.3"/>
+
+                                <g id="laser-cannon-wrist" transform="translate(324, 128)">
+                                    <rect x="0" y="0" width="18" height="22" rx="4.5" fill="url(#bzu-white-bright)" stroke="#0f172a" stroke-width="1.6"/>
+                                    <rect x="4" y="3" width="12" height="8" rx="1.5" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="0.8"/>
+                                    <circle cx="18" cy="11" r="4.5" fill="#ef4444" stroke="#ffffff" stroke-width="1" filter="url(#glow-filter-u)"/>
+                                </g>
+
+                                <!-- 纯红激光光束 -->
+                                <g id="laser-beam-group" class="anim-laser-beam">
+                                    <line x1="344" y1="139" x2="432" y2="139" stroke="#ef4444" stroke-width="9" stroke-linecap="round" opacity="0.6" filter="url(#glow-filter-u)"/>
+                                    <line x1="344" y1="139" x2="432" y2="139" stroke="#ff0000" stroke-width="5" stroke-linecap="round" filter="url(#glow-filter-u)"/>
+                                    <line x1="344" y1="139" x2="432" y2="139" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+
+                                    <circle cx="350" cy="139" r="10" fill="none" stroke="#f87171" stroke-width="1.6" opacity="0.85" filter="url(#glow-filter-u)"/>
+                                    <circle cx="362" cy="139" r="6.5" fill="none" stroke="#f87171" stroke-width="1.3" opacity="0.65"/>
+
+                                    <g transform="translate(427, 139)">
+                                        <circle cx="0" cy="0" r="9" fill="none" stroke="#ef4444" stroke-width="1.3" stroke-dasharray="3.5 2" filter="url(#glow-filter-u)"/>
+                                        <circle cx="0" cy="0" r="3" fill="#ffffff"/>
+                                        <line x1="-14" y1="0" x2="14" y2="0" stroke="#ef4444" stroke-width="1.2"/>
+                                        <line x1="0" y1="-14" x2="0" y2="14" stroke="#ef4444" stroke-width="1.2"/>
+                                    </g>
+                                </g>
+                            </g>
+
+                        </g>
+
+                        <!-- 粗壮肌肉颈部 -->
+                        <path d="M 124 104 L 176 104 L 170 126 L 130 126 Z" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="2"/>
+
+                        <!-- ============================================================
+                             【Strong 方脸肌肉头雕与面部系统 (清晰分区，零遮挡)】
+                             ============================================================ -->
+                        <g id="head" filter="url(#shadow-filter-u)">
+                            <!-- 紫色宇航头套 -->
+                            <path d="M 114 56 C 114 26, 186 26, 186 56 L 188 104 C 188 116, 172 120, 150 120 C 128 120, 112 116, 112 104 Z" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="2.2"/>
+
+                            <!-- 耳部通讯节点 -->
+                            <ellipse cx="111" cy="74" rx="5" ry="10" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="1.4"/>
+                            <circle cx="111" cy="74" r="2.5" fill="#38bdf8" filter="url(#glow-filter-u)"/>
+                            <ellipse cx="189" cy="74" rx="5" ry="10" fill="url(#bzu-purple)" stroke="#2e1065" stroke-width="1.4"/>
+                            <circle cx="189" cy="74" r="2.5" fill="#38bdf8" filter="url(#glow-filter-u)"/>
+
+                            <!-- 刚毅大方脸轮廓 (Strong Square Jaw - 下巴延伸至 114) -->
+                            <path d="M 120 48 C 130 40, 170 40, 180 48 C 188 58, 186 82, 182 94 L 172 112 C 166 116, 134 116, 128 112 L 118 94 C 114 82, 112 58, 120 48 Z" fill="url(#bzu-skin)" stroke="#0f172a" stroke-width="2.2" stroke-linejoin="round"/>
+
+                            <!-- 【动态眉毛】 -->
+                            <g id="eyebrows-group">
+                                <path id="eyebrow-left" class="anim-brow-l" d="M 124 54 Q 138 46 147 55 Z" fill="#2d150b" stroke="#2d150b" stroke-width="1.8" stroke-linejoin="round"/>
+                                <path id="eyebrow-right" class="anim-brow-r" d="M 176 54 Q 162 46 153 55 Z" fill="#2d150b" stroke="#2d150b" stroke-width="1.8" stroke-linejoin="round"/>
+                                <path d="M 126 58 L 144 59" stroke="#ea580c" stroke-width="1.3" stroke-linecap="round" opacity="0.65"/>
+                                <path d="M 174 58 L 156 59" stroke="#ea580c" stroke-width="1.3" stroke-linecap="round" opacity="0.65"/>
+                            </g>
+
+                            <!-- 【动态眼睛】：生理自然眨眼 -->
+                            <g id="eyes-group" class="anim-blink-active">
+                                <g id="eye-left" class="eye-ball">
+                                    <ellipse cx="137" cy="65" rx="7" ry="7.5" fill="#ffffff" stroke="#0f172a" stroke-width="1.3"/>
+                                    <circle cx="138" cy="65" r="4.2" fill="#0284c7"/>
+                                    <circle cx="138" cy="65" r="2.2" fill="#0f172a"/>
+                                    <circle cx="139.5" cy="63" r="1.3" fill="#ffffff"/>
+                                </g>
+
+                                <g id="eye-right" class="eye-ball">
+                                    <ellipse cx="163" cy="65" rx="7" ry="7.5" fill="#ffffff" stroke="#0f172a" stroke-width="1.3"/>
+                                    <circle cx="162" cy="65" r="4.2" fill="#0284c7"/>
+                                    <circle cx="162" cy="65" r="2.2" fill="#0f172a"/>
+                                    <circle cx="163.5" cy="63" r="1.3" fill="#ffffff"/>
+                                </g>
+                            </g>
+
+                            <!-- 坚毅立体鼻梁 -->
+                            <path d="M 150 60 L 154 75 L 145 77 L 155 77" fill="none" stroke="#c2410c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+                            <!-- 【嘴巴区域】：上移至 Y: 84 (完全与下巴旋涡分离，零遮挡) -->
+                            <g id="mouth-group">
+                                <!-- 状态 A：默认自信微笑 (Closed Smirk) -->
+                                <g id="mouth-smirk-closed">
+                                    <path d="M 136 84 Q 148 91 166 82" fill="none" stroke="#7c2d12" stroke-width="2.8" stroke-linecap="round"/>
+                                    <line x1="166" y1="82" x2="169" y2="78" stroke="#7c2d12" stroke-width="2.2" stroke-linecap="round"/>
+                                </g>
+
+                                <!-- 状态 B：拟真自然讲话口型 (Natural Lip-Sync Mouth) -->
+                                <g id="mouth-talk-open" style="display:none;">
+                                    <path d="M 136 83 Q 150 94 166 83 Q 150 86 136 83 Z" fill="#7f1d1d" stroke="#450a0a" stroke-width="1.8"/>
+                                    <path d="M 140 84 Q 150 87 162 84 L 160 86 Q 150 89 142 86 Z" fill="#ffffff"/>
+                                    <path d="M 145 89 Q 150 86 155 89 Q 150 93 145 89 Z" fill="#f87171"/>
+                                </g>
+                            </g>
+
+                            <!-- 【下巴独立特征区】：下移至 Y: 104 (清晰位于宽方下巴窝正中，与嘴巴间隔 15px) -->
+                            <g id="chin-swirl" transform="translate(150, 104)">
+                                <path d="M -6,-3 Q 0,-1 6,-3" fill="none" stroke="#ea580c" stroke-width="1.2" opacity="0.6"/>
+                                <path d="M 0,-4 A 4 4 0 0 1 4,0 A 4 4 0 0 1 0,4 A 3.2 3.2 0 0 1 -3.2,0 A 2.2 2.2 0 0 1 0,-2.2 A 1.4 1.4 0 0 1 1.4,0" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round"/>
+                            </g>
+                        </g>
+
+                        <!-- ============================================================
+                             【经典圆形透明太空面罩】(Iconic Classic Circular Dome)
+                             ============================================================ -->
+                        <g id="helmet-glass-dome">
+                            <circle cx="150" cy="76" r="54" fill="url(#bzu-glass)" stroke="#38bdf8" stroke-width="2.2" opacity="0.82"/>
+                            
+                            <ellipse cx="150" cy="126" rx="46" ry="7.5" fill="none" stroke="#e0f2fe" stroke-width="2" opacity="0.9"/>
+                            <ellipse cx="150" cy="126" rx="43" ry="5.5" fill="none" stroke="#38bdf8" stroke-width="1.2" opacity="0.7"/>
+
+                            <path d="M 116 50 A 46 46 0 0 1 184 50 A 46 36 0 0 0 116 50 Z" fill="#ffffff" opacity="0.85" filter="url(#glow-filter-u)"/>
+                            <ellipse cx="122" cy="42" rx="14" ry="5" transform="rotate(-30 122 42)" fill="#ffffff" opacity="0.85"/>
+                            <ellipse cx="178" cy="46" rx="7" ry="3.5" transform="rotate(25 178 46)" fill="#ffffff" opacity="0.65"/>
+                        </g>
+
+                    </g>
+                </svg>
+            </div>
+            <div class="card-body">
+                <div class="desc">
+                    <strong>完美纠偏定稿版：</strong>
+                    <br>1. <strong>双手真·叉腰英雄姿态（Akimbo）</strong>：双肘向两侧外展形成经典的倒三角英雄身姿，手掌稳稳扣在腰际白甲上，<strong>彻底告别 X 交叉误区</strong>！
+                    <br>2. <strong>自然垂手微张站姿（Standing）</strong>：双臂自然向外张开 15° 顺垂在大腿两侧，比例协调舒展。
+                    <br>3. <strong>连贯五指招手长臂（Wave）</strong>：大臂与小臂完美连接<strong>绝无脱节分离</strong>，五指充分舒展张开并优雅招手！
+                </div>
+                <div class="tech-tags">
+                    <span class="tag">True Flared Akimbo</span>
+                    <span class="tag">Natural 15deg Flare Standing</span>
+                    <span class="tag">Seamless 5-Finger Wave</span>
+                    <span class="tag">100% Uniform Arm Thickness</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 交互与真人语音播报控制脚本 -->
+    <script>
+        // 骨骼图层显隐
+        function toggleBones(containerId) {
+            const container = document.getElementById(containerId);
+            container.classList.toggle('show-bones');
+        }
+
+        // 手臂姿态实时切换控制 (支持 akimbo / standing / wave / laser)
+        function setPose(poseName) {
+            const poses = ['akimbo', 'standing', 'wave', 'laser'];
+            
+            // 左臂控制：如果是 akimbo 则左臂叉腰，其余状态左臂自然微张垂手
+            const armLeftAkimbo = document.getElementById('arm-left-akimbo');
+            const armLeftStanding = document.getElementById('arm-left-standing');
+            if (poseName === 'akimbo') {
+                if (armLeftAkimbo) armLeftAkimbo.style.display = 'inline';
+                if (armLeftStanding) armLeftStanding.style.display = 'none';
+            } else {
+                if (armLeftAkimbo) armLeftAkimbo.style.display = 'none';
+                if (armLeftStanding) armLeftStanding.style.display = 'inline';
+            }
+
+            // 右臂与按钮高亮控制
+            poses.forEach(p => {
+                const el = document.getElementById('pose-' + p + '-right');
+                const btn = document.getElementById('btn-pose-' + p);
+                if (p === poseName) {
+                    if (el) el.style.display = 'inline';
+                    if (btn) btn.classList.add('active');
+                } else {
+                    if (el) el.style.display = 'none';
+                    if (btn) btn.classList.remove('active');
+                }
+            });
+        }
+
+        // 飞行模式 / 双翼展开切换
+        let isFlightMode = false;
+        function toggleFlightMode() {
+            isFlightMode = !isFlightMode;
+            const wingsDeployed = document.getElementById('wings-deployed');
+            const wingsFolded = document.getElementById('wings-folded');
+            const buzzRoot = document.getElementById('buzz-lightyear-ultimate');
+            const status = document.getElementById('flight-status');
+            const btn = document.getElementById('btn-wings');
+
+            if (isFlightMode) {
+                wingsDeployed.style.display = 'inline';
+                wingsFolded.style.display = 'none';
+                buzzRoot.classList.add('anim-flight-hover');
+                status.textContent = '飞行展开中';
+                btn.classList.add('active');
+            } else {
+                wingsDeployed.style.display = 'none';
+                wingsFolded.style.display = 'inline';
+                buzzRoot.classList.remove('anim-flight-hover');
+                status.textContent = '地面收纳';
+                btn.classList.remove('active');
+            }
+        }
+
+        // 眨眼动画开启/关闭
+        let isBlinkActive = true;
+        function toggleBlink() {
+            isBlinkActive = !isBlinkActive;
+            const eyes = document.getElementById('eyes-group');
+            const btn = document.getElementById('btn-blink');
+            if (isBlinkActive) {
+                eyes.classList.add('anim-blink-active');
+                btn.classList.add('active');
+            } else {
+                eyes.classList.remove('anim-blink-active');
+                btn.classList.remove('active');
+            }
+        }
+
+        // 讲话模式切换与自然口型控制
+        let isTalking = false;
+        let talkTimeout = null;
+
+        function setSpeakingState(speaking) {
+            const head = document.getElementById('head');
+            const btn = document.getElementById('btn-talk');
+
+            isTalking = speaking;
+            if (speaking) {
+                head.classList.add('speaking-mode');
+                btn.classList.add('active');
+            } else {
+                head.classList.remove('speaking-mode');
+                btn.classList.remove('active');
+            }
+        }
+
+        function toggleTalking() {
+            if (isTalking) {
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
+                clearTimeout(talkTimeout);
+                setSpeakingState(false);
+            } else {
+                speakLine('飞向太空，宇宙无限！我是巴斯光年！');
+            }
+        }
+
+        // 真人中文语音合成与口型同步系统
+        function speakLine(text) {
+            clearTimeout(talkTimeout);
+            setSpeakingState(true);
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 0.92;
+                utterance.pitch = 0.9;
+
+                utterance.onend = () => {
+                    setSpeakingState(false);
+                };
+                utterance.onerror = () => {
+                    setSpeakingState(false);
+                };
+
+                window.speechSynthesis.speak(utterance);
+
+                talkTimeout = setTimeout(() => {
+                    setSpeakingState(false);
+                }, (text.length * 280) + 800);
+            } else {
+                talkTimeout = setTimeout(() => {
+                    setSpeakingState(false);
+                }, 2500);
+            }
+        }
+    </script>
+</body>
+</html>

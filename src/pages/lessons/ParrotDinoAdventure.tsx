@@ -94,6 +94,7 @@ function seatBg(character: MascotId): string {
     case 'fox': return 'linear-gradient(160deg,#FF8A65,#D84315)';
     case 'olaf': return 'linear-gradient(160deg,#4FC3F7,#0277BD)';
     case 'dino': return 'linear-gradient(160deg,#66BB6A,#2E7D32)';
+    case 'xiaobanlong': return 'linear-gradient(160deg,#FFD54F,#F57C00)';
     default: return 'linear-gradient(160deg,#FFCA28,#F57C00)';
   }
 }
@@ -121,6 +122,7 @@ function dockBandBg(step: Step, world: World, character: MascotId): string {
     case 'fox': return 'linear-gradient(180deg,#FFB74D,#FF8A65)';
     case 'olaf': return 'linear-gradient(180deg,#B3E5FC,#81D4FA)';
     case 'dino': return 'linear-gradient(180deg,#A5D6A7,#66BB6A)';
+    case 'xiaobanlong': return 'linear-gradient(180deg,#FFE082,#FFB74D)';
     default: return 'linear-gradient(180deg,#FFE082,#FFB74D)';
   }
 }
@@ -158,7 +160,7 @@ export default function ParrotDinoAdventure() {
   // 进入冒险前把 ?character=xxx 写入 localStorage，整条课程都用该角色。
   const charParam = searchParams.get('character');
   const character: MascotId =
-    charParam === 'fox' || charParam === 'olaf' || charParam === 'dino' || charParam === 'parrot'
+    charParam === 'fox' || charParam === 'olaf' || charParam === 'dino' || charParam === 'xiaobanlong' || charParam === 'parrot'
       ? charParam as MascotId
       : getMascotId();
   useEffect(() => {
